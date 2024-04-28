@@ -1,0 +1,78 @@
+{lib, pkgs, ... }:
+{
+  home.shellAliases = {
+    mkdir = "mkdir -p";
+    myip = "curl http://ipecho.net/plain; echo";
+    pyserver = "python3 -m http.server";
+    venv = "source ./.venv/bin/activate";
+    suh = "systemctl hibernate";
+    sus = "systemctl suspend";
+    srs = "doas systemctl restart";
+    sss = "doas systemctl status";
+
+     lsc = "/usr/bin/ls --color=auto";
+     ls="eza --icons --color=always --group-directories-first"; 
+      l = "ls -lh";
+      la = "l -a";
+      lt = "l -T";
+      "l." = "la ..";
+      "l.." = "la ../..";
+      "l..." = "la ../../..";
+      cd = "z";
+      cdi = "zi";
+      "~" = "cd ~";
+      ".-" = "cd -";
+      "cd.." = "cd ..";
+      ".." = "cd ..";
+      "..." = "cd ../..";
+      ".3" = "cd ../../..";
+      ".4" = "cd ../../../..";
+      ".5" = "cd ../../../../..";
+      "." = "pwd";
+      e = "$EDITOR";
+      r = "bat";
+      cargo = "cargo mommy";
+      c = "cargo";
+      ct = "cargo test";
+      m = "make";
+      o = "xdg-open";
+      vimdiff = "nvim -d";
+      clip = "xclip -selection clipboard";
+      bash = "SHELL=bash bash";
+      zsh = "SHELL=zsh zsh";
+      fish = "SHELL=fish fish";
+      ks = "keybase chat send";
+      ksr = "keybase chat read";
+      kl = "keybase chat list";
+      g = "git";
+      gc = "git checkout";
+      push = "git push";
+      pusht = "push --tags";
+      pushf = "push --force";
+      commit = "git commit -S";
+      clone = "git clone";
+      sclone = "git clone --depth=1";
+      add = "git add";
+      addp = "git add -p";
+      status = "git status";
+      pull = "git pull";
+      fetch = "git fetch";
+      rebase = "git rebase";
+      tag = "git tag";
+      ctag = "git tag --sign";
+      switch = "git switch";
+      gah = "git stash && git pull --rebase && git stash pop";
+      pr = "gh pr create -t $(git show -s --format=%s HEAD) -b $(git show -s --format=%B HEAD | tail -n+3)";
+      grep = "grep --color=auto";
+      egrep = "egrep --color=auto";
+      fgrep = "fgrep --color=auto";
+      cp = "cp -i";
+      mv = "mv -i";
+      yta-aac = "yt-dlp --extract-audio --audio-format aac";
+      yta-best = "yt-dlp --extract-audio --audio-format best";
+      yta-flac = "yt-dlp --extract-audio --audio-format flac";
+      yta-mp3 = "yt-dlp --extract-audio --audio-format mp3";
+      ytv-best = "yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio' --merge-output-format mp4";
+  };
+  
+}
