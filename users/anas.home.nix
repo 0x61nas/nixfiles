@@ -13,6 +13,7 @@ in
     ../configs/dunst.nix
     ../configs/gnupg.nix
     ../configs/git.nix
+    ../configs/btop.nix
   ];
   home.username = "anas";
   home.homeDirectory = "/home/anas";
