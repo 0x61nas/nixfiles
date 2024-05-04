@@ -29,6 +29,7 @@ in
     youtube-dl
     vagrant
     plantuml
+    rofi
     cmus
     just
     gnupg
