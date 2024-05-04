@@ -44,6 +44,8 @@ in
     jellycli
     jellyfin-web
     playerctl
+    heroic
+    #protonup-qt
     # notification daemon
     dunst
     libnotify
@@ -73,7 +75,7 @@ in
     newSession = true;
     extraConfig = builtins.readFile ../configs/tmux/tmux.conf;
   };
-  
+
   programs.home-manager.enable = true;
 
   xdg.enable = true;
