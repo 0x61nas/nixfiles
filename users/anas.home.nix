@@ -14,6 +14,7 @@ in
     ../configs/gnupg.nix
     ../configs/git.nix
     ../configs/btop.nix
+    ../configs/sxhkd.nix
   ];
   home.username = "anas";
   home.homeDirectory = "/home/anas";
