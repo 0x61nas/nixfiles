@@ -80,7 +80,6 @@
 
     neovim
     ripgrep
-    neofetch
     git
     eza
     networkmanagerapplet
