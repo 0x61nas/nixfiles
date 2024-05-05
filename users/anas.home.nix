@@ -15,6 +15,7 @@ in
     ../configs/git.nix
     ../configs/btop.nix
     ../configs/sxhkd.nix
+    ../configs/x11/xinit.nix
   ];
   home.username = "anas";
   home.homeDirectory = "/home/anas";
