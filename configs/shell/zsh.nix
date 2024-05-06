@@ -6,14 +6,6 @@
     sha256 = "0cl2ml4z62yiwn0n5wk6bj4zsf5avjl643c66k2p0m2bfa8a2pwk";
   };
 
-  home.file = {
-    ".local/share/zsh/zsh-autosuggestions".source = "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions";
-    ".local/share/zsh/zsh-fast-syntax-highlighting".source = "${pkgs.zsh-fast-syntax-highlighting}/share/zsh/site-functions";
-    ".local/share/zsh/nix-zsh-completions".source = "${pkgs.nix-zsh-completions}/share/zsh/plugins/nix";
-    ".local/share/zsh/zsh-vi-mode".source = "${pkgs.zsh-vi-mode}/share/zsh-vi-mode";
-    ".local/share/zsh/you-should-use".source = "${pkgs.zsh-you-should-use}/share/zsh/plugins/you-should-use";
-  };
-  
   programs.zsh = {
     enable = true;
     dotDir = ".config/zsh";
@@ -32,60 +24,30 @@
     };
     plugins = [
 	  {
-	    # will source zsh-autosuggestions.plugin.zsh
-	    name = "zsh-autosuggestions";
-	    src = pkgs.fetchFromGitHub {
-	      owner = "zsh-users";
-	      repo = "zsh-autosuggestions";
-	      rev = "v0.7.0";
-	      sha256 = "sha256-KLUYpUu4DHRumQZ3w59m9aTW6TBKMCXl2UcKi4uMd7w=";
-	    };
-	  }
-	  {
-	    name = "zsh-syntax-highlighting";
-	    src = pkgs.fetchFromGitHub {
-	      owner = "zsh-users";
-	      repo = "zsh-syntax-highlighting";
-	      rev = "0.8.0";
-	      sha256 = "sha256-iJdWopZwHpSyYl5/FQXEW7gl/SrKaYDEtTH9cGP7iPo=";
-	    };
-	  }
-	  {
 	    name = "zsh-history-substring-search";
-	    src = pkgs.fetchFromGitHub {
-	      owner = "zsh-users";
-	      repo = "zsh-history-substring-search";
-	      rev = "v1.1.0";
-	      sha256 = "sha256-GSEvgvgWi1rrsgikTzDXokHTROoyPRlU0FVpAoEmXG4=";
-	    };
+        src = "${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search";
+        file = "zsh-history-substring-search.zsh";
 	  }
 	  {
-	    name = "zsh-you-should-use";
-	    src = pkgs.fetchFromGitHub {
-	      owner = "MichaelAquilina";
-	      repo = "zsh-you-should-use";
-	      rev = "1.7.3";
-	      sha256 = "sha256-/uVFyplnlg9mETMi7myIndO6IG7Wr9M7xDFfY1pG5Lc=";
-	    };
+	    name = "you-should-use";
+        src = "${pkgs.zsh-you-should-use}/share/zsh/plugins/you-should-use";
+        file = "you-should-use.plugin.zsh";
 	  }
-	  {
-	    name = "zsh-autoswitch-virtualenv";
-	    src = pkgs.fetchFromGitHub {
-	      owner = "archy-linux";
-	      repo = "zsh-autoswitch-virtualenv";
-	      rev = "master";
-	      sha256 = "sha256-9ussStZVNwWkefWZDE3S9AXTVMEuwjoWLQ+MzYVCjm4=";
-	    };
-	  }
-	  {
-	    name = "zsh-auto-notify";
-	    src = pkgs.fetchFromGitHub {
-	      owner = "archy-linux";
-	      repo = "zsh-auto-notify";
-	      rev = "master";
-	      sha256 = "sha256-11VyO65GEP8yvXsLNktNmC2yn5WT+301rEKKOx94g3M=";
-	    };
-	  }
+      {
+        name = "nix-zsh-compltions";
+        src = "${pkgs.nix-zsh-completions}/share/zsh/plugins/nix";
+        file = "nix.plugin.zsh";
+      }
+      #{
+        #name = "zsh-autoswitch-virtualenv";
+        #src = pkgs.fetchFromGitHub {
+          #owner = "archy-linux";
+          #repo = "zsh-autoswitch-virtualenv";
+          #rev = "master";
+          #sha256 = "sha256-9ussStZVNwWkefWZDE3S9AXTVMEuwjoWLQ+MzYVCjm4=";
+        #};
+        #file = "autoswitch_virtualenv.plugin.zsh";
+      #}
     ];
     initExtra = ''
       SHELL_NAME=$(basename $SHELL)
@@ -102,11 +64,15 @@
       if command -v pyenv 1>/dev/null 2>&1; then
         eval "$(pyenv init -)"
       fi
-      eval "$(zoxide init $SHELL_NAME)"
+      eval "$(${pkgs.zoxide}/bin/zoxide init $SHELL_NAME)"
+
+          bindkey '^ ' autosuggest-accept
+    ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+
     # EXTRACT FUNCTION (needs more nix)
 
     hst() {
-        history 0 | cut -c 8- | uniq | ${pkgs.fzf}/bin/fzf | ${pkgs.wl-clipboard}/bin/wl-copy
+        history 0 | cut -c 8- | uniq | ${pkgs.fzf}/bin/fzf | ${pkgs.xclip}/bin/xclip
     }
 
     proj() {
@@ -159,26 +125,7 @@
         echo "$extra_dev_shell$addspace"
     }
 
-    # PLUGINS (whatever)
-    [ -f "$HOME/.local/share/zsh/zsh-vi-mode/zsh-vi-mode.plugin.zsh" ] && \
-    source "$HOME/.local/share/zsh/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
-
-    [ -f "$HOME/.local/share/zsh/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh" ] && \
-    source "$HOME/.local/share/zsh/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
-
-    bindkey '^ ' autosuggest-accept
-    ZSH_AUTOSUGGEST_STRATEGY=(history completion)
     
-
-    [ -f "$HOME/.local/share/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" ] && \
-    source "$HOME/.local/share/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
-
-    [ -f "$HOME/.local/share/zsh/nix-zsh-completions/nix.plugin.zsh" ] && \
-    source "$HOME/.local/share/zsh/nix-zsh-completions/nix.plugin.zsh"
-
-    [ -f "$HOME/share/zsh/plugins/zsh-you-should-use/you-should-use.plugin.zsh" ] && \
-    source "$HOME/share/zsh/plugins/zsh-you-should-use/you-should-use.plugin.zsh"
-
     if [[ -n $CUSTOMZSHTOSOURCE ]]; then
       source "$CUSTOMZSHTOSOURCE"
     fi

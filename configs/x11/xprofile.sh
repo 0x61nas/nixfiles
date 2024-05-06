@@ -15,7 +15,7 @@ gpgconf --launch gpg-agent
 export "SSH_AUTH_SOCK=/run/user/$(id -u)/gnupg/S.gpg-agent.ssh"
 
 # Keyboard layouts switch (requires setxkbmap)
-#setxkbmap -model pc104 -layout us,ara -variant dvorak-l, -option grp:win_space_toggle caps:swapescape keypad:pointerkeys
+setxkbmap -model pc104 -layout us,ara -variant dvorak-l, -option grp:win_space_toggle caps:swapescape keypad:pointerkeys
 #export TOUCHPAD_ACCEL_SPEED=0.6
 #touchpad-accel-toggle -e
 

@@ -92,16 +92,15 @@
     zathura
     wget
    
-    btop
-    nvtop
-
     brave
     firefox
+    #(pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true;}) {})
     vlc
     keepassxc
     unzip
     zip
     farbfeld
+    ffmpeg
 
     rustup
     gcc
@@ -111,9 +110,13 @@
     jellyfin
     jellyfin-web
     jellyfin-ffmpeg
+    #mtpfs
 
   ] ++ (with pkgs-unstable; [
     qbittorrent
+    nvtopPackages.intel
+    nvtopPackages.nvidia
+    btop
   ]);
 
    #----=[ Fonts ]=----#
@@ -178,7 +181,7 @@ fonts = {
 	    # Rust stuff
 	    CARGO_INCREMENTAL = "1";
 	    RUSTFLAGS = "-C target-cpu=native";
-	    RUST_BACKTRACE = "1";
+        RUST_BACKTRACE = "1";
 	  };
 
   system.stateVersion = "23.11";
@@ -192,6 +195,9 @@ fonts = {
       XDG_CONFIG_HOME = "$HOME/.config";
       XDG_DATA_HOME = "$HOME/.local/share";
       XDG_STATE_HOME = "$HOME/.local/state";
+      # This improves touchscreen support and enables additional touchpad gestures. 
+      # It also enables smooth scrolling as opposed to the stepped scrolling that Firefox has by default.
+      MOZ_USE_XINPUT2 = "1"; 
     };
 
     services.printing.enable = true;
@@ -206,6 +212,10 @@ fonts = {
       #jack.enable = true;
       #media-session.enable = true; # default for now, no need to change
     };
+
+    qt.enable = true;
+    qt.platformTheme = "gtk2";
+    qt.style = "gtk2";
 
 
   nix = {

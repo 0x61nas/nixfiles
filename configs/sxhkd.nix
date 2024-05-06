@@ -11,11 +11,12 @@
 
       # Lunchers (rofi, dmenu)
       # dmenu
-     "super + p" =  "$HOME/.scripts/dmenu_run";
+     "super + p" = "rofi -show drun";
+     "super + c" = "rofi -show calc";
       # Web browsers
-      "super + w; {f,c,t}" = "{firefox,google-chrome,tor-browser}";
+      "super + w; {f,c,b,t}" = "nvidia-offload {firefox,google-chrome,brave,tor-browser}";
       # applications
-      "super + shift; {d,o}" = "{discord,obsidian}";
+      "super + shift; {d,o,k}" = "{discord,obsidian,keepassxc}";
       ##---------- System Keys ----------##
 
       # Take a screenshot in the clipboard
@@ -26,7 +27,7 @@
       "alt + shift + Print" = "screenshot -n";
       "alt + Print" = "screenshot -r -n";
       "alt + ctrl + Print" = "screenshot --activewindow -n";
-      "XF86MonBrightness{Up,Down}" = "xbacklight -{inc,dec} 5"
+      "XF86MonBrightness{Up,Down}" = "xbacklight -{inc,dec} 5";
       # Manage Volume
       "XF86Audio{Raise,Lower}Volume" = "sh $HOME/.scripts/volume {up,down}";
       "XF86AudioMute" = "sh $HOME/.scripts/volume mute";

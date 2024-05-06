@@ -32,6 +32,9 @@
       e = "$EDITOR";
       r = "bat";
       cargo = "cargo mommy";
+      j = "just";
+      jr = "just run";
+      jl = "just --list";
       c = "cargo";
       ct = "cargo test";
       m = "make";

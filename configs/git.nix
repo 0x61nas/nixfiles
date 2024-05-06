@@ -1,5 +1,6 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 {
+  home.packages = with pkgs; [ delta ];
   programs.git = {
     enable = true;
     userName = "0x61nas";

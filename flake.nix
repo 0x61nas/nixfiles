@@ -13,8 +13,8 @@
     sops-nix.url = "github:Mic92/sops-nix";
     impermanence.url = "github:nix-community/impermanence";
 
-    # nix-ld-rs.url = "github:nix-community/nix-ld-rs";
-    # nix-ld-rs.inputs.nixpkgs.follows = "nixpkgs";
+    nix-ld-rs.url = "github:nix-community/nix-ld-rs";
+    nix-ld-rs.inputs.nixpkgs.follows = "nixpkgs";
 
     # My Flakes
     spotify-adblock.url = "path:./flakes/spotify-adblock";

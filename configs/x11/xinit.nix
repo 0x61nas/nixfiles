@@ -23,7 +23,7 @@
       "Xft.hinting" = true;
       "Xft.hintstyle" = "hintfull";
       "Xft.rgba" = "rgb";
-      "Xft.dpi" 110;
+      "Xft.dpi" = 110;
       # xterm ----------------------------------------------------------------------
       "xterm*geometry" = "100x25";
       "xterm*dynamicColors" = true;
@@ -38,7 +38,6 @@
       "xterm*termName" = "xterm-256color";
       "xterm*faceName" = "Noto Sans Mono";   
     };
-    extraConfig = builtins.readFile("./base16-gruvbox-dark-hard-256.Xresources");
+    extraConfig = builtins.readFile ./base16-gruvbox-dark-hard-256.Xresources;
   };
-  
 }

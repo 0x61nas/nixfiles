@@ -24,21 +24,19 @@ in
 
   home.packages = with pkgs; [
     pfetch-rs
-    btop
-    nvtop
     thunderbird
     tree
     tor-browser
     youtube-dl
     vagrant
     plantuml
-    rofi
     cmus
     just
     gnupg
     discord
+    #dorion
     gh
-    eza
+    #eza
     bat
     gitmux
     keepassxc
