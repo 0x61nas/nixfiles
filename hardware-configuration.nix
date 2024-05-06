@@ -72,20 +72,37 @@
   services.tlp = {
       enable = true;
       settings = {
-        CPU_SCALING_GOVERNOR_ON_AC = "performance";
+        # Select a CPU frequency scaling governor.
+        # Intel processor with intel_pstate driver:
+        #   performance, powersave(*).
+        # Intel processor with intel_cpufreq driver (aka intel_pstate passive mode):
+        #   conservative, ondemand, userspace, powersave, performance, schedutil(*).
+        # Intel and other processor brands with acpi-cpufreq driver:
+        #   conservative, ondemand(*), userspace, powersave, performance, schedutil(*).
+        # Use tlp-stat -p to show the active driver and available governors.
+        # Important:
+        #   Governors marked (*) above are power efficient for *almost all* workloads
+        #   and therefore kernel and most distributions have chosen them as defaults.
+        #   You should have done your research about advantages/disadvantages *before*
+        #   changing the governor.
+        CPU_SCALING_GOVERNOR_ON_AC = "powersave";
         CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
-        CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
-        CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
+        CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
+        CPU_ENERGY_PERF_POLICY_ON_BAT = "balance_power";
+
+        CPU_HWP_DYN_BOOST_ON_AC = 1;
+        CPU_HWP_DYN_BOOST_ON_BAT = 0;
 
         CPU_MIN_PERF_ON_AC = 0;
         CPU_MAX_PERF_ON_AC = 100;
         CPU_MIN_PERF_ON_BAT = 0;
-        CPU_MAX_PERF_ON_BAT = 20;
+        CPU_MAX_PERF_ON_BAT = 65;
 
        #Optional helps save long term battery health
        START_CHARGE_THRESH_BAT0 = 40; # 40 and bellow it starts to charge
        STOP_CHARGE_THRESH_BAT0 = 1;
+       RESTORE_THRESHOLDS_ON_BAT = 1;
       };
   };
 
