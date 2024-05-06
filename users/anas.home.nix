@@ -16,6 +16,7 @@ in
     ../configs/btop.nix
     ../configs/sxhkd.nix
     ../configs/x11/xinit.nix
+    ../configs/rofi.nix
   ];
   home.username = "anas";
   home.homeDirectory = "/home/anas";
