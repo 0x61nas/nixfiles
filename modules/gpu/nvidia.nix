@@ -39,7 +39,7 @@ in
       NVD_BACKEND = "direct";
       # Required for firefox 98+, see:
       # https://github.com/elFarto/nvidia-vaapi-driver#firefox
-      EGL_PLATFORM = "wayland";
+      #EGL_PLATFORM = "wayland";
       };
 
 
@@ -49,9 +49,9 @@ in
 
     # Load nvidia driver for Xorg and Wayland
     services.xserver.videoDrivers = [ "nvidia" ];
-    # systemd.services.nvidia-resume.enable = true;
-    # systemd.services.nvidia-hibernate.enable = true;
-    # systemd.services.nvidia-suspend.enable = true;
+    systemd.services.nvidia-resume.enable = true;
+    systemd.services.nvidia-hibernate.enable = true;
+    systemd.services.nvidia-suspend.enable = true;
 
     hardware.nvidia = {
       modesetting.enable = true;
@@ -77,10 +77,14 @@ in
 
 
     prime = {
-	# Make sure to use the correct Bus ID values for your system!
-	intelBusId = "PCI:0:2:0";
-	nvidiaBusId = "PCI:1:0";
- };
+      offload = {
+        enable = true;
+        enableOffloadCmd = true;
+      };
+	  # Make sure to use the correct Bus ID values for your system!
+      intelBusId = "PCI:0:2:0";
+	  nvidiaBusId = "PCI:1:0:0";
+    };
 
       # Optionally, you may need to select the appropriate driver version for your specific GPU.
       package = config.boot.kernelPackages.nvidiaPackages.stable;
