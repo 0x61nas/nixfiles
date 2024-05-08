@@ -6,7 +6,6 @@ in
 {
   imports = [
     inputs.nix-colors.homeManagerModules.default
-    inputs.spotify-adblock.homeManagerModules.spotify-adblock
     ../configs/shell/zsh.nix
     ../configs/shell/aliases.nix
     ../configs/nvim/nvim.nix
@@ -55,12 +54,6 @@ in
 
   # theme
   colorScheme = inputs.nix-colors.colorSchemes.${lib.strings.toLower (lib.strings.concatStringsSep "-" base16Theme)};
-
-  programs.spotify-adblock = {
-    enable = true;
-    client = pkgs.spotify;
-    generateDesktopFile = true;
-  };
 
   programs.direnv = {
     enable = true;

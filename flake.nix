@@ -15,9 +15,6 @@
 
     nix-ld-rs.url = "github:nix-community/nix-ld-rs";
     nix-ld-rs.inputs.nixpkgs.follows = "nixpkgs";
-
-    # My Flakes
-    spotify-adblock.url = "path:./flakes/spotify-adblock";
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, ... }@inputs:
