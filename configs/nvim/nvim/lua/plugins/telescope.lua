@@ -1,6 +1,6 @@
 return {
     'nvim-telescope/telescope.nvim',
-    lazy = true,
+    lazy = false,
     keys = {
       {'<Leader>f', ":lua require('telescope.builtin').find_files()<CR>", {noremap = true, silent = true}, desc="Find Files"},
       {'<Leader>b', ":lua require('telescope.builtin').buffers()<CR>", {noremap = true, silent = true}, desc="Buffers"},
