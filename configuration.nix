@@ -104,6 +104,8 @@
     farbfeld
     ffmpeg
 
+    llvmPackages_17.clang-unwrapped
+    llvmPackages_17.bintools
     rustup
     gcc
 
