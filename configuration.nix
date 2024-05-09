@@ -11,7 +11,8 @@
 
   gpu = {
     nvidia.enable = true;
-    #intel.enable = false;
+    intel.enable = false;
+    amd.enable = false;
   };
 
   services.flatpak.enable = false;

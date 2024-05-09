@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 let
   st = pkgs.stdenv.mkDerivation {
@@ -8,8 +8,8 @@ let
   src = pkgs.fetchFromGitHub {
     owner = "archy-linux";
     repo = "archy-st";
-    rev = "aurora";
-    hash = "sha256-QxmXqfFGtgwFcOq6oFxSueEEFz7Lg+e29XRchv+1kIE=";  # Use `nix-prefetch-url --unpack <url>` to get the hash
+    rev = "02cadd77e890f1285f9277532acdaac270e94e15";
+    hash = "sha256-j/J5HELZAsgfsvTsnXiYy1d69ZwlGlZmPnUedHpydHM=";  # Use `nix-prefetch-url --unpack <url>` to get the hash
   };
 
   buildInputs = with pkgs; [ xorg.libX11 xorg.libXft pkg-config harfbuzz ];
