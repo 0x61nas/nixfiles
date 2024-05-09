@@ -92,7 +92,8 @@
     killall
     zathura
     wget
-   
+    fzf
+
     brave
     firefox
     #(pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true;}) {})
