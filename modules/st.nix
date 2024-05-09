@@ -8,7 +8,7 @@ let
   src = pkgs.fetchFromGitHub {
     owner = "archy-linux";
     repo = "archy-st";
-    rev = "02cadd77e890f1285f9277532acdaac270e94e15";
+    rev = "aurora";
     hash = "sha256-j/J5HELZAsgfsvTsnXiYy1d69ZwlGlZmPnUedHpydHM=";  # Use `nix-prefetch-url --unpack <url>` to get the hash
   };
 
