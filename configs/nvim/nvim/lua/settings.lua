@@ -33,7 +33,7 @@ opt.guicursor =
 opt.splitbelow = true
 opt.splitright = true
 opt.lazyredraw = true
-opt.showtabline = 2
+opt.showtabline = 0
 
 -- Spelling
 opt.spell = true
