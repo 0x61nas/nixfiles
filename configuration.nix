@@ -108,6 +108,7 @@
     llvmPackages_17.bintools
     rustup
     gcc
+    python3
 
     ntfs3g
 
