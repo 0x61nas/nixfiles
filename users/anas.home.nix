@@ -17,6 +17,7 @@ in
     ../configs/x11/xinit.nix
     ../configs/rofi.nix
     ../configs/cargo/cargo.nix
+    ../configs/bat.nix
   ];
   home.username = "anas";
   home.homeDirectory = "/home/anas";
@@ -37,7 +38,6 @@ in
     #dorion
     gh
     #eza
-    bat
     gitmux
     keepassxc
     pavucontrol
