@@ -18,6 +18,7 @@ in
     ../configs/rofi.nix
     ../configs/cargo/cargo.nix
     ../configs/bat.nix
+    ../configs/tmux
   ];
   home.username = "anas";
   home.homeDirectory = "/home/anas";
@@ -38,7 +39,6 @@ in
     #dorion
     gh
     #eza
-    gitmux
     keepassxc
     pavucontrol
     jellyfin
@@ -60,16 +60,6 @@ in
     enable = true;
     nix-direnv.enable = true;
     enableZshIntegration = true;
-  };
-
-  programs.tmux = {
-    enable = true;
-    #extraPackges = [ pkgs.gitmux ];
-    baseIndex = 1;
-    mouse = true;
-    keyMode = "vi";
-    newSession = true;
-    extraConfig = builtins.readFile ../configs/tmux/tmux.conf;
   };
 
   programs.home-manager.enable = true;
