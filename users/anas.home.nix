@@ -46,6 +46,7 @@ in
     heroic
     #protonup-qt
     wine64Packages.stagingFull
+    inlyne
   ];
 
   # theme
