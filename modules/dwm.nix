@@ -23,7 +23,7 @@ in
     ./X11.nix
   ];
 
-  environment.systemPackages = with pkgs; [ customDwm sxhkd dmenu slock ];
+  environment.systemPackages = with pkgs; [ customDwm sxhkd dmenu ];
 
   services.xserver.windowManager = {dwm.enable = true;  # Ensures dwm is recognized
  # services.xserver.displayManager.lightdm.enable = false;

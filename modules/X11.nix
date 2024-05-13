@@ -7,6 +7,8 @@
       
   };
 
+  programs.slock.enable = true;
+
   environment.systemPackages = with pkgs; [
       xorg.libX11
       xorg.libX11.dev
