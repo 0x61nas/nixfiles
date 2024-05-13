@@ -8,6 +8,7 @@
       stylua
       nodePackages.bash-language-server
       asm-lsp
+      # nasmfmt
   ];
   home.file.".config/nvim" = {
     source = ./nvim;
