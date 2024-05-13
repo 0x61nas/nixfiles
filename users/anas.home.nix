@@ -69,4 +69,9 @@ in
     EDITOR = "nvim";
     BROWSER = "firefox";
   };
+
+  home.sessionPath = [
+    "$HOME/.local/bin"
+    "$HOME/.cargo/bin/"
+  ];
 }
