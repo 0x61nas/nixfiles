@@ -20,6 +20,7 @@ in
     ../configs/tmux
     ../configs/zoxide.nix
     ../configs/discord.nix
+    ../virtualization
   ];
   home.username = "anas";
   home.homeDirectory = "/home/anas";
