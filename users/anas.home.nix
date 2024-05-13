@@ -19,6 +19,7 @@ in
     ../configs/cargo/cargo.nix
     ../configs/bat.nix
     ../configs/tmux
+    ../configs/zoxide.nix
   ];
   home.username = "anas";
   home.homeDirectory = "/home/anas";
