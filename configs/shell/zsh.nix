@@ -1,9 +1,9 @@
-{lib, pkgs, config, ... }:
+{ pkgs, config, ... }:
 {
   # Download the prompt
   home.file.".config/zsh/prompt.zsh".source = builtins.fetchurl {
-    url = "https://gist.githubusercontent.com/0x61nas/6ee08add16a0ac8f63bfc485be5239f0/raw/100a7fecc752b6fe0ce564124a3c1e660ce18b7a/prompt.zsh";
-    sha256 = "0cl2ml4z62yiwn0n5wk6bj4zsf5avjl643c66k2p0m2bfa8a2pwk";
+    url = "https://gist.githubusercontent.com/0x61nas/6ee08add16a0ac8f63bfc485be5239f0/raw/72915834bb24398aae2968a96e0b350f5ff206b7/prompt.zsh";
+    sha256 = "1kkaq2x3p6dvgjbsbq0ir9la5ffxxh1a5s288jpj64zkm529p4af";
   };
 
   programs.zsh = {

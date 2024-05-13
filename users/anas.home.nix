@@ -1,4 +1,4 @@
-{ inputs, lib, pkgs, ... }:
+{ inputs, lib, pkgs, config, ... }:
 
 let
   base16Theme = [ "Gruvbox" "Dark" "Hard" ];
@@ -16,6 +16,7 @@ in
     ../configs/sxhkd.nix
     ../configs/x11/xinit.nix
     ../configs/rofi.nix
+    ../configs/cargo/cargo.nix
   ];
   home.username = "anas";
   home.homeDirectory = "/home/anas";
