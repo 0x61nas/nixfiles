@@ -49,6 +49,7 @@ in
     # notification daemon
     dunst
     libnotify
+    wine64Packages.stagingFull
   ];
 
   # theme
