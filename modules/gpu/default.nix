@@ -1,7 +1,7 @@
 {lib, ...}:
 with lib;
  {
-  imports = [ ./nvidia.nix ];
+  imports = [ ./nvidia.nix ./intel.nix ./amd.nix ];
   config = {
     hardware.opengl = {
       enable = mkDefault true;
