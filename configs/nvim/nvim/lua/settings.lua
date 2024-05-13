@@ -26,8 +26,8 @@ opt.wrap = false
 
 -- Cursor Settings
 opt.cursorline = true
-opt.guicursor =
-    "n-v-c-sm:block,ci-ve:ver25,r-cr-o:hor20,i:block-blinkoff1-blinkon1"
+-- opt.guicursor =
+    -- "n-v-c-sm:block,ci-ve:ver25,r-cr-o:hor20,i:block-blinkoff1-blinkon1"
 
 -- Window Settings
 opt.splitbelow = true
