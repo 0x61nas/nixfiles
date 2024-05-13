@@ -6,17 +6,16 @@ in
 {
   imports = [
     inputs.nix-colors.homeManagerModules.default
-    ../configs/shell/zsh.nix
-    ../configs/shell/aliases.nix
-    ../configs/nvim/nvim.nix
+    ../configs/shell
+    ../configs/nvim
     ../configs/dunst.nix
     ../configs/gnupg.nix
     ../configs/git.nix
     ../configs/btop.nix
     ../configs/sxhkd.nix
-    ../configs/x11/xinit.nix
+    ../configs/x11
     ../configs/rofi.nix
-    ../configs/cargo/cargo.nix
+    ../configs/cargo
     ../configs/bat.nix
     ../configs/tmux
     ../configs/zoxide.nix

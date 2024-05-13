@@ -56,6 +56,7 @@
       COMPLETION_WAITING_DOTS="true"
       source "$HOME/.config/zsh/prompt.zsh"
       [[ -e "$HOME/.private-env.sh" ]] && source "$HOME/.private-env.sh"
+      [[ -e "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
       if command -v gh >/dev/null 2>&1; then
         eval "$(gh copilot alias -- $SHELL_NAME)"
