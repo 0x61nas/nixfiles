@@ -32,8 +32,6 @@ in
     youtube-dl
     vagrant
     plantuml
-    cmus
-    just
     gnupg
     discord
     #dorion
@@ -47,9 +45,6 @@ in
     playerctl
     heroic
     #protonup-qt
-    # notification daemon
-    dunst
-    libnotify
     wine64Packages.stagingFull
   ];
 

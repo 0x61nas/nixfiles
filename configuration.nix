@@ -103,12 +103,14 @@
     zip
     farbfeld
     ffmpeg
+    cmus
 
     llvmPackages_17.clang-unwrapped
     llvmPackages_17.bintools
     rustup
     gcc
     python3
+    just
 
     ntfs3g
 
@@ -116,6 +118,9 @@
     jellyfin-web
     jellyfin-ffmpeg
     #mtpfs
+    # notification daemon
+    dunst
+    libnotify
 
   ] ++ (with pkgs-unstable; [
     qbittorrent
