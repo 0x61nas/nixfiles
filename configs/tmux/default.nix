@@ -1,4 +1,4 @@
-{pkgs, ...}: let
+{pkgs, pkgs-unstable, ...}: let
   tmux-gruvbox = pkgs.tmuxPlugins.mkTmuxPlugin {
     pluginName = "gruvbox";
     version = "0.1.0";
@@ -74,5 +74,7 @@ in {
           tmux kill-session -t $selected_name
       fi
     '')
-  ];
+  ] ++ (with pkgs-unstable; [
+    sesh
+  ]);
 }
