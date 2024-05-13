@@ -21,19 +21,7 @@ return {
       }
       },
       lualine_c = { { 'filename', file_status = true, path = 1 } },
-      lualine_x = {
-        {
-          'vim.fn["codeium#GetStatusString"]()',
-          fmt = function(str)
-            local trimmed = str:match("^%s*(.-)%s*$")
-            if trimmed == 'OFF' then return "󱚡 " end
-            if trimmed == "ON" then return "󰚩 " end
-            if trimmed == "*" then return "󱚣 " end
-            return "󰚩  " .. trimmed
-          end
-        },
-        'filetype',
-      },
+      lualine_x = { 'filetype' },
       lualine_y = { '%p%%', 'location' },
       lualine_z = {}
     },
