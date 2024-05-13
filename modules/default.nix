@@ -10,5 +10,6 @@
     ./st.nix
     #./dmenu.nix
     ./archy-slstatus.nix
+    ./fonts.nix
   ];
 }
