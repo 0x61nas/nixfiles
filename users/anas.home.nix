@@ -19,6 +19,7 @@ in
     ../configs/bat.nix
     ../configs/tmux
     ../configs/zoxide.nix
+    ../configs/discord.nix
   ];
   home.username = "anas";
   home.homeDirectory = "/home/anas";
@@ -33,8 +34,6 @@ in
     vagrant
     plantuml
     gnupg
-    discord
-    #dorion
     gh
     #eza
     keepassxc
