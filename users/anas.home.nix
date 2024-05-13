@@ -33,7 +33,6 @@ in
     just
     gnupg
     discord
-    sonic-pi
     #dorion
     gh
     #eza
