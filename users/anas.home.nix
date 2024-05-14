@@ -62,7 +62,6 @@ in
 
   programs.home-manager.enable = true;
 
-  xdg.enable = true;
   home.sessionVariables = {
     EDITOR = "nvim";
     BROWSER = "firefox";
