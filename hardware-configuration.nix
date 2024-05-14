@@ -5,56 +5,77 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
-  boot.initrd.kernelModules = [ ];
+  # hardware.cpu.intel.updateMicrocode = true;
+  boot.initrd.kernelModules = [ "i915" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
   boot.supportedFilesystems = [ "ntfs" ];
-  boot.tmp.cleanOnBoot =  true;
+  boot.tmp.cleanOnBoot = true;
 
   services.fstrim.enable = true;
 
+
+  environment.variables = {
+    VDPAU_DRIVER =  "va_gl";
+  };
+
+  hardware.opengl.extraPackages = with pkgs; [
+    (if (lib.versionOlder (lib.versions.majorMinor lib.version) "23.11") then vaapiIntel else intel-vaapi-driver)
+    libvdpau-va-gl
+    intel-media-driver
+  ];
+
+  # hardware.cpu.intel.sgx = true; 
+
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/e8b4cd92-d6e3-4b46-86d8-98502c2986aa";
+    {
+      device = "/dev/disk/by-uuid/e8b4cd92-d6e3-4b46-86d8-98502c2986aa";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/6451-1BDE";
+    {
+      device = "/dev/disk/by-uuid/6451-1BDE";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
     };
 
   fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/fa07f453-1d04-4939-b7a7-1b25a18df052";
+    {
+      device = "/dev/disk/by-uuid/fa07f453-1d04-4939-b7a7-1b25a18df052";
       fsType = "ext4";
       neededForBoot = true;
     };
-  
+
   fileSystems."/mnt/work" =
-    { device = "/dev/disk/by-uuid/bee230d5-e78b-4abd-b3ec-699aa9426442";
+    {
+      device = "/dev/disk/by-uuid/bee230d5-e78b-4abd-b3ec-699aa9426442";
       fsType = "ext4";
     };
 
   fileSystems."/mnt/data" =
-    { device = "/dev/disk/by-uuid/01D7B7F51EFC4A00";
-      fsType = "ntfs-3g"; 
+    {
+      device = "/dev/disk/by-uuid/01D7B7F51EFC4A00";
+      fsType = "ntfs-3g";
       options = [ "rw" ];
     };
 
   fileSystems."/mnt/uni" =
-    { device = "/dev/disk/by-uuid/01D74343567CAC80";
-      fsType = "ntfs-3g"; 
+    {
+      device = "/dev/disk/by-uuid/01D74343567CAC80";
+      fsType = "ntfs-3g";
       options = [ "rw" ];
     };
 
-   swapDevices = [ {
+  swapDevices = [{
     device = "/var/lib/swapfile";
-    size = 18*1024;
-  } ];
+    size = 18 * 1024;
+  }];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -65,48 +86,48 @@
   # networking.interfaces.wlp0s20f3.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  # hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
-  
+
   # TLP
   services.tlp = {
-      enable = true;
-      settings = {
-        # Select a CPU frequency scaling governor.
-        # Intel processor with intel_pstate driver:
-        #   performance, powersave(*).
-        # Intel processor with intel_cpufreq driver (aka intel_pstate passive mode):
-        #   conservative, ondemand, userspace, powersave, performance, schedutil(*).
-        # Intel and other processor brands with acpi-cpufreq driver:
-        #   conservative, ondemand(*), userspace, powersave, performance, schedutil(*).
-        # Use tlp-stat -p to show the active driver and available governors.
-        # Important:
-        #   Governors marked (*) above are power efficient for *almost all* workloads
-        #   and therefore kernel and most distributions have chosen them as defaults.
-        #   You should have done your research about advantages/disadvantages *before*
-        #   changing the governor.
-        CPU_SCALING_GOVERNOR_ON_AC = "powersave";
-        CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+    enable = true;
+    settings = {
+      # Select a CPU frequency scaling governor.
+      # Intel processor with intel_pstate driver:
+      #   performance, powersave(*).
+      # Intel processor with intel_cpufreq driver (aka intel_pstate passive mode):
+      #   conservative, ondemand, userspace, powersave, performance, schedutil(*).
+      # Intel and other processor brands with acpi-cpufreq driver:
+      #   conservative, ondemand(*), userspace, powersave, performance, schedutil(*).
+      # Use tlp-stat -p to show the active driver and available governors.
+      # Important:
+      #   Governors marked (*) above are power efficient for *almost all* workloads
+      #   and therefore kernel and most distributions have chosen them as defaults.
+      #   You should have done your research about advantages/disadvantages *before*
+      #   changing the governor.
+      CPU_SCALING_GOVERNOR_ON_AC = "powersave";
+      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
-        CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
-        CPU_ENERGY_PERF_POLICY_ON_BAT = "balance_power";
+      CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
+      CPU_ENERGY_PERF_POLICY_ON_BAT = "balance_power";
 
-        CPU_HWP_DYN_BOOST_ON_AC = 1;
-        CPU_HWP_DYN_BOOST_ON_BAT = 0;
+      CPU_HWP_DYN_BOOST_ON_AC = 1;
+      CPU_HWP_DYN_BOOST_ON_BAT = 0;
 
-        CPU_MIN_PERF_ON_AC = 0;
-        CPU_MAX_PERF_ON_AC = 100;
-        CPU_MIN_PERF_ON_BAT = 0;
-        CPU_MAX_PERF_ON_BAT = 65;
+      CPU_MIN_PERF_ON_AC = 0;
+      CPU_MAX_PERF_ON_AC = 100;
+      CPU_MIN_PERF_ON_BAT = 0;
+      CPU_MAX_PERF_ON_BAT = 65;
 
-       #Optional helps save long term battery health
-       START_CHARGE_THRESH_BAT0 = 40; # 40 and bellow it starts to charge
-       STOP_CHARGE_THRESH_BAT0 = 1;
-       RESTORE_THRESHOLDS_ON_BAT = 1;
-      };
+      #Optional helps save long term battery health
+      START_CHARGE_THRESH_BAT0 = 40; # 40 and bellow it starts to charge
+      STOP_CHARGE_THRESH_BAT0 = 1;
+      RESTORE_THRESHOLDS_ON_BAT = 1;
+    };
   };
 
   # Thermald proactively prevents overheating on Intel CPUs and works well with other tools.
-  services.thermald.enable = true; 
+  services.thermald.enable = true;
   powerManagement.enable = true;
 }
