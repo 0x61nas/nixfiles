@@ -142,7 +142,7 @@
   security.sudo.enable = false;
   security.doas.extraRules = [{
     users = [ "anas" ];
-    # Optional, retains environment variables while running commands 
+    # Optional, retains environment variables while running commands
     # e.g. retains your NIX_PATH when applying your config
     keepEnv = true;
     persist = true; # Optional, only require password verification a single time
@@ -182,9 +182,9 @@
     XDG_CONFIG_HOME = "$HOME/.config";
     XDG_DATA_HOME = "$HOME/.local/share";
     XDG_STATE_HOME = "$HOME/.local/state";
-    # This improves touchscreen support and enables additional touchpad gestures. 
+    # This improves touchscreen support and enables additional touchpad gestures.
     # It also enables smooth scrolling as opposed to the stepped scrolling that Firefox has by default.
-    #MOZ_USE_XINPUT2 = "1"; 
+    #MOZ_USE_XINPUT2 = "1";
   };
 
   services.printing.enable = true;
