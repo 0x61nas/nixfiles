@@ -1,9 +1,8 @@
 return {
   "mfussenegger/nvim-lint",
-  event = "LazyFile",
+  -- Event to trigger linters
+  events = { "BufWritePost", "BufReadPost", "InsertLeave" },
   opts = {
-    -- Event to trigger linters
-    events = { "BufWritePost", "BufReadPost", "InsertLeave" },
     linters_by_ft = {
       -- Use the "*" filetype to run linters on all filetypes.
       -- Use the "_" filetype to run linters on filetypes that don't have other linters configured.
@@ -79,10 +78,5 @@ return {
         lint.try_lint(names)
       end
     end
-
-    vim.api.nvim_create_autocmd(opts.events, {
-      group = vim.api.nvim_create_augroup("nvim-lint", { clear = true }),
-      callback = M.debounce(100, M.lint),
-    })
   end,
 }
