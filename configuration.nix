@@ -87,7 +87,9 @@
     neovim
     ripgrep
     git
-    eza
+    (eza.override {
+      gitSupport = false;
+    })
     networkmanagerapplet
     tmux
     zoxide
