@@ -15,6 +15,10 @@
     amd.enable = false;
   };
 
+  # Firmware update helper
+  # https://nixos.wiki/wiki/Fwupd
+  services.fwupd.enable = true;
+
   services.flatpak.enable = false;
   # services.flatpak.packages = [
   #   "hu.kramo.Cartridges"
