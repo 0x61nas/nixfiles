@@ -21,6 +21,8 @@ in
     ../configs/zoxide.nix
     ../configs/discord.nix
     ../virtualization
+    # ../configs/thunar.nix
+    ../configs/xdg.nix
   ];
   home.username = "anas";
   home.homeDirectory = "/home/anas";
