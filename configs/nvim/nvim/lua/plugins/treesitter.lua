@@ -74,6 +74,10 @@ return {
       "vimdoc",
       "xml",
       "yaml",
+      "hurl",
+      "nix",
+      "zig",
+      "asm",
     },
     incremental_selection = {
       enable = true,
