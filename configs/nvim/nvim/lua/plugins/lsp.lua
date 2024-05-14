@@ -18,29 +18,29 @@ return {
     capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
     -- Rust
-    lspconfig.rust_analyzer.setup {
-      -- Server-specific settings. See `:help lspconfig-setup`
-      capabilities = capabilities,
-      -- on_attach = on_attach,
-      autostart = true,
-      settings = {
-        ["rust-analyzer"] = {
-          cargo = {
-            allFeatures = true,
-          },
-          imports = {
-            group = {
-              enable = false,
-            },
-          },
-          completion = {
-            postfix = {
-              enable = false,
-            },
-          },
-        },
-      },
-    }
+    -- lspconfig.rust_analyzer.setup {
+    --   -- Server-specific settings. See `:help lspconfig-setup`
+    --   capabilities = capabilities,
+    --   -- on_attach = on_attach,
+    --   autostart = true,
+    --   settings = {
+    --     ["rust-analyzer"] = {
+    --       cargo = {
+    --         allFeatures = true,
+    --       },
+    --       imports = {
+    --         group = {
+    --           enable = false,
+    --         },
+    --       },
+    --       completion = {
+    --         postfix = {
+    --           enable = false,
+    --         },
+    --       },
+    --     },
+    --   },
+    -- }
 
     -- nix
     lspconfig.nil_ls.setup {
