@@ -3,13 +3,13 @@
 let
   archy-slstatus = pkgs.stdenv.mkDerivation {
     name = "archy-slstatus";
-  version = "1.0.1";
+  version = "1.0.2";
 
   src = pkgs.fetchFromGitHub {
     owner = "archy-linux";
     repo = "archy-slstatus";
-    rev = "1.0.1";
-    hash = "sha256-UAG3la4IqTmPbMIFc2WXF8F5nyAQACs5Y4FZn7Zgrw8=";  # Use `nix-prefetch-url --unpack <url>` to get the hash
+    rev = "aurora";
+    hash = "sha256-2+JY2aGRrYfukrdem53mXgVg3/5xYTVaXJNSpPtbDkw=";  # Use `nix-prefetch-url --unpack <url>` to get the hash
   };
 
   buildInputs = with pkgs; [ xorg.libX11 xorg.libXft ];
