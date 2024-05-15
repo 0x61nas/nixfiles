@@ -20,10 +20,10 @@ vim.g.mapleader = ' '
 map("n", ";", ":", {noremap = true})
 
 -- Easy Normal Mode
-map("i", "jk", "<Esc>", {noremap = true})
-map("i", "jk", "<Esc>", {noremap = true})
-map("i", "KJ", "<Esc>", {noremap = true})
-map("i", "JK", "<Esc>", {noremap = true})
+map("i", "kc", "<Esc>", {noremap = true})
+map("i", "KC", "<Esc>", {noremap = true})
+map("i", 'ck', "<Esc>", {noremap = true})
+map("i", "CK", "<Esc>", {noremap = true})
 
 -- Easy Resize
 map("n", "<M-h>", ":vertical resize -2<CR>", {noremap = true})
@@ -37,8 +37,8 @@ map("v", "<F7>", "<Esc>V:s/\\v<(.)(\\w*)/\\u\\1\\L\\2/g<CR>:noh<CR>", {})
 map("i", "<F7>", "<Esc>V:s/\\v<(.)(\\w*)/\\u\\1\\L\\2/g<CR>:noh<CR>i", {})
 
 -- The Best Thing In vscode But Better
-map('v', "J", ":m '>+1<CR>gv=gv")
-map('v', "K", ":m '<-2<CR>gv=gv")
+map('v', "U", ":m '<-2<CR>gv=gv")
+map('v', "Y", ":m '>+1<CR>gv=gv")
 
 -- Replace The Current Word
 -- map.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
@@ -52,29 +52,19 @@ map('x', "<Leader>p", "\"_dP")
 -- map('n', '<Left>', [[:echoerr "Do not do that!!"<cr>]], {noremap = true})
 -- map('n', '<Right>', [[:echoerr "Do not do that!!"<cr>]], {noremap = true})
 
--- i use dvorak-l layout, so.. no hjkl :|
--- instead i will use  byur
+-- I use Dvorak layout, so.. no hjkl :|
+-- Instead, I will use  -kcd
 local modes = {'n', 'v', 's', 'o'}  -- Normal, visual, select, operator-pending
+local keys = {{'h', '-'}, {'j', 'c'}, {'l', 'd'}}
 for _, mode in ipairs(modes) do
-    map(mode, 'h', 'b', {noremap = true})
-    map(mode, 'j', 'y', {noremap = true})
-    map(mode, 'k', 'u', {noremap = true})
-    map(mode, 'l', 'r', {noremap = true})
-
-    map(mode, 'b', 'h', {noremap = true})
-    map(mode, 'y', 'j', {noremap = true})
-    map(mode, 'u', 'k', {noremap = true})
-    map(mode, 'r', 'l', {noremap = true})
+    for _, key in ipairs(keys) do
+        map(mode, key[1], key[2], {noremap = true})
+        map(mode, key[2], key[1], {noremap = true})
+    end
 end
-
 
 -- Keybinds Reloading Init Files
 map('n', '<Leader>vr', '<Cmd>luafile $MYVIMRC<CR>', {noremap = true})
-
--- Saving Files With <C-S>
-map('n', '<C-s>', ':up!<CR>', {noremap = true, silent = true})
-map('i', '<C-s>', '<Esc>:up!<CR>', {noremap = true, silent = true})
-map('v', '<C-s>', '<Esc>:up!<CR>', {noremap = true, silent = true})
 
 -- Deleting Words With <C-Bs>
 map('i', '', '<C-w>', {noremap = true, silent = true})
@@ -107,6 +97,10 @@ map('n', '<C-l>', '<C-w>l', {noremap = true, silent = true})
 -- Ctrl + W Close The Window
 -- map('n', '<C-w>', ':bd!<CR>', { noremap = true, silent = true })
 -- map('i', '<C-w>', ':bd!<CR>', { noremap = true, silent = true })
+
+-- split
+map('n', '<leader>wv', ':vsplit<CR>', {noremap = true})
+map('n', '<leader>ws', ':split<CR>', {noremap = true})
 
 -- Other
 map('n', '<Leader>l', ':noh<CR>', {noremap = true}) -- Clear highlights
