@@ -8,6 +8,7 @@
   };
 
   programs.slock.enable = true;
+  # programs.light.enable = true;
 
   environment.systemPackages = with pkgs; [
       xorg.libX11

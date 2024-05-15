@@ -9,6 +9,8 @@
       nodePackages.bash-language-server
       asm-lsp
       # nasmfmt
+      # typos
+
   ];
   home.file.".config/nvim" = {
     source = ./nvim;
