@@ -45,7 +45,7 @@
   users.users.anas = {
     isNormalUser = true;
     description = "am the problem its me";
-    extraGroups = [ "networkmanager" "wheel" "docker" "libvirtd" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "libvirtd" "video" "audio" ];
     shell = pkgs.zsh;
     initialPassword = "kill me plz";
     packages = with pkgs; [
