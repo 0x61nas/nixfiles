@@ -30,6 +30,10 @@
 
       # Nixpkgs instantiated for supported system types.
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
+
+      forEachSupportedSystem = f: nixpkgs.lib.genAttrs supportedSystems (system: f {
+        pkgs = import nixpkgs { inherit system; };
+      });
     in
     {
       nixosConfigurations = {
@@ -76,32 +80,36 @@
         };
       };
 
-      devShells = forAllSystems (system:
-        let
-          pkgs = nixpkgsFor.${system};
-        in
-        {
+      devShells = forEachSupportedSystem ({ pkgs }: {
+        default = pkgs.mkShell {
+          packages = with pkgs; [
+            git
+            nixpkgs-fmt
+            just
+            pre-commit
+            nix
+          ];
           shellHook = ''
             #!/usr/bin/env bash
-            bin=${pkgs.tmux}/bin/tmux
-            $bin new-session -As "configs:1" -n code  -d "${pkgs.neovim}/bin/nvim ."
-            $bin new-window  -t  "configs:2" -n shell
-
-            $bin attach -t configs:1
-          '';
-        });
-
-      templates = {
-        nextjs-pkg = {
-          path = ./templates/nextjs;
-          description = "Basic nextjs app ready to be compiled";
-          welcomeText = ''
-            - To Compile Run The Bash Script `./dist.sh`
-
-            - To Add Lincense
-            ```nix-shell -p licensor --command "licensor SPDX > LICENSE"```
+            ${pkgs.git}/bin/git status .
           '';
         };
-      };
+      });
+
+      # devShells = forAllSystems (system:
+      #   let
+      #     pkgs = nixpkgsFor.${system};
+      #   in
+      #   {
+      #     shellHook = ''
+      #       #!/usr/bin/env bash
+      #       bin=${pkgs.tmux}/bin/tmux
+      #       $bin new-session -As "configs:1" -n code  -d "${pkgs.neovim}/bin/nvim ."
+      #       $bin new-window  -t  "configs:2" -n shell
+      #
+      #       $bin attach -t configs:1
+      #     '';
+      #   });
+
     };
 }
