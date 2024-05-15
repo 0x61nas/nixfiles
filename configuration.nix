@@ -33,6 +33,7 @@
   workarounds.pulseaudio-mic-boost.enable = true;
 
   programs.zsh.enable = true;
+  # I don't use ohMyZsh, but it doses provide a some convenient functions.
   programs.zsh.ohMyZsh.enable = true;
   programs.dconf.enable = true;
 
@@ -48,23 +49,6 @@
     extraGroups = [ "networkmanager" "wheel" "docker" "libvirtd" "video" "audio" ];
     shell = pkgs.zsh;
     initialPassword = "kill me plz";
-    packages = with pkgs; [
-      #sxhkd
-      #sxiv
-      #xorg.xinit
-      #nitrogen
-      #zsh-autosuggestions
-      #zsh-syntax-highlighting
-      #zsh-history-substring-search
-      #zsh-you-should-use
-      #oh-my-posh
-      #dmenu-rs
-      #keepassxc
-      #pavucontrol
-      #jellyfin
-      #jellycli
-      #jellyfin-web
-    ];
   };
 
   services.xserver = {
