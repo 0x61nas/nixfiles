@@ -19,10 +19,10 @@ in
     ../configs/bat.nix
     ../configs/tmux
     ../configs/zoxide.nix
-    ../configs/discord.nix
     ../virtualization
     # ../configs/thunar.nix
     ../configs/xdg.nix
+    ../social
   ];
   home.username = "anas";
   home.homeDirectory = "/home/anas";
