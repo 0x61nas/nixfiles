@@ -7,7 +7,7 @@ in
   imports = [
     inputs.nix-colors.homeManagerModules.default
     ../system
-    ../configs/nvim
+    ../dev
     ../configs/dunst.nix
     ../configs/gnupg.nix
     ../configs/git.nix

@@ -61,4 +61,3 @@ opt.undofile = true
 -- arabic support
 opt.encoding = "utf-8"
 opt.termbidi = true
-
