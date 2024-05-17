@@ -6,7 +6,7 @@ in
 {
   imports = [
     inputs.nix-colors.homeManagerModules.default
-    ../configs/shell
+    ../system
     ../configs/nvim
     ../configs/dunst.nix
     ../configs/gnupg.nix
