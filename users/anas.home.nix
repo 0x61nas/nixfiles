@@ -10,15 +10,9 @@ in
     ../dev
     ../gui
     ../configs/dunst.nix
-    ../configs/gnupg.nix
-    ../configs/btop.nix
     ../configs/rofi.nix
-    ../configs/bat.nix
-    ../configs/tmux
-    ../configs/zoxide.nix
     ../virtualization
     # ../configs/thunar.nix
-    ../configs/xdg.nix
     ../social
   ];
   home.username = "anas";

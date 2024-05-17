@@ -1,4 +1,5 @@
-{pkgs, pkgs-unstable, ...}: let
+{ pkgs, pkgs-unstable, ... }:
+let
   tmux-gruvbox = pkgs.tmuxPlugins.mkTmuxPlugin {
     pluginName = "gruvbox";
     version = "0.1.0";
@@ -9,7 +10,8 @@
       sha256 = "sha256-jvGCrV94vJroembKZLmvGO8NknV1Hbgz2IuNmc/BE9A=";
     };
   };
-in {
+in
+{
   programs.tmux = {
     enable = true;
     baseIndex = 1;
