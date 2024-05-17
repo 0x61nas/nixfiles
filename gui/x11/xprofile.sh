@@ -31,4 +31,3 @@ nm-applet &
 stickykeys &
 # Start a new terminal with tmux
 $TERMINAL -e tmux &
-

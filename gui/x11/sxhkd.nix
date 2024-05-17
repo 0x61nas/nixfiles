@@ -11,8 +11,8 @@
 
       # Lunchers (rofi, dmenu)
       # dmenu
-     "super + p" = "rofi -show drun";
-     "super + c" = "rofi -show calc";
+      "super + p" = "rofi -show drun";
+      "super + c" = "rofi -show calc";
       # Web browsers
       "super + w; {f,c,b,t}" = "nvidia-offload {firefox,google-chrome,brave,tor-browser}";
       # applications

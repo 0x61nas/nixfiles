@@ -8,12 +8,11 @@ in
     inputs.nix-colors.homeManagerModules.default
     ../system
     ../dev
+    ../gui
     ../configs/dunst.nix
     ../configs/gnupg.nix
     ../configs/git.nix
     ../configs/btop.nix
-    ../configs/sxhkd.nix
-    ../configs/x11
     ../configs/rofi.nix
     ../configs/cargo
     ../configs/bat.nix
