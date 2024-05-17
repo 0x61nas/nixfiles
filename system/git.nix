@@ -56,5 +56,5 @@
 
       push.autoSetupRemote = true;
     };
-  };  
+  };
 }

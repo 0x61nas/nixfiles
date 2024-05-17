@@ -11,7 +11,6 @@ in
     ../gui
     ../configs/dunst.nix
     ../configs/gnupg.nix
-    ../configs/git.nix
     ../configs/btop.nix
     ../configs/rofi.nix
     ../configs/bat.nix
