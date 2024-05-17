@@ -14,7 +14,6 @@ in
     ../configs/git.nix
     ../configs/btop.nix
     ../configs/rofi.nix
-    ../configs/cargo
     ../configs/bat.nix
     ../configs/tmux
     ../configs/zoxide.nix

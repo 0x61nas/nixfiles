@@ -20,4 +20,3 @@ frequency = 'always' # when to display a notification about a future incompat re
 
 [cargo-new]
 vcs = "git"              # VCS to use ('git', 'hg', 'pijul', 'fossil', 'none')
-
