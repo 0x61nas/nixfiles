@@ -18,6 +18,8 @@
       path = "${config.home.homeDirectory}/.shell_history";
       expireDuplicatesFirst = true;
       share = true;
+      ignoreSpace = true;
+      ignoreAllDups = true;
     };
     shellAliases = {
       nix-shell = "nix-shell --command zsh";
@@ -34,6 +36,10 @@
         file = "you-should-use.plugin.zsh";
       }
       {
+        name = "forgit";
+        src = "${pkgs.zsh-forgit}/share/zsh/zsh-forgit";
+      }
+      {
         name = "zsh-completions";
         src = "${pkgs.zsh-completions}/share/zsh/site-function";
       }
@@ -42,42 +48,33 @@
         src = "${pkgs.nix-zsh-completions}/share/zsh/plugins/nix";
         file = "nix.plugin.zsh";
       }
-      #{
-      #name = "zsh-autoswitch-virtualenv";
-      #src = pkgs.fetchFromGitHub {
-      #owner = "archy-linux";
-      #repo = "zsh-autoswitch-virtualenv";
-      #rev = "master";
-      #sha256 = "sha256-9ussStZVNwWkefWZDE3S9AXTVMEuwjoWLQ+MzYVCjm4=";
-      #};
-      #file = "autoswitch_virtualenv.plugin.zsh";
-      #}
+      {
+        name = "fzf-tab";
+        src = "${pkgs.zsh-fzf-tab}/share/fzf-tab";
+      }
     ];
     initExtra = ''
-        SHELL_NAME=$(basename $SHELL)
-        DISABLE_AUTO_TITLE="false"
-        ENABLE_CORRECTION="false"
-        COMPLETION_WAITING_DOTS="true"
-        source "$HOME/.config/zsh/prompt.zsh"
-        [[ -e "$HOME/.private-env.sh" ]] && source "$HOME/.private-env.sh"
-        [[ -e "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
-
-        if command -v gh >/dev/null 2>&1; then
-          eval "$(gh copilot alias -- $SHELL_NAME)"
-        fi
-
-        if command -v pyenv 1>/dev/null 2>&1; then
-          eval "$(pyenv init -)"
-        fi
-        eval "$(${pkgs.zoxide}/bin/zoxide init $SHELL_NAME)"
-
-            bindkey '^ ' autosuggest-accept
+      setopt hist_find_no_dups
+      bindkey '^ ' autosuggest-accept
       ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
-      # EXTRACT FUNCTION (needs more nix)
+      SHELL_NAME=$(basename $SHELL)
+      DISABLE_AUTO_TITLE="false"
+      ENABLE_CORRECTION="false"
+      COMPLETION_WAITING_DOTS="true"
+      source "$HOME/.config/zsh/prompt.zsh"
+      [[ -e "$HOME/.private-env.sh" ]] && source "$HOME/.private-env.sh"
+      [[ -e "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+      if command -v gh >/dev/null 2>&1; then
+        eval "$(gh copilot alias -- $SHELL_NAME)"
+      fi
+      if command -v pyenv 1>/dev/null 2>&1; then
+        eval "$(pyenv init -)"
+      fi
+      eval "$(${pkgs.zoxide}/bin/zoxide init $SHELL_NAME)"
 
       hst() {
-          history 0 | cut -c 8- | uniq | ${pkgs.fzf}/bin/fzf | ${pkgs.xclip}/bin/xclip
+          history 0 | cut -c 8- | uniq | ${pkgs.fzf}/bin/fzf | ${pkgs.xclip}/bin/xclip -selection clipboard
       }
 
       proj() {
@@ -88,7 +85,7 @@
 
       plf() {
         proj
-        lf
+        ${pkgs.lf}/bin/lf
       }
 
       detach() {
@@ -149,8 +146,11 @@
     '';
 
     completionInit = ''
-      zstyle ':completion:*' menu select
-      zstyle ':completion:*' accept-exact '*(N)'
+      zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+      zstyle ':completion:*' list-colors "$\{(s.:.)LS_COLORS}"
+      zstyle ':completion:*' menu no
+      zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+      zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
       zstyle ':completion:*' use-cache on
       zstyle ':completion:*' cache-path ~/.zsh/cache
     '';
