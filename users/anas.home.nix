@@ -9,10 +9,7 @@ in
     ../system
     ../dev
     ../gui
-    ../configs/dunst.nix
-    ../configs/rofi.nix
     ../virtualization
-    # ../configs/thunar.nix
     ../social
   ];
   home.username = "anas";
