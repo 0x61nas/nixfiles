@@ -22,7 +22,8 @@
 ❄️ NixOS dotfiles ❄️
 </h1>
 </div>
-<h2 align="center">My NixOS system configuration. Feel free to explore!</h2>
+
+![me](./background.png)
 
 ```mint
 ⠀⠀   🌸 Setup / ARCHY DWM 🌸
@@ -44,7 +45,17 @@
                󰣨         
 ```
 
----
+> [!Note]
+> This repo is still experimental, USE IT ON YOUR OWN RESPONSIBILITY
+
+> [!Note]
+> This readme file isn't completed yet, and it might have outdated or even evil information
+
+> [!Note]
+> WHAT ABOUT GOING OUTSIDE?
+
+> [!Note]
+> STOP
 
 ## Commands you should know:
 
@@ -102,7 +113,7 @@ nix-shell -p git nixUnstable neovim
 # create this folder if necessary
 mkdir -p /mnt/etc/
 # clone the repo
-git clone https://github.com/anas/nixdots.git /mnt/etc/nixos --recurse-submodules
+git clone https://github.com/anas/nixfiles.git /mnt/etc/nixos --recurse-submodules
 # generate the config and take some files
 nixos-generate-config --root /mnt --show-hardware-config > /mnt/etc/nixos/hosts/anas/hardware-configuration.nix
 # make sure you're in this path
@@ -110,21 +121,3 @@ cd /mnt/etc/nixos
 # Install my config:
 nixos-install --flake '.#anas'
 ```
-
-# Obs:
-If you'd like to use my config as a template, all you need to do is replace "anas" with your username.
-
----
-
-Credits for the installation section goes to [Stephenstechtalks](https://github.com/stephenstechtalks) and [AlphaTechnolog](https://github.com/AlphaTechnolog) as they helped a lot with their installation guides.
-
-## Shoutout to:
-
-- [AlphaTechnolog](https://github.com/AlphaTechnolog/nixdots)
-- [Eriim's](https://github.com/erictossell/nixflakes)
-- [IogaMaster](https://github.com/IogaMaster)
-- [linuxmobile](https://github.com/linuxmobile)
-- [NotAShelf](https://github.com/NotAShelf/nyx)
-- [notusknot](https://github.com/notusknot)
-- [Sioodmy](https://github.com/sioodmy/dotfiles)
-- [ZerotoNix](https://zero-to-nix.com)
