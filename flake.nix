@@ -8,9 +8,7 @@
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-colors.url = "github:misterio77/nix-colors";
     nix-alien.url = "github:thiagokokada/nix-alien";
-    sops-nix.url = "github:Mic92/sops-nix";
     impermanence.url = "github:nix-community/impermanence";
 
     nix-ld-rs.url = "github:nix-community/nix-ld-rs";
@@ -48,7 +46,6 @@
             ./cache.nix
             ./configuration.nix
             ./services
-            inputs.sops-nix.nixosModules.sops
             inputs.impermanence.nixosModules.impermanence
           ];
         };

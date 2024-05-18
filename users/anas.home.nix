@@ -1,11 +1,5 @@
-{ inputs, lib, pkgs, config, ... }:
-
-let
-  base16Theme = [ "Gruvbox" "Dark" "Hard" ];
-in
-{
+{ pkgs, ... }: {
   imports = [
-    inputs.nix-colors.homeManagerModules.default
     ../system
     ../dev
     ../gui
@@ -36,9 +30,6 @@ in
     wine64Packages.stagingFull
     inlyne
   ];
-
-  # theme
-  colorScheme = inputs.nix-colors.colorSchemes.${lib.strings.toLower (lib.strings.concatStringsSep "-" base16Theme)};
 
   programs.direnv = {
     enable = true;
