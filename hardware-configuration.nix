@@ -10,7 +10,7 @@
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
-  # hardware.cpu.intel.updateMicrocode = true;
+  hardware.cpu.intel.updateMicrocode = false;
   boot.initrd.kernelModules = [ "i915" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
@@ -21,7 +21,7 @@
 
 
   environment.variables = {
-    VDPAU_DRIVER =  "va_gl";
+    VDPAU_DRIVER = "va_gl";
   };
 
   hardware.opengl.extraPackages = with pkgs; [
@@ -30,7 +30,7 @@
     intel-media-driver
   ];
 
-  # hardware.cpu.intel.sgx = true; 
+  # hardware.cpu.intel.sgx = true;
 
   fileSystems."/" =
     {
