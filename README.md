@@ -45,16 +45,16 @@
                󰣨         
 ```
 
-> [!Note]
+> [!Warning]
 > This repo is still experimental, USE IT ON YOUR OWN RESPONSIBILITY
 
-> [!Note]
+> [!Warning]
 > This readme file isn't completed yet, and it might have outdated or even evil information
 
-> [!Note]
+> [!Warning]
 > WHAT ABOUT GOING OUTSIDE?
 
-> [!Note]
+> [!Warning]
 > STOP
 
 ## Commands you should know:
