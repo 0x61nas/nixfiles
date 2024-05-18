@@ -105,9 +105,6 @@
 
     ntfs3g
 
-    jellyfin
-    jellyfin-web
-    jellyfin-ffmpeg
     #mtpfs
     # notification daemon
     dunst
@@ -118,8 +115,6 @@
     nvtopPackages.full
     btop
   ]);
-
-  services.jellyfin.enable = true;
 
   #security.sudo-rs.enable = true;
   # she was sudo girl, ama doas boy :(

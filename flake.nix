@@ -47,6 +47,7 @@
           modules = [
             ./cache.nix
             ./configuration.nix
+            ./services
             inputs.sops-nix.nixosModules.sops
             inputs.impermanence.nixosModules.impermanence
           ];

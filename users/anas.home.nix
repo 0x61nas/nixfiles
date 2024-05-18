@@ -29,9 +29,7 @@ in
     #eza
     keepassxc
     pavucontrol
-    jellyfin
     jellycli
-    jellyfin-web
     playerctl
     heroic
     #protonup-qt
