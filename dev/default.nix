@@ -3,5 +3,6 @@ _: {
     ./nvim
     ./cargo
     ./direnv.nix
+    ./devenv.nix
   ];
 }
