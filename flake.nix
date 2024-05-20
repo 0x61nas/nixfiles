@@ -13,6 +13,8 @@
 
     nix-ld-rs.url = "github:nix-community/nix-ld-rs";
     nix-ld-rs.inputs.nixpkgs.follows = "nixpkgs";
+
+    lqth.url = "github:0x61nas/lqth";
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, ... } @inputs:
