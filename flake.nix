@@ -15,6 +15,7 @@
     nix-ld-rs.inputs.nixpkgs.follows = "nixpkgs";
 
     lqth.url = "github:0x61nas/lqth";
+    archy-dwm.url = "github:archy-linux/archy-dwm";
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, ... } @inputs:

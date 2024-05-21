@@ -6,7 +6,7 @@
     ./networking.nix
     ./gpu/default.nix
     ./nix-ld.nix
-    ./dwm.nix
+    ./X11.nix
     ./st.nix
     #./dmenu.nix
     ./archy-slstatus.nix

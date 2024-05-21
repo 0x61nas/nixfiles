@@ -10,12 +10,26 @@
   programs.slock.enable = true;
   # programs.light.enable = true;
 
+  services.xserver.windowManager = {
+    dwm.enable = true; # Ensures dwm is recognized
+    bspwm.sxhkd.configFile = builtins.getEnv "HOME" + "/.config/sxhkd/sxhkdrc";
+  };
+
+  services.xserver = {
+    displayManager = {
+      lightdm.enable = false;
+      startx.enable = true;
+    };
+  };
+
   environment.systemPackages = with pkgs; [
-    xorg.libX11
-    xorg.libX11.dev
-    xorg.libxcb
-    xorg.libXft
-    xorg.libXinerama
+    inputs.archy-dwm.packages."${pkgs.system}".archy-wm
+    sxhkd
+    # xorg.libX11
+    # xorg.libX11.dev
+    # xorg.libxcb
+    # xorg.libXft
+    # xorg.libXinerama
     xorg.xinit
     xorg.xinput
     xorg.xorgserver
