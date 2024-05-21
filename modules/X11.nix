@@ -20,7 +20,7 @@
     xorg.xinput
     xorg.xorgserver
     xorg.xf86inputevdev
-    xorg.xf86videointel
+    # xorg.xf86videointel
     xclip
     nitrogen
     xorg.xbacklight
