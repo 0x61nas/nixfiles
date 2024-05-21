@@ -14,19 +14,19 @@
       "super + p" = "rofi -show drun";
       "super + c" = "rofi -show calc";
       # Web browsers
-      "super + w; {f,c,b,t}" = "nvidia-offload {firefox,google-chrome,brave,tor-browser}";
+      "super + w; {f,c,b,t}" = "{firefox,google-chrome,brave,tor-browser}";
       # applications
       "super + shift; {d,o,k}" = "{discord,obsidian,keepassxc}";
       ##---------- System Keys ----------##
 
-      # Take a screenshot in the clipboard
-      "shift + Print" = "screenshot -n -c";
-      "Print" = "screenshot -r -n -c";
-      "ctrl + Print" = "screenshot --activewindow -n -c";
-      # Take a screenshot and save it
-      "alt + shift + Print" = "screenshot -n";
-      "alt + Print" = "screenshot -r -n";
-      "alt + ctrl + Print" = "screenshot --activewindow -n";
+      # Take a lqth-wrapper in the clipboard
+      "shift + Print" = "lqth-wrapper -n -c";
+      "Print" = "lqth-wrapper -r -n -c";
+      "ctrl + Print" = "lqth-wrapper --activewindow -n -c";
+      # Take a lqth-wrapper and save it
+      "alt + shift + Print" = "lqth-wrapper -n";
+      "alt + Print" = "lqth-wrapper -r -n";
+      "alt + ctrl + Print" = "lqth-wrapper --activewindow -n";
       "XF86MonBrightness{Up,Down}" = "xbacklight -{inc,dec} 5";
       # Manage Volume
       "XF86Audio{Raise,Lower}Volume" = "sh $HOME/.scripts/volume {up,down}";
