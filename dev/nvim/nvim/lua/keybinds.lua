@@ -19,17 +19,11 @@ vim.g.mapleader = ' '
 -- Easy :
 map("n", ";", ":", {noremap = true})
 
--- Easy Normal Mode
-map("i", "kc", "<Esc>", {noremap = true})
-map("i", "KC", "<Esc>", {noremap = true})
-map("i", 'ck', "<Esc>", {noremap = true})
-map("i", "CK", "<Esc>", {noremap = true})
-
 -- Easy Resize
-map("n", "<M-h>", ":vertical resize -2<CR>", {noremap = true})
-map("n", "<M-j>", ":resize +2<CR>", {noremap = true})
-map("n", "<M-k>", ":resize -2<CR>", {noremap = true})
-map("n", "<M-l>", ":vertical resize +2<CR>", {noremap = true})
+map("n", "<M-c>", ":vertical resize -2<CR>", {noremap = true})
+map("n", "<M-k>", ":resize +2<CR>", {noremap = true})
+-- map("n", "<M-k>", ":resize -2<CR>", {noremap = true})
+map("n", "<M-d>", ":vertical resize +2<CR>", {noremap = true})
 
 -- Easy Capitalization
 map("n", "<F7>", "<Esc>V:s/\\v<(.)(\\w*)/\\u\\1\\L\\2/g<CR>:noh<CR>", {})
