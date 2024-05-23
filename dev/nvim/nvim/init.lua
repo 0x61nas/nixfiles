@@ -2,6 +2,9 @@
 require('settings')
 require('keybinds')
 require('autocommands')
+if vim.g.neovide then
+  require('neovide')
+end
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
