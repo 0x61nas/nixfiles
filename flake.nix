@@ -92,6 +92,8 @@
             just
             pre-commit
             nix
+            jq
+            fzf
           ];
           shellHook = ''
             #!/usr/bin/env bash
