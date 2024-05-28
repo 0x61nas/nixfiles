@@ -1,6 +1,6 @@
-{ pkgs, ... }: {
+{ pkgs-7d69e, ... }: {
   boot = {
-    kernelPackages = pkgs.linuxPackages_zen;
+    kernelPackages = pkgs-7d69e.linuxPackages_zen;
     loader = {
       systemd-boot = {
         enable = true;

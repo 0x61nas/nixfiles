@@ -313,6 +313,21 @@
         "url": "https://flakehub.com/f/NixOS/nixpkgs/%2A.tar.gz"
       }
     },
+    "nixpkgs-7d69e": {
+      "locked": {
+        "lastModified": 1705968870,
+        "narHash": "sha256-SBpFrYNDrvvXFXXSooNMZzkzlSNaeEfwYrqWS0g0cjk=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "7d69e528a70b434e276e17578e8ef5c5dbc2ef5b",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "rev": "7d69e528a70b434e276e17578e8ef5c5dbc2ef5b",
+        "type": "indirect"
+      }
+    },
     "nixpkgs-unstable": {
       "locked": {
         "lastModified": 1716509168,
@@ -382,6 +397,7 @@
         "nix-alien": "nix-alien",
         "nix-ld-rs": "nix-ld-rs",
         "nixpkgs": "nixpkgs_4",
+        "nixpkgs-7d69e": "nixpkgs-7d69e",
         "nixpkgs-unstable": "nixpkgs-unstable"
       }
     },
