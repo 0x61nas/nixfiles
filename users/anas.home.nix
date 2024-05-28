@@ -29,6 +29,7 @@
     #protonup-qt
     wine64Packages.stagingFull
     inlyne
+    anki
   ];
 
   programs.home-manager.enable = true;
