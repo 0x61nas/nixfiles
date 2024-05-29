@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
-    nixpkgs-7d69e.url = "nixpkgs/7d69e528a70b434e276e17578e8ef5c5dbc2ef5b";
+    # nixpkgs-7d69e.url = "nixpkgs/7d69e528a70b434e276e17578e8ef5c5dbc2ef5b";
     home-manager = {
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,13 +19,13 @@
     archy-dwm.url = "github:archy-linux/archy-dwm";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, nixpkgs-7d69e, ... } @inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, ... } @inputs:
     let
       lib = nixpkgs.lib;
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; config = { allowUnfree = true; }; };
       pkgs-unstable = import nixpkgs-unstable { inherit system; config = { allowUnfree = true; }; };
-      pkgs-7d69e = import nixpkgs-7d69e { inherit system; config = { allowUnfree = true; }; };
+      # pkgs-7d69e = import nixpkgs-7d69e { inherit system; config = { allowUnfree = true; }; };
       supportedSystems = [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
 
       # Helper function to generate an attrset '{ x86_64-linux = f "x86_64-linux"; ... }'.
@@ -46,7 +46,6 @@
             inherit inputs;
             inherit pkgs;
             inherit pkgs-unstable;
-            inherit pkgs-7d69e;
           };
           modules = [
             ./cache.nix
@@ -91,7 +90,7 @@
             nixpkgs-fmt
             just
             pre-commit
-            nix
+            # nix
             jq
             fzf
           ];
