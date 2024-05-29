@@ -19,7 +19,7 @@
     archy-dwm.url = "github:archy-linux/archy-dwm";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, ... } @inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... } @inputs:
     let
       lib = nixpkgs.lib;
       system = "x86_64-linux";
@@ -52,33 +52,22 @@
             ./configuration.nix
             ./services
             inputs.impermanence.nixosModules.impermanence
-          ];
-        };
-      };
 
-      homeConfigurations = {
-        anas = inputs.home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          extraSpecialArgs = {
-            inherit pkgs;
-            inherit pkgs-unstable;
-            inherit inputs;
-          };
-          modules = [
-            ./users/anas.home.nix
-            ({ config, pkgs-unstable, ... }:
-              let
-                iconTheme = {
-                  name = "Gruvbox-Plus-Dark";
-                  package = pkgs-unstable.gruvbox-plus-icons;
-                };
-              in
-              {
-                gtk.iconTheme.name = iconTheme.name;
-                gtk.iconTheme.package = iconTheme.package;
-                services.dunst.iconTheme.name = iconTheme.name;
-                services.dunst.iconTheme.package = iconTheme.package;
-              })
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+
+              # TODO replace ryan with your own username
+              home-manager.users.anas = import ./users/anas.home.nix;
+
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+                inherit pkgs;
+                inherit pkgs-unstable;
+
+              };
+            }
           ];
         };
       };
