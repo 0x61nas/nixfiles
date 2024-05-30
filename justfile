@@ -23,7 +23,7 @@ update:
     if [[ $input == "_SHOW_CHOOSER_" ]]; then
         input="$(just choose-input)"
     fi
-    nix flake lock --update-input $input
+    nix flake update $input
 
 # Show an interactive chooser for inputs.
 @choose-input:
