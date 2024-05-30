@@ -186,6 +186,7 @@
 
 
   nix = {
+    package = pkgs-unstable.nixVersions.latest;
     gc = {
       automatic = true;
       dates = "weekly";
