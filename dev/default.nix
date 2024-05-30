@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, pkgs-unstable, ... }: {
   imports = [
     ./nvim
     ./cargo
@@ -6,5 +6,8 @@
     # ./devenv.nix
   ];
 
-  home.packages = with pkgs; [ neovide ];
+  home.packages = with pkgs; [
+    neovide
+    pkgs-unstable.ida-free
+  ];
 }
