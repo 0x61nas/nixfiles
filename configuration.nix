@@ -176,7 +176,7 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    jack.enable = true;
+    # jack.enable = true;
     #media-session.enable = true; # default for now, no need to change
   };
 
