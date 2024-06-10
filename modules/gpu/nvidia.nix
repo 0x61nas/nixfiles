@@ -15,7 +15,13 @@ in
   };
 
   config = mkIf cfg.enable {
-    boot.kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" ];
+    boot.kernelParams = [
+      "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+
+      # The kernel module i915 for intel or amdgpu for AMD may interfere with the Nvidia driver.
+      # This may result in a black screen when switching to the virtual terminal, or when exiting the X session.
+      "module_blacklist=i915"
+    ];
     environment.variables = {
       # Necessary to correctly enable va-api (video codec hardware
       # acceleration). If this isn't set, the libvdpau backend will be
