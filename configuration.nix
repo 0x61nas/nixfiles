@@ -117,6 +117,7 @@
     qbittorrent
     nvtopPackages.full
     btop
+    mpv
   ]);
 
   #security.sudo-rs.enable = true;
