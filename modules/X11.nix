@@ -1,10 +1,11 @@
 { inputs, pkgs, ... }: {
   services.xserver = {
     enable = true;
-    layout = "us,ara";
-    xkbVariant = "dvorak-l,";
-    xkbOptions = "grp:win_space_toggle caps:swapescape keypad:pointerkeys";
-
+    xkb = {
+      layout = "us,ara";
+      variant = "dvorak-l,";
+      options = "grp:win_space_toggle caps:swapescape keypad:pointerkeys";
+    };
   };
 
   programs.slock.enable = true;
@@ -96,7 +97,7 @@
 
       if [[ -n $COPY ]]; then
           $CMD $ARGS | $PIPETO | $COPY
-          [[ -n $NOTIFY ]] && $NOTIFY "Screenshot copyed to system clipbooard"
+          [[ -n $NOTIFY ]] && $NOTIFY "Screenshot copied to system clipbooard"
       else
           $CMD $ARGS | $PIPETO > $OUTFILE
           [[ -n $NOTIFY ]] && $NOTIFY "Screenshot saved at: $OUTFILE"

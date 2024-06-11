@@ -54,12 +54,6 @@
     initialPassword = "kill me plz";
   };
 
-  services.xserver = {
-    layout = "us,ara";
-    xkbVariant = "dvorak-l,";
-    xkbOptions = "grp:win_space_toggle caps:swapescape keypad:pointerkeys";
-  };
-
   console = {
     font = "Lat2-Terminus16";
     # keyMap = "us";
@@ -155,7 +149,7 @@
     RUST_BACKTRACE = "1";
   };
 
-  system.stateVersion = "23.11";
+  system.stateVersion = "24.05";
   system.autoUpgrade.enable = true;
 
   nixpkgs.config.allowUnfree = true;
