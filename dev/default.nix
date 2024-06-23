@@ -8,6 +8,7 @@
 
   home.packages = with pkgs; [
     neovide
+    heh
     pkgs-unstable.ida-free
   ];
 }
