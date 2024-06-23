@@ -2,6 +2,10 @@ minimum_pre_commit_version: "2.9.0"
 ci:
   autoupdate_schedule: monthly
 repos:
+  - repo: https://github.com/crate-ci/committed
+    rev: v1.0.20
+    hooks:
+      - id: committed
   - repo: https://github.com/Lucas-C/pre-commit-hooks
     rev: v1.5.1
     hooks:
@@ -25,6 +29,10 @@ repos:
     rev: f3fac47d6509e6b23c6103bb833353db348c634f
     hooks:
      - id: nixpkgs-fmt
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.2.4
+    hooks:
+      - id: codespell
 
 # - repo: https://github.com/scop/pre-commit-shfmt
 #   rev: v3.7.0-1
