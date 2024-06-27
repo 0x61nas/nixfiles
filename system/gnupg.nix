@@ -1,15 +1,16 @@
-{ lib, pkgs, config, ... }:
-{
+{ pkgs, ... }: {
   services.gpg-agent = {
     enable = true;
     enableSshSupport = true;
     # Cache the PIN for 3 hours
     defaultCacheTtl = 3600 * 3;
-    #grabKeyboardAndMouse = false;
-    #pinentryPackage = pkgs.pinentry;
+    grabKeyboardAndMouse = false;
+    pinentryPackage = pkgs.pinentry-gtk2;
+    enableZshIntegration = true;
   };
   programs.gpg = {
     enable = true;
+    mutableKeys = true; # i know, its the default, but to be extra sure.
     #homedir = "${config.xdg.dataHome}/gnupg";
     settings = {
       # Assume that command line arguments are given as UTF8 strings.
