@@ -185,10 +185,10 @@
 
   nix = {
     package = pkgs-unstable.nixVersions.latest;
-    gc = {
-      automatic = true;
-      dates = "weekly";
-    };
+    # gc = {
+    #   automatic = true;
+    #   dates = "weekly";
+    # };
     settings = {
       auto-optimise-store = true;
       sandbox = "relaxed";
@@ -201,5 +201,12 @@
     package = pkgs-unstable.steam;
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  };
+
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+    clean.extraArgs = "--keep-since 4d --keep 3";
+    flake = "/home/anas/nixfiles";
   };
 }
