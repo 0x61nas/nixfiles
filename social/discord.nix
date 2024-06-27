@@ -1,8 +1,8 @@
-{ pkgs, ... }: {
-  home.packages = with pkgs; [
+{ pkgs-unstable, ... }: {
+  home.packages = with pkgs-unstable; [
     vesktop
     (writeShellScriptBin "discord" ''
-      ${pkgs.vesktop}/bin/vencorddesktop "$@"
+      ${vesktop}/bin/vencorddesktop "$@"
     '')
     # (discord.override {
     #   withOpenASAR = false;
