@@ -82,8 +82,8 @@
     fzf
 
     brave
-    firefox
-    #(pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true;}) {})
+    # firefox
+    (pkgs.wrapFirefox (firefox-unwrapped.override { pipewireSupport = true; }) { })
     vlc
     keepassxc
     unzip
