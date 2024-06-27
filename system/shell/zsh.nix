@@ -16,7 +16,7 @@
     enableCompletion = true;
     autocd = true;
     history = {
-      save = 5000;
+      save = 10000;
       path = "${config.home.homeDirectory}/.shell_history";
       expireDuplicatesFirst = true;
       share = true;
