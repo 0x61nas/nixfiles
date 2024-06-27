@@ -66,7 +66,6 @@
     home-manager
     docker
 
-    neovim
     ripgrep
     git
     (eza.override {
@@ -108,6 +107,7 @@
     libnotify
 
   ] ++ (with pkgs-unstable; [
+    neovim
     qbittorrent
     nvtopPackages.full
     btop
