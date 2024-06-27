@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ pkgs, ... }:
 {
   home.packages = with pkgs; [ delta ];
   programs.git = {
@@ -7,7 +7,7 @@
     userEmail = "anas.elgarhy.dev@gmail.com";
     ignores = [ "*~" ];
     signing = {
-      #signByDefault = true;
+      signByDefault = true;
       key = "0x83E03DC6F3834086";
     };
     aliases = {
@@ -38,7 +38,7 @@
       sync = "!git fetch && git rebase origin/$(git symbolic-ref --short HEAD)";
       upstream = "branch --set-upstream-to";
       ignore = "!echo '$1' >> .gitignore";
-      rebase = "rebase -S";
+      # rebase = "rebase -S";
       addp = "add --patch";
     };
     extraConfig = {
