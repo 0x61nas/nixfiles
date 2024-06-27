@@ -7,6 +7,6 @@ _: {
     ./btop.nix
     ./zoxide.nix
     ./tmux
-    ./xdg.nix
+    # ./xdg.nix
   ];
 }
