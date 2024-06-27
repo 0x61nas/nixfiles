@@ -1,4 +1,4 @@
-_: {
+{ pkgs, ... }: {
   home.shellAliases = {
     mkdir = "mkdir -p";
     myip = "curl http://ipecho.net/plain; echo";
@@ -51,7 +51,7 @@ _: {
     push = "git push";
     pusht = "push --tags";
     pushf = "push --force";
-    commit = "git commit -S";
+    commit = "git commit";
     clone = "git clone";
     sclone = "git clone --depth=1";
     add = "git add";
@@ -61,7 +61,7 @@ _: {
     fetch = "git fetch";
     rebase = "git rebase";
     tag = "git tag";
-    ctag = "git tag --sign";
+    ctag = "git tag";
     switch = "git switch";
     gah = "git stash && git pull --rebase && git stash pop";
     pr = "gh pr create -t $(git show -s --format=%s HEAD) -b $(git show -s --format=%B HEAD | tail -n+3)";
@@ -70,7 +70,7 @@ _: {
     fgrep = "fgrep --color=auto";
     cp = "cp -i";
     mv = "mv -i";
-    yta-aac = "yt-dlp --extract-audio --audio-format aac";
+    yta-aac = "${pkgs.yt-dlp}/bin/yt-dlp --extract-audio --audio-format aac";
     yta-best = "yt-dlp --extract-audio --audio-format best";
     yta-flac = "yt-dlp --extract-audio --audio-format flac";
     yta-mp3 = "yt-dlp --extract-audio --audio-format mp3";
