@@ -73,7 +73,6 @@
       if command -v pyenv 1>/dev/null 2>&1; then
         eval "$(pyenv init -)"
       fi
-      eval "$(${pkgs.zoxide}/bin/zoxide init $SHELL_NAME)"
 
       hst() {
           history 0 | cut -c 8- | uniq | ${pkgs.fzf}/bin/fzf | ${pkgs.xclip}/bin/xclip -selection clipboard
