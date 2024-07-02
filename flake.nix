@@ -92,21 +92,5 @@
           '';
         };
       });
-
-      # devShells = forAllSystems (system:
-      #   let
-      #     pkgs = nixpkgsFor.${system};
-      #   in
-      #   {
-      #     shellHook = ''
-      #       #!/usr/bin/env bash
-      #       bin=${pkgs.tmux}/bin/tmux
-      #       $bin new-session -As "configs:1" -n code  -d "${pkgs.neovim}/bin/nvim ."
-      #       $bin new-window  -t  "configs:2" -n shell
-      #
-      #       $bin attach -t configs:1
-      #     '';
-      #   });
-
     };
 }
