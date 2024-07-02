@@ -8,5 +8,6 @@ _: {
     ./zoxide.nix
     ./tmux
     # ./xdg.nix
+    ./gitui.nix
   ];
 }
