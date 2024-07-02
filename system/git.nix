@@ -64,8 +64,12 @@ _:
       mergetool.prompt = true;
       mergetool."nvimdiff".cmd =
         "nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c 'wincmd w' -c 'wincmd J'";
-
       push.autoSetupRemote = true;
+      url = {
+        "git@github.com:0x61nas/" = {
+          insteadOf = "me:";
+        };
+      };
     };
   };
 }
