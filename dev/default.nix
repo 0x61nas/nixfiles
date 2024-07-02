@@ -9,6 +9,8 @@
   home.packages = with pkgs; [
     neovide
     heh
+    hex
     pkgs-unstable.ida-free
+    ghidra
   ];
 }
