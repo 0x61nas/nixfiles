@@ -59,7 +59,7 @@ _:
         smtpencryption = "tls";
         smtpuser = "anas.elgarhy.dev@gmail.com";
       };
-
+      safe.directory = "*"; # opt-out, this is my fucking machine
       merge.tool = "nvimdiff";
       mergetool.prompt = true;
       mergetool."nvimdiff".cmd =
