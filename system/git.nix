@@ -1,8 +1,8 @@
-{ pkgs, ... }:
+_:
 {
-  home.packages = with pkgs; [ delta ];
   programs.git = {
     enable = true;
+    delta.enable = true;
     userName = "0x61nas";
     userEmail = "anas.elgarhy.dev@gmail.com";
     ignores = [ "*~" ];
@@ -46,7 +46,7 @@
       diff.tool = "nvimdiff";
       difftool.prompt = false;
       difftool."nvimdiff".cmd = "nvim -d \"$LOCAL\" \"$REMOTE\"";
-      interactive.diffFilter = "delta --color-only";
+      # interactive.diffFilter = "delta --color-only";
       github.user = "0x61nas";
       sendemail = {
         from = "anas.elgarhy.dev@gmail.com";
