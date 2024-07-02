@@ -163,6 +163,8 @@
     # This improves touchscreen support and enables additional touchpad gestures.
     # It also enables smooth scrolling as opposed to the stepped scrolling that Firefox has by default.
     #MOZ_USE_XINPUT2 = "1";
+    # WEBKIT_DISABLE_COMPOSITING_MODE essential in NVIDIA + compositor https://github.com/NixOS/nixpkgs/issues/212064#issuecomment-1400202079
+    WEBKIT_DISABLE_COMPOSITING_MODE = "1";
   };
 
   services.printing.enable = true;
