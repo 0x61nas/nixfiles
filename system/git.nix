@@ -43,6 +43,9 @@ _:
     };
     extraConfig = {
       init.defaultBranch = "aurora";
+      core = {
+        fsmonitor = true;
+      };
       diff.tool = "nvimdiff";
       difftool.prompt = false;
       difftool."nvimdiff".cmd = "nvim -d \"$LOCAL\" \"$REMOTE\"";
