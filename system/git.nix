@@ -44,6 +44,7 @@ _:
     extraConfig = {
       init.defaultBranch = "aurora";
       core = {
+        eol = "lf";
         fsmonitor = true;
       };
       diff.tool = "nvimdiff";
