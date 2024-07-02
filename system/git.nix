@@ -48,6 +48,13 @@
       difftool."nvimdiff".cmd = "nvim -d \"$LOCAL\" \"$REMOTE\"";
       interactive.diffFilter = "delta --color-only";
       github.user = "0x61nas";
+      sendemail = {
+        from = "anas.elgarhy.dev@gmail.com";
+        smtpserver = "smtp.gmail.com";
+        smtpserverport = 587;
+        smtpencryption = "tls";
+        smtpuser = "anas.elgarhy.dev@gmail.com";
+      };
 
       merge.tool = "nvimdiff";
       mergetool.prompt = true;
