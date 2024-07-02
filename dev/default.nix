@@ -11,6 +11,5 @@
     heh
     hex
     pkgs-unstable.ida-free
-    ghidra
   ];
 }
