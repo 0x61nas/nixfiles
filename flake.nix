@@ -85,6 +85,9 @@
           ];
           shellHook = ''
             #!/usr/bin/env bash
+            if ! grep -q "pre-commit" .git/hooks/pre-commit 2>/dev/null; then
+                pre-commit install
+            fi
             ${pkgs.git}/bin/git status .
           '';
         };
