@@ -1,0 +1,39 @@
+pull_request_rules:
+  - name: Automatic queue for my pull requests
+    conditions:
+      - "author=0x61nas"
+      - "check-success=ci"
+    actions:
+      queue:
+        merge_method: rebase
+        update_method: rebase
+
+  - name: Automatic update to the aurora branch for pull requests
+    conditions:
+      - -conflict # skip PRs with conflicts
+      - -draft # skip GH draft PRs
+      - -author=dependabot[bot] # skip dependabot PRs
+    actions:
+      update:
+
+  - name: conflict check
+    conditions:
+      - conflict
+    actions:
+      comment:
+        message: Your PR is in conflict, {{author}}. You should fix it.
+
+  - name: disallow changing a file
+    conditions:
+      - files=FUNDING.yml
+    actions:
+      close:
+        message: No PR can touch this file.
+
+  - name: Automatic merge on approval
+    conditions:
+      - "#approved-reviews-by>=1"
+    actions:
+      queue:
+        merge_method: squash
+        update_method: rebase
