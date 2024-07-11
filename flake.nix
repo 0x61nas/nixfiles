@@ -17,6 +17,9 @@
 
     lqth.url = "github:0x61nas/lqth";
     archy-dwm.url = "github:archy-linux/archy-dwm";
+
+    # flake-parts.url = "github:hercules-ci/flake-parts";
+    # utils.url = "github:numtide/flake-utils";
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... } @inputs:
@@ -27,12 +30,6 @@
       pkgs-unstable = import nixpkgs-unstable { inherit system; config = { allowUnfree = true; }; };
       # pkgs-7d69e = import nixpkgs-7d69e { inherit system; config = { allowUnfree = true; }; };
       supportedSystems = [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
-
-      # Helper function to generate an attrset '{ x86_64-linux = f "x86_64-linux"; ... }'.
-      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-
-      # Nixpkgs instantiated for supported system types.
-      nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
 
       forEachSupportedSystem = f: nixpkgs.lib.genAttrs supportedSystems (system: f {
         pkgs = import nixpkgs { inherit system; };
@@ -58,7 +55,6 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
 
-              # TODO replace ryan with your own username
               home-manager.users.anas = import ./users/anas.home.nix;
 
               home-manager.extraSpecialArgs = {
@@ -74,13 +70,36 @@
 
       devShells = forEachSupportedSystem ({ pkgs }: {
         default = pkgs.mkShell {
-          packages = with pkgs; [
-            git
+          name = "nix-config";
+
+          nativeBuildInputs = with pkgs; [
+            # Nix
+            # agenix
+            nil
+            nix-melt
+            nix-output-monitor
+            nix-tree
             nixpkgs-fmt
-            just
-            pre-commit
-            # nix
+
+            # Lua
+            # stylua
+            # (luajit.withPackages (p: with p; [ luacheck ]))
+            # lua-language-server
+
+            # Shell
+            shellcheck
+            shfmt
+
+            # GitHub Actions
+            act
+            actionlint
+            python3Packages.pyflakes
+            shellcheck
+
+            # Misc
             jq
+            pre-commit
+            just
             fzf
           ];
           shellHook = ''

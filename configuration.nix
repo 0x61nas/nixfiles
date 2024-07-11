@@ -208,7 +208,7 @@
   programs.nh = {
     enable = true;
     clean.enable = true;
-    clean.extraArgs = "--keep-since 4d --keep 3";
+    clean.extraArgs = "--keep-since 5month --keep 6";
     flake = "/home/anas/nixfiles";
   };
 }
