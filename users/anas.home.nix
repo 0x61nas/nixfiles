@@ -15,7 +15,7 @@
     thunderbird
     tree
     tor-browser
-    youtube-dl
+    yt-dlp
     vagrant
     plantuml
     gnupg
