@@ -4,6 +4,10 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
+    nur = {
+      url = "github:0x61nas/nur";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     # nixpkgs-7d69e.url = "nixpkgs/7d69e528a70b434e276e17578e8ef5c5dbc2ef5b";
     home-manager = {
       url = "github:nix-community/home-manager/release-24.05";
@@ -22,7 +26,7 @@
     # utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... } @inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, nur, home-manager, ... } @inputs:
     let
       lib = nixpkgs.lib;
       system = "x86_64-linux";
@@ -43,6 +47,7 @@
             inherit inputs;
             inherit pkgs;
             inherit pkgs-unstable;
+            inherit nur;
           };
           modules = [
             ./cache.nix
@@ -61,6 +66,7 @@
                 inherit inputs;
                 inherit pkgs;
                 inherit pkgs-unstable;
+                inherit nur;
 
               };
             }

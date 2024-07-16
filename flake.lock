@@ -373,6 +373,26 @@
         "type": "indirect"
       }
     },
+    "nur": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1720730413,
+        "narHash": "sha256-yyeOrroMYTugTe+a3pTIxWb2zi+jJtxjuZrKguXFARQ=",
+        "owner": "0x61nas",
+        "repo": "nur",
+        "rev": "9ef59e0c19f9328e54dec038d2b5afb19bcbf428",
+        "type": "github"
+      },
+      "original": {
+        "owner": "0x61nas",
+        "repo": "nur",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "archy-dwm": "archy-dwm",
@@ -382,7 +402,8 @@
         "nix-alien": "nix-alien",
         "nix-ld-rs": "nix-ld-rs",
         "nixpkgs": "nixpkgs_4",
-        "nixpkgs-unstable": "nixpkgs-unstable"
+        "nixpkgs-unstable": "nixpkgs-unstable",
+        "nur": "nur"
       }
     },
     "rust-overlay": {
