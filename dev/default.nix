@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, ... }: {
+{ pkgs, pkgs-unstable, nur, ... }: {
   imports = [
     ./nvim
     ./cargo
@@ -11,5 +11,6 @@
     heh
     hex
     pkgs-unstable.ida-free
+    nur.packages.${pkgs.system}.ducker
   ];
 }
