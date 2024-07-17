@@ -9,5 +9,6 @@ _: {
     ./tmux
     # ./xdg.nix
     ./gitui.nix
+    ./mics.nix
   ];
 }
