@@ -84,7 +84,6 @@
     brave
     # firefox
     (pkgs.wrapFirefox (firefox-unwrapped.override { pipewireSupport = true; }) { })
-    vlc
     keepassxc
     unzip
     zip
@@ -111,7 +110,6 @@
     qbittorrent
     nvtopPackages.full
     btop
-    mpv
   ]);
 
   #security.sudo-rs.enable = true;

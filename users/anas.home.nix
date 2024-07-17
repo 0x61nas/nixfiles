@@ -5,6 +5,7 @@
     ../gui
     ../virtualization
     ../social
+    ../media
   ];
   home.username = "anas";
   home.homeDirectory = "/home/anas";
