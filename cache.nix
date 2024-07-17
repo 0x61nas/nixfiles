@@ -3,7 +3,8 @@
     substituters = [
       #"https://hyprland.cachix.org"
       "https://nix-community.cachix.org"
-      "https://cachix.org"
+      "https://anas-nur.cachix.org"
+      "https://mayuri.cachix.org"
     ];
     trusted-public-keys = [
       #"hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
