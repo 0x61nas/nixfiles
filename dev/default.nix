@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, nur, ... }: {
+{ pkgs-unstable, nur, ... }: {
   imports = [
     ./nvim
     ./cargo
@@ -6,11 +6,19 @@
     # ./devenv.nix
   ];
 
-  home.packages = with pkgs; [
+  home.packages = with pkgs-unstable; [
     neovide
     heh
     hex
-    pkgs-unstable.ida-free
-    nur.packages.${pkgs.system}.ducker
+    ida-free
+    nur.packages.${pkgs-unstable.system}.ducker
+    onefetch
+    loc
+    tokei
+    nur.packages.${pkgs-unstable.system}.tokei-pie
+    nixfmt-rfc-style
+    android-tools
+    zed-editor
+    lua
   ];
 }
