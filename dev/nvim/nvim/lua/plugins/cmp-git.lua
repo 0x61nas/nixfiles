@@ -3,6 +3,9 @@ return {
   dependencies = {
     'nvim-lua/plenary.nvim'
   },
+  init = function()
+    table.insert(require("cmp").get_config().sources, { name = "git" })
+  end,
   config = function()
     local format = require("cmp_git.format")
     local sort = require("cmp_git.sort")
