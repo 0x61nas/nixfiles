@@ -1,20 +1,15 @@
 -- Global Settings And Remaps
-require('settings')
-require('keybinds')
-require('autocommands')
-if vim.g.neovide then
-  require('neovide')
-end
+require("settings")
+require("keybinds")
+require("autocommands")
+if vim.g.neovide then require("neovide") end
 
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system({
-        "git", "clone", "--filter=blob:none",
-        "https://github.com/folke/lazy.nvim.git", "--branch=stable", -- latest stable release
-        lazypath
-    })
-end
+vim.loader.enable()
 
-vim.opt.rtp:prepend(lazypath)
+-- require("core.opts").initial()
 
-return require('lazy').setup('plugins')
+local lazy_path = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+
+require("core.utils").bootstrap(lazy_path)
+
+return require("lazy").setup("plugins")
