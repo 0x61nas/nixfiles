@@ -6,7 +6,7 @@ if vim.g.neovide then require("neovide") end
 
 vim.loader.enable()
 
--- require("core.opts").initial()
+require("core.opts")
 
 local lazy_path = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
