@@ -28,7 +28,7 @@
     ".4" = "cd ../../../..";
     ".5" = "cd ../../../../..";
     "." = "pwd";
-    e = "$EDITOR";
+    e = "edit";
     r = "bat";
     cargo = "cargo mommy";
     j = "just";
@@ -51,10 +51,8 @@
     push = "git push";
     pusht = "push --tags";
     pushf = "push --force";
-    commit = "git commit";
     clone = "git clone";
     sclone = "git clone --depth=1";
-    add = "git add";
     addp = "git add -p";
     status = "git status";
     pull = "git pull";
