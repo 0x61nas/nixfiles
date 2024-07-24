@@ -6,6 +6,8 @@
     sha256 = "1kkaq2x3p6dvgjbsbq0ir9la5ffxxh1a5s288jpj64zkm529p4af";
   };
 
+  home.file.".config/zsh/functions.zsh".source = ./functions.zsh;
+
   programs.zsh = {
     enable = true;
     dotDir = ".config/zsh";
@@ -65,6 +67,7 @@
       ENABLE_CORRECTION="false"
       COMPLETION_WAITING_DOTS="true"
       source "$HOME/.config/zsh/prompt.zsh"
+      source "$HOME/.config/zsh/functions.zsh"
       [[ -e "$HOME/.private-env.sh" ]] && source "$HOME/.private-env.sh"
       [[ -e "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
       if command -v gh >/dev/null 2>&1; then
