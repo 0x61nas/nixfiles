@@ -13,6 +13,8 @@
     gopls
     zls
     pylint
+    tree-sitter
+    nodejs_22
     # nasmfmt
     # typos
 
