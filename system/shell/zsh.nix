@@ -1,11 +1,7 @@
 { pkgs, config, ... }:
 {
   # Download the prompt
-  home.file.".config/zsh/prompt.zsh".source = builtins.fetchurl {
-    url = "https://gist.githubusercontent.com/0x61nas/6ee08add16a0ac8f63bfc485be5239f0/raw/72915834bb24398aae2968a96e0b350f5ff206b7/prompt.zsh";
-    sha256 = "1kkaq2x3p6dvgjbsbq0ir9la5ffxxh1a5s288jpj64zkm529p4af";
-  };
-
+  home.file.".config/zsh/prompt.zsh".source = ./prompt.zsh;
   home.file.".config/zsh/functions.zsh".source = ./functions.zsh;
 
   programs.zsh = {
