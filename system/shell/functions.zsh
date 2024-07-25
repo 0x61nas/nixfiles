@@ -41,7 +41,10 @@ function gita() {
 }
 
 function gitc() {
-    gita
+    local last_cmd=$(fc -ln -1)
+    if [[ $last_cmd != "gita"* && $last_cmd != "git add"* && $last_cmd != "addp"* ]]; then
+        gita
+    fi
     if [[ $# -eq 0 ]]; then
         git commit --amend
     elif [[ $# -eq 1 ]]; then
