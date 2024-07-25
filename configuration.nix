@@ -206,8 +206,8 @@
   programs.nh = {
     enable = true;
     package = pkgs-unstable.nh;
-    clean.enable = true;
-    clean.extraArgs = "--keep-since 5month --keep 6";
+    # clean.enable = true;
+    # clean.extraArgs = "--keep-since 5month --keep 6";
     flake = "/home/anas/nixfiles";
   };
 }
