@@ -29,7 +29,7 @@
     ".5" = "cd ../../../../..";
     "." = "pwd";
     e = "edit";
-    r = "bat";
+    r = "bat -p";
     cargo = "cargo mommy";
     j = "just";
     jr = "just run";
