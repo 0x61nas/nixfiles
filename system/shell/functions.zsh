@@ -49,6 +49,7 @@ function gitc() {
     elif [[ $# -gt 1 ]]; then
         local msg=""
         local files=()
+        local extra_args=()
 
         while [[ $# -gt 0 ]]; do
             case $1 in
@@ -57,8 +58,11 @@ function gitc() {
                     msg="$1"
                     if [[ -z $msg ]]; then
                         echo "error: no commit message provided"
-                        break
+                        return 1
                     fi
+                ;;
+                -*)
+                    extra_args+=("$1")
                 ;;
                 *) files+=("$1");;
             esac
@@ -66,7 +70,7 @@ function gitc() {
         done
 
         gita "${files[@]}"
-        git commit -m "$msg"
+        git commit -m "$msg" "${extra_args[@]}"
     else
         echo "ARE YOU AN IDIOT??"
         type -f gitc
