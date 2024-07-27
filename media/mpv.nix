@@ -1,14 +1,7 @@
-{ pkgs-unstable, ... }: {
+{ pkgs, ... }: {
   programs.mpv = {
     enable = true;
-    # package = with pkgs-unstable; wrapMpv
-    #   (mpv-unwrapped.override {
-    #     vapoursynthSupport = true;
-    #   })
-    #   {
-    #     youtubeSupport = true;
-    #   };
-    scripts = with pkgs-unstable.mpvScripts; [
+    scripts = with pkgs.mpvScripts; [
       uosc
       thumbfast
       mpv-cheatsheet

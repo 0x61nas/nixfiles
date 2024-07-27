@@ -2,11 +2,10 @@
   description = "OS";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-24.05";
-    nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
+    nixpkgs.url = "nixpkgs/nixos-unstable";
     nur = {
       url = "github:0x61nas/nur";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     # nixpkgs-7d69e.url = "nixpkgs/7d69e528a70b434e276e17578e8ef5c5dbc2ef5b";
     home-manager = {
@@ -26,29 +25,27 @@
     # utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, nur, home-manager, ... } @inputs:
+  outputs = { self, nixpkgs, nur, home-manager, ... } @inputs:
     let
       lib = nixpkgs.lib;
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; config = { allowUnfree = true; }; };
-      pkgs-unstable = import nixpkgs-unstable { inherit system; config = { allowUnfree = true; }; };
-      # pkgs-7d69e = import nixpkgs-7d69e { inherit system; config = { allowUnfree = true; }; };
       supportedSystems = [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
 
       forEachSupportedSystem = f: nixpkgs.lib.genAttrs supportedSystems (system: f {
         pkgs = import nixpkgs { inherit system; };
       });
+
+      specialArgs = {
+        inherit inputs;
+        inherit pkgs;
+        inherit nur;
+      };
     in
     {
       nixosConfigurations = {
         Mayuri = lib.nixosSystem {
-          inherit system;
-          specialArgs = {
-            inherit inputs;
-            inherit pkgs;
-            inherit pkgs-unstable;
-            inherit nur;
-          };
+          inherit system specialArgs;
           modules = [
             ./cache.nix
             ./configuration.nix
@@ -62,13 +59,7 @@
 
               home-manager.users.anas = import ./users/anas.home.nix;
 
-              home-manager.extraSpecialArgs = {
-                inherit inputs;
-                inherit pkgs;
-                inherit pkgs-unstable;
-                inherit nur;
-
-              };
+              home-manager.extraSpecialArgs = specialArgs;
             }
           ];
         };

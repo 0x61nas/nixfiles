@@ -1,7 +1,7 @@
-{ pkgs-unstable, ... }: {
+{ pkgs, ... }: {
   programs.gitui = {
     enable = true;
-    package = pkgs-unstable.gitui;
+    package = pkgs.gitui;
     # theme = ''
     #
     # '';
