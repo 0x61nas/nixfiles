@@ -79,6 +79,8 @@
     zathura
     wget
     fzf
+    file
+    usbutils
 
     # firefox
     (pkgs.wrapFirefox (firefox-unwrapped.override { pipewireSupport = true; }) { })
