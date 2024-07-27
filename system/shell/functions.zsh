@@ -9,7 +9,7 @@
   }
 
 function edit() {
-  if [[ $# -gt 0 && $(all_options "$@") -eq 1 ]]; then
+  if [[ $# -gt 0 && $(all_options "$@") -eq 0 ]]; then
     $EDITOR $@
   else
     # Get the last argument of the previous command
