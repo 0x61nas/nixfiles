@@ -20,5 +20,6 @@
     android-tools
     zed-editor
     lua
+    go
   ];
 }
