@@ -25,10 +25,10 @@ in
       #   plugin = catppuccin;
       #   extraConfig = builtins.readFile ./catppuccin.conf;
       # }
-      {
-        plugin = tmux-gruvbox;
-        # extraConfig = builtins.readFile ./tmux-gruvbox-dark.conf;
-      }
+      # {
+      #   plugin = tmux-gruvbox;
+      #   # extraConfig = builtins.readFile ./tmux-gruvbox-dark.conf;
+      # }
       # {
       #   plugin = rose-pine;
       #   extraConfig = builtins.readFile ./rose-pine.conf;
