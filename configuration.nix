@@ -63,7 +63,6 @@
   environment.systemPackages = with pkgs; [
     cachix
     coreutils-full
-    home-manager
     docker
 
     ripgrep
@@ -81,7 +80,6 @@
     wget
     fzf
 
-    brave
     # firefox
     (pkgs.wrapFirefox (firefox-unwrapped.override { pipewireSupport = true; }) { })
     keepassxc

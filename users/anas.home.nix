@@ -15,7 +15,6 @@
     pfetch-rs
     thunderbird
     tree
-    tor-browser
     yt-dlp
     vagrant
     plantuml
