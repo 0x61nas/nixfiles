@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, ... }:
+{ pkgs, ... }:
 {
   imports = [
     # Include the results of the hardware scan.
@@ -105,12 +105,13 @@
     dunst
     libnotify
 
-  ] ++ (with pkgs-unstable; [
     neovim
     qbittorrent
     nvtopPackages.full
     btop
-  ]);
+
+
+  ];
 
   #security.sudo-rs.enable = true;
   # she was sudo girl, ama doas boy :(
@@ -184,7 +185,7 @@
 
 
   nix = {
-    package = pkgs-unstable.nixVersions.latest;
+    package = pkgs.nixVersions.latest;
     # gc = {
     #   automatic = true;
     #   dates = "weekly";
@@ -198,14 +199,14 @@
 
   programs.steam = {
     enable = true;
-    package = pkgs-unstable.steam;
+    package = pkgs.steam;
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
 
   programs.nh = {
     enable = true;
-    package = pkgs-unstable.nh;
+    package = pkgs.nh;
     # clean.enable = true;
     # clean.extraArgs = "--keep-since 5month --keep 6";
     flake = "/home/anas/nixfiles";

@@ -1,6 +1,6 @@
-{ pkgs, pkgs-unstable, ... }: {
+{ pkgs, ... }: {
   programs.nix-ld.enable = true;
-  programs.nix-ld.package = pkgs-unstable.nix-ld-rs;
+  programs.nix-ld.package = pkgs.nix-ld-rs;
 
   programs.nix-ld.libraries = with pkgs; [
     alsa-lib
