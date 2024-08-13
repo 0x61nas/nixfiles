@@ -1,6 +1,7 @@
 return {
-  "mustache/vim-mustache-handlebars",
-  ft = {
-    "html.mustache", "html.handlebars"
-  }
+	"mustache/vim-mustache-handlebars",
+	ft = {
+		"html.mustache",
+		"html.handlebars",
+	},
 }

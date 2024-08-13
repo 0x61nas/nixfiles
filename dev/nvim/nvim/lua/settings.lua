@@ -27,7 +27,7 @@ opt.wrap = false
 -- Cursor Settings
 opt.cursorline = true
 -- opt.guicursor =
-    -- "n-v-c-sm:block,ci-ve:ver25,r-cr-o:hor20,i:block-blinkoff1-blinkon1"
+-- "n-v-c-sm:block,ci-ve:ver25,r-cr-o:hor20,i:block-blinkoff1-blinkon1"
 
 -- Window Settings
 opt.splitbelow = true
@@ -40,16 +40,16 @@ opt.spell = true
 opt.spelloptions = "camel"
 
 -- Other
-opt.mouse = 'a'
+opt.mouse = "a"
 opt.showmode = false
 opt.termguicolors = true
 opt.hidden = true
 opt.clipboard = "unnamedplus"
 opt.formatoptions = "cjql"
 opt.laststatus = 3
-opt.completeopt = {"menu", "menuone", "preview"}
+opt.completeopt = { "menu", "menuone", "preview" }
 opt.conceallevel = 2
-opt.concealcursor = ''
+opt.concealcursor = ""
 -- opt.updatetime = 100
 
 -- Backup -- I have power issues :/

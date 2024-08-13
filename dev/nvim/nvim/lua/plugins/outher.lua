@@ -1,17 +1,17 @@
 return {
-  -- language support
+	-- language support
 	-- terraform
 	{
-		'hashivim/vim-terraform',
+		"hashivim/vim-terraform",
 		ft = { "terraform" },
 	},
 	-- svelte
 	{
-		'evanleck/vim-svelte',
+		"evanleck/vim-svelte",
 		ft = { "svelte" },
 	},
 	-- toml
-	'cespare/vim-toml',
+	"cespare/vim-toml",
 	-- yaml
 	{
 		"cuducos/yaml.nvim",
@@ -22,23 +22,23 @@ return {
 	},
 	-- rust
 	{
-		'rust-lang/rust.vim',
+		"rust-lang/rust.vim",
 		ft = { "rust" },
 		config = function()
 			vim.g.rustfmt_autosave = 1
 			vim.g.rustfmt_emit_files = 1
 			vim.g.rustfmt_fail_silently = 0
-			vim.g.rust_clip_command = 'xcopy'
-		end
+			vim.g.rust_clip_command = "xcopy"
+		end,
 	},
 	-- fish
-	'khaveesh/vim-fish-syntax',
+	"khaveesh/vim-fish-syntax",
 	-- markdown
 	{
-		'plasticboy/vim-markdown',
+		"plasticboy/vim-markdown",
 		ft = { "markdown" },
 		dependencies = {
-			'godlygeek/tabular',
+			"godlygeek/tabular",
 		},
 		config = function()
 			-- never ever fold!
@@ -50,6 +50,6 @@ return {
 			-- don't add bullets when wrapping:
 			-- https://github.com/preservim/vim-markdown/issues/232
 			vim.g.vim_markdown_auto_insert_bullets = 0
-		end
-  },
+		end,
+	},
 }

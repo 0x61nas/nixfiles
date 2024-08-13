@@ -1,14 +1,14 @@
 return {
-  -- Cosmetics
-  {
-      'folke/todo-comments.nvim',
-      config = true
-  },
+	-- Cosmetics
+	{
+		"folke/todo-comments.nvim",
+		config = true,
+	},
 
-  -- Git
-  'tpope/vim-fugitive',
+	-- Git
+	"tpope/vim-fugitive",
 
-  -- Utilities
+	-- Utilities
 
-  "ellisonleao/glow.nvim",
+	"ellisonleao/glow.nvim",
 }

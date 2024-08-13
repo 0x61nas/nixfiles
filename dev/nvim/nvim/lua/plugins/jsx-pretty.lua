@@ -1,3 +1,3 @@
 return {
-  "MaxMEllon/vim-jsx-pretty",
+	"MaxMEllon/vim-jsx-pretty",
 }
