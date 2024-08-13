@@ -53,7 +53,8 @@ return {
       "python", "query", "regex", "toml", "tsx", "typescript", "vim", "nasm",
       "vimdoc", "xml", "yaml", "hurl", "nix", "zig", "asm", "jq", "just",
       "latex", "go", "gleam", "gitcommit", "gitignore", "dockerfile", "go",
-      "kdl", "kotlin", "java", "make", "pony", "po", "printf", "sql", "typst"
+      "kdl", "kotlin", "java", "make", "pony", "po", "printf", "sql", "typst",
+      "http", "graphql"
     },
     incremental_selection = {
       enable = true,
