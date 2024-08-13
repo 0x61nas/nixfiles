@@ -6,10 +6,10 @@ opt.relativenumber = true
 opt.number = true
 
 -- Tabs & Spaces
-opt.expandtab = true
-opt.tabstop = 4
-opt.softtabstop = 4
-opt.shiftwidth = 4
+opt.expandtab = false
+opt.tabstop = 2
+opt.softtabstop = 2
+opt.shiftwidth = 2
 opt.smartindent = true
 opt.autoindent = true
 
