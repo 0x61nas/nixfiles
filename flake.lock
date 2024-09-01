@@ -205,11 +205,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1716277584,
-        "narHash": "sha256-SDq+BTGEgK/r9kn/IWyinDs04YiXqy3QDn1C1YqzJBw=",
+        "lastModified": 1722766693,
+        "narHash": "sha256-m2McGeKvqZ6jh+Q9nWLCTrjgnp1RxdKyQ4llrWB3b/4=",
         "owner": "0x61nas",
         "repo": "lqth",
-        "rev": "e94aaff5747d4621c209e8473afaeeb3e84be46d",
+        "rev": "44f4b942fd10b01be7ba6fedd99927eaab988e28",
         "type": "github"
       },
       "original": {
