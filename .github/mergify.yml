@@ -1,13 +1,22 @@
-pull_request_rules:
-  - name: Automatic queue for my pull requests
-    conditions:
+queue_rules:
+  - name: duplicated Automatic queue for my pull requests from Automatic merge on
+      approval
+    queue_conditions:
       - "author=0x61nas"
       - "check-success=ci"
-    actions:
-      queue:
-        merge_method: rebase
-        update_method: rebase
+      - "#approved-reviews-by>=1"
+    merge_conditions: []
+    merge_method: squash
+    update_method: rebase
+  - name: Automatic queue for my pull requests
+    queue_conditions:
+      - "author=0x61nas"
+      - "check-success=ci"
+    merge_conditions: []
+    merge_method: rebase
+    update_method: rebase
 
+pull_request_rules:
   - name: Automatic update to the aurora branch for pull requests
     conditions:
       - -conflict # skip PRs with conflicts
@@ -15,7 +24,6 @@ pull_request_rules:
       - -author=dependabot[bot] # skip dependabot PRs
     actions:
       update:
-
   - name: conflict check
     conditions:
       - conflict
@@ -30,10 +38,7 @@ pull_request_rules:
       close:
         message: No PR can touch this file.
 
-  - name: Automatic merge on approval
-    conditions:
-      - "#approved-reviews-by>=1"
+  - name: Automatic merge on approval + Automatic queue for my pull requests
+    conditions: []
     actions:
       queue:
-        merge_method: squash
-        update_method: rebase
