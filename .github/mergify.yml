@@ -1,6 +1,5 @@
 queue_rules:
-  - name: duplicated Automatic queue for my pull requests from Automatic merge on
-      approval
+  - name: duplicated Automatic queue for my pull requests from Automatic merge on approval
     queue_conditions:
       - "author=0x61nas"
       - "check-success=ci"
@@ -42,3 +41,9 @@ pull_request_rules:
     conditions: []
     actions:
       queue:
+priority_rules:
+  - name: priority for queue `duplicated Automatic queue for my pull requests from
+      Automatic merge on approval`
+    conditions:
+      - "#approved-reviews-by>=1"
+    priority: 2250
