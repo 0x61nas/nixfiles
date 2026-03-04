@@ -147,7 +147,7 @@ jobs:
     env:
       system: ${{ matrix.attrs.hostPlatform }}
     steps:
-      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-qemu-action@v4
         if: ${{ matrix.attrs.hostPlatform == 'aarch64-linux' }}
       - uses: DeterminateSystems/nix-installer-action@v16
         with:
@@ -174,7 +174,7 @@ jobs:
     env:
       system: ${{ matrix.attrs.hostPlatform }}
     steps:
-      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-qemu-action@v4
         if: ${{ env.system == 'aarch64-linux' }}
       - name: "Make more space"
         run: "sudo rm -rf /opt /usr/local || true &"
