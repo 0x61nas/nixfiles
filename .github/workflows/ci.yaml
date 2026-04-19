@@ -21,7 +21,7 @@ jobs:
   flake-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: DeterminateSystems/nix-installer-action@v16
+      - uses: DeterminateSystems/nix-installer-action@v22
         with:
           extra-conf: ${{ env.nix-conf }}
       - uses: cachix/cachix-action@v15
@@ -35,7 +35,7 @@ jobs:
   flake-show:
     runs-on: ubuntu-latest
     steps:
-      - uses: DeterminateSystems/nix-installer-action@v16
+      - uses: DeterminateSystems/nix-installer-action@v22
         with:
           extra-conf: ${{ env.nix-conf }}
       - uses: cachix/cachix-action@v15
@@ -52,7 +52,7 @@ jobs:
       build: ${{ steps.get-attrs.outputs.build }}
       eval: ${{ steps.get-attrs.outputs.eval }}
     steps:
-      - uses: DeterminateSystems/nix-installer-action@v16
+      - uses: DeterminateSystems/nix-installer-action@v22
         with:
           extra-conf: ${{ env.nix-conf }}
       - uses: DeterminateSystems/magic-nix-cache-action@v14
@@ -149,7 +149,7 @@ jobs:
     steps:
       - uses: docker/setup-qemu-action@v4
         if: ${{ matrix.attrs.hostPlatform == 'aarch64-linux' }}
-      - uses: DeterminateSystems/nix-installer-action@v16
+      - uses: DeterminateSystems/nix-installer-action@v22
         with:
           extra-conf: ${{ env.nix-conf }}
       - uses: cachix/cachix-action@v15
@@ -178,7 +178,7 @@ jobs:
         if: ${{ env.system == 'aarch64-linux' }}
       - name: "Make more space"
         run: "sudo rm -rf /opt /usr/local || true &"
-      - uses: DeterminateSystems/nix-installer-action@v16
+      - uses: DeterminateSystems/nix-installer-action@v22
         with:
           extra-conf: ${{ env.nix-conf }}
       - uses: cachix/cachix-action@v15
