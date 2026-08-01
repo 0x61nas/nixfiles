@@ -41,7 +41,7 @@
     in
     {
       nixosConfigurations = {
-        Mayuri = lib.nixosSystem {
+        anas = lib.nixosSystem {
           inherit system;
           specialArgs = {
             inherit inputs;
