@@ -1,5 +1,5 @@
 { ... }: {
-  networking.hostName = "Mayuri";
+  networking.hostName = "Kurisu";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
