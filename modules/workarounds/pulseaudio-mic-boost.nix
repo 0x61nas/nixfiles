@@ -57,7 +57,7 @@ let
 in
 {
   options.workarounds.pulseaudio-mic-boost.enable = mkEnableOption "Disbale pulseaudio mic boost";
-  config = mkIf (config.hardware.pulseaudio.enable && cfg.enable) {
-    hardware.pulseaudio.package = pulseaudio_with_mic_boost_disabled;
+  config = mkIf (config.services.pulseaudio.enable && cfg.enable) {
+    services.pulseaudio.package = pulseaudio_with_mic_boost_disabled;
   };
 }
