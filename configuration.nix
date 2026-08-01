@@ -12,10 +12,10 @@
 
   gpu = {
     nvidia = {
-      enable = true;
+      enable = false;
       isTuring = false; # https://en.wikipedia.org/wiki/Turing_(microarchitecture)#Products_using_Turing
     };
-    intel.enable = false;
+    intel.enable = true;
     amd.enable = false;
   };
 
