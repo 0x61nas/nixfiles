@@ -7,14 +7,14 @@
     # Configuration options for sioyek
     config = {
       # Contrast for custom color mode
-      custom_color_contrast = 0.3;
+      custom_color_contrast = "0.3";
 
       # Background color when custom color mode is empty
       custom_color_mode_empty_background_color = "#1d2021";
 
       # Color and width of the page separator
       page_separator_color = "#1d2021";
-      page_separator_width = 10;
+      page_separator_width = "10";
 
       # Custom colors for various UI elements
       custom_background_color = "#282828";
