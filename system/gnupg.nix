@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, config, ... }: {
   services.gpg-agent = {
     enable = true;
     enableSshSupport = true;
@@ -49,5 +49,7 @@
 
     };
   };
-
+  home.packages = [
+    pkgs.pinentry-gtk2
+  ];
 }
