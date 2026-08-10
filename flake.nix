@@ -16,9 +16,6 @@
     nix-alien.url = "github:thiagokokada/nix-alien";
     impermanence.url = "github:nix-community/impermanence";
 
-    nix-ld-rs.url = "github:nix-community/nix-ld-rs";
-    nix-ld-rs.inputs.nixpkgs.follows = "nixpkgs";
-
     lqth.url = "github:0x61nas/lqth";
     archy-dwm.url = "github:archy-linux/archy-dwm";
 
