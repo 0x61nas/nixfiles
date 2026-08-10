@@ -35,4 +35,5 @@ fi
 [ -f /etc/xprofile ] && . /etc/xprofile
 [ -f ~/.xprofile ] && . ~/.xprofile
 
-exec archy-dwm 2> .logs/archy-dwm.err > .logs/archy-dwm.log
+mkdir -p "$HOME/.logs"
+exec archy-dwm 2> "$HOME/.logs/archy-dwm.err" > "$HOME/.logs/archy-dwm.log"
