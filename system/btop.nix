@@ -6,4 +6,5 @@
       vim_keys = true;
     };
   };
+  xdg.configFile."btop/btop.conf".force = true;
 }
