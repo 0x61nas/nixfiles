@@ -1,5 +1,4 @@
-_:
-{
+_: {
   programs.git = {
     enable = true;
     delta.enable = true;
@@ -8,7 +7,7 @@ _:
     ignores = [ "*~" ];
     signing = {
       signByDefault = true;
-      key = "0x83E03DC6F3834086";
+      key = "0x597AB12E66262898";
     };
     aliases = {
       logline = "log --graph --oneline --decorate";
@@ -62,8 +61,7 @@ _:
       safe.directory = "*"; # opt-out, this is my fucking machine
       merge.tool = "nvimdiff";
       mergetool.prompt = true;
-      mergetool."nvimdiff".cmd =
-        "nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c 'wincmd w' -c 'wincmd J'";
+      mergetool."nvimdiff".cmd = "nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c 'wincmd w' -c 'wincmd J'";
       push.autoSetupRemote = true;
       url = {
         "git@github.com:0x61nas/" = {
