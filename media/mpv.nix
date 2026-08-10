@@ -11,7 +11,6 @@
     scripts = with pkgs-unstable.mpvScripts; [
       uosc
       thumbfast
-      mpv-cheatsheet
     ];
     scriptOpts = {
       uosc = {
