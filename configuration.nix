@@ -1,8 +1,6 @@
 { pkgs, pkgs-unstable, ... }:
 {
   imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
     ./modules
     ./gui/thunar.nix
   ];
@@ -10,27 +8,9 @@
   fonts.fontDir.enable = true;
   # desktop.hyprland.enable = true;
 
-  gpu = {
-    nvidia = {
-      enable = false;
-      isTuring = false; # https://en.wikipedia.org/wiki/Turing_(microarchitecture)#Products_using_Turing
-    };
-    intel.enable = true;
-    amd.enable = false;
-  };
-
   # Firmware update helper
   # https://nixos.wiki/wiki/Fwupd
   services.fwupd.enable = true;
-
-  services.openssh = {
-    enable = true;
-    openFirewall = true;
-    settings = {
-      PermitRootLogin = "yes";
-      PasswordAuthentication = true; # Set to false if using SSH keys only
-    };
-  };
 
   services.flatpak.enable = false;
   # services.flatpak.packages = [
@@ -66,6 +46,7 @@
       "video"
       "audio"
       "tty"
+      "anas"
     ];
     shell = pkgs.zsh;
     initialPassword = "kill me plz";
