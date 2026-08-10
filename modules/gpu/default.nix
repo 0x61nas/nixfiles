@@ -3,10 +3,9 @@ with lib;
  {
   imports = [ ./nvidia.nix ./intel.nix ./amd.nix ];
   config = {
-    hardware.opengl = {
+    hardware.graphics = {
       enable = mkDefault true;
-      driSupport = mkDefault true;
-      driSupport32Bit = mkDefault true;
+      enable32Bit = mkDefault true;
     };
   };
 }

@@ -91,8 +91,8 @@
     ffmpeg
     cmus
 
-    llvmPackages_17.clang-unwrapped
-    llvmPackages_17.bintools
+    llvmPackages.clang-unwrapped
+    llvmPackages.bintools
     rustup
     gcc
     python3
@@ -166,8 +166,7 @@
   };
 
   services.printing.enable = true;
-  sound.enable = true;
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;

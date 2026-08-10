@@ -2,10 +2,11 @@
   fonts = {
     enableDefaultPackages = true;
     packages = with pkgs; [
-      ubuntu_font_family
+      ubuntu-classic
       noto-fonts
-      noto-fonts-cjk
-      noto-fonts-emoji
+      noto-fonts-cjk-sans
+      noto-fonts-cjk-serif
+      noto-fonts-color-emoji
       liberation_ttf
       fira-code
       fira-code-symbols
@@ -13,7 +14,7 @@
       dina-font
       proggyfonts
       hack-font
-      nerdfonts
+      nerd-fonts.hack
       jetbrains-mono
     ];
 
