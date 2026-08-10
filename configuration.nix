@@ -23,6 +23,15 @@
   # https://nixos.wiki/wiki/Fwupd
   services.fwupd.enable = true;
 
+  services.openssh = {
+    enable = true;
+    openFirewall = true;
+    settings = {
+      PermitRootLogin = "yes";
+      PasswordAuthentication = true; # Set to false if using SSH keys only
+    };
+  };
+
   services.flatpak.enable = false;
   # services.flatpak.packages = [
   #   "hu.kramo.Cartridges"
