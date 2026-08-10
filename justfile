@@ -5,7 +5,7 @@ DOAS := "doas"
 
 # Deploy the system.
 system-switch:
-    {{ DOAS }} nixos-rebuild switch --fallback --flake {{ justfile_directory() }}
+    {{ DOAS }} nixos-rebuild switch --fallback --flake {{ justfile_directory() }}#anas
 
 # Deploy the home-manager generation.
 home-switch USER="anas":
