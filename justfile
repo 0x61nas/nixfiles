@@ -4,8 +4,8 @@ DOAS := "doas"
     just --choose
 
 # Deploy the system.
-system-switch:
-    {{ DOAS }} nixos-rebuild switch --fallback --flake {{ justfile_directory() }}#anas
+system-switch MACHINE:
+    {{ DOAS }} nixos-rebuild switch --fallback --flake {{ justfile_directory() }}#{{MACHINE}}
 
 # Deploy the home-manager generation.
 home-switch USER="anas":
