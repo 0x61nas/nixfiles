@@ -1,4 +1,16 @@
-{ ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
+  imports = [
+    # Include the results of the hardware scan.
+    ./mayuri-hardware-configuration.nix
+
+  ];
+  # Networking
   networking.hostName = "Mayuri";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -22,4 +34,21 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+  gpu = {
+    nvidia = {
+      enable = true;
+      isTuring = false; # https://en.wikipedia.org/wiki/Turing_(microarchitecture)#Products_using_Turing
+    };
+    intel.enable = true;
+    amd.enable = false;
+  };
+  services.openssh = {
+    enable = true;
+    openFirewall = true;
+    settings = {
+      PermitRootLogin = "yes";
+      PasswordAuthentication = true; # Set to false if using SSH keys only
+    };
+  };
+
 }

@@ -23,6 +23,14 @@
     };
   };
 
+  # Xorg started via `startx` needs to open /dev/tty0 (to query VT settings)
+  # and /dev/ttyN (as its console). NixOS doesn't ship systemd's default udev
+  # rules, so /dev/tty* end up 0600 root:tty; grant the tty group read/write
+  # and make sure the user is a member (see configuration.nix).
+  services.udev.extraRules = ''
+    SUBSYSTEM=="tty", KERNEL=="tty[0-9]*", GROUP="tty", MODE="0660"
+  '';
+
   environment.systemPackages = with pkgs; [
     inputs.archy-dwm.packages."${pkgs.system}".archy-wm
     sxhkd

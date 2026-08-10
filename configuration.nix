@@ -1,23 +1,12 @@
 { pkgs, pkgs-unstable, ... }:
 {
   imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
     ./modules
     ./gui/thunar.nix
   ];
 
   fonts.fontDir.enable = true;
   # desktop.hyprland.enable = true;
-
-  gpu = {
-    nvidia = {
-      enable = true;
-      isTuring = false; # https://en.wikipedia.org/wiki/Turing_(microarchitecture)#Products_using_Turing
-    };
-    intel.enable = false;
-    amd.enable = false;
-  };
 
   # Firmware update helper
   # https://nixos.wiki/wiki/Fwupd
@@ -49,7 +38,16 @@
   users.users.anas = {
     isNormalUser = true;
     description = "am the problem its me";
-    extraGroups = [ "networkmanager" "wheel" "docker" "libvirtd" "video" "audio" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "docker"
+      "libvirtd"
+      "video"
+      "audio"
+      "tty"
+      "anas"
+    ];
     shell = pkgs.zsh;
     initialPassword = "kill me plz";
   };
@@ -60,69 +58,74 @@
     useXkbConfig = true; # use xkb.options in tty.
   };
 
-  environment.systemPackages = with pkgs; [
-    cachix
-    coreutils-full
-    docker
+  environment.systemPackages =
+    with pkgs;
+    [
+      cachix
+      coreutils-full
+      docker
 
-    ripgrep
-    git
-    (eza.override {
-      gitSupport = false;
-    })
-    networkmanagerapplet
-    tmux
-    zoxide
-    gdb
-    gnumake
-    killall
-    zathura
-    wget
-    fzf
-    file
-    usbutils
+      ripgrep
+      git
+      (eza.override {
+        gitSupport = false;
+      })
+      networkmanagerapplet
+      tmux
+      zoxide
+      gdb
+      gnumake
+      killall
+      zathura
+      wget
+      fzf
+      file
+      usbutils
 
-    # firefox
-    (pkgs.wrapFirefox (firefox-unwrapped.override { pipewireSupport = true; }) { })
-    keepassxc
-    unzip
-    zip
-    farbfeld
-    ffmpeg
-    cmus
+      # firefox
+      (pkgs.wrapFirefox (firefox-unwrapped.override { pipewireSupport = true; }) { })
+      keepassxc
+      unzip
+      zip
+      farbfeld
+      ffmpeg
+      cmus
 
-    llvmPackages.clang-unwrapped
-    llvmPackages.bintools
-    rustup
-    gcc
-    python3
-    just
+      llvmPackages.clang-unwrapped
+      llvmPackages.bintools
+      rustup
+      gcc
+      python3
+      just
 
-    ntfs3g
+      ntfs3g
 
-    #mtpfs
-    # notification daemon
-    dunst
-    libnotify
+      #mtpfs
+      # notification daemon
+      dunst
+      libnotify
 
-  ] ++ (with pkgs-unstable; [
-    neovim
-    qbittorrent
-    nvtopPackages.full
-    btop
-  ]);
+    ]
+    ++ (with pkgs-unstable; [
+      neovim
+      qbittorrent
+      nvtopPackages.full
+      btop
+    ]);
 
   #security.sudo-rs.enable = true;
   # she was sudo girl, ama doas boy :(
   security.doas.enable = true;
   security.sudo.enable = false;
-  security.doas.extraRules = [{
-    users = [ "anas" ];
-    # Optional, retains environment variables while running commands
-    # e.g. retains your NIX_PATH when applying your config
-    keepEnv = true;
-    persist = true; # Optional, only require password verification a single time
-  }];
+  security.doas.extraRules = [
+    {
+      users = [ "anas" ];
+      # Optional, retains environment variables while running commands
+      # e.g. retains your NIX_PATH when applying your config
+      keepEnv = true;
+      persist = true; # Optional, only require password verification a single time
+    }
+  ];
 
   environment.variables = {
     EDITOR = "nvim";
@@ -152,7 +155,6 @@
 
   nixpkgs.config.allowUnfree = true;
 
-
   environment.sessionVariables = {
     XDG_CACHE_HOME = "$HOME/.cache";
     XDG_CONFIG_HOME = "$HOME/.config";
@@ -181,7 +183,6 @@
   qt.platformTheme = "gtk2";
   qt.style = "gtk2";
 
-
   nix = {
     package = pkgs-unstable.nixVersions.latest;
     # gc = {
@@ -191,15 +192,11 @@
     settings = {
       auto-optimise-store = true;
       sandbox = "relaxed";
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
     };
-  };
-
-  programs.steam = {
-    enable = true;
-    package = pkgs-unstable.steam;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
 
   programs.nh = {

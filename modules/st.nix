@@ -8,8 +8,8 @@ let
   src = pkgs.fetchFromGitHub {
     owner = "archy-linux";
     repo = "archy-st";
-    rev = "aurora";
-    hash = "sha256-j/J5HELZAsgfsvTsnXiYy1d69ZwlGlZmPnUedHpydHM=";  # Use `nix-prefetch-url --unpack <url>` to get the hash
+    rev = "7775631d43af165987280a9bb6715390d124e5ee";
+    hash = "sha256-KCl9ip986xs7pLBalT/TDqlw/rCwlWolr9XcXGMW1eo=";
   };
 
   buildInputs = with pkgs; [ xorg.libX11 xorg.libXft pkg-config harfbuzz ];
