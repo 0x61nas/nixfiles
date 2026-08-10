@@ -5,16 +5,15 @@
     nil
     rust-analyzer
     stylua
-    nodePackages.bash-language-server
     asm-lsp
     # nodePackages_latest.lua-fmt
     luaformatter
-    python312Packages.python-lsp-server
+    #python312Packages.python-lsp-server
     gopls
-    zls
-    pylint
+    #zls
+    #pylint
     tree-sitter
-    nodejs_22
+    #nodejs_22
     # nasmfmt
     # typos
 

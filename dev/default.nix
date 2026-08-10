@@ -10,12 +10,8 @@
     neovide
     heh
     hex
-    ida-free
-    nur.packages.${pkgs-unstable.system}.ducker
+#    nur.packages.${pkgs-unstable.system}.ducker
     onefetch
-    loc
-    tokei
-    nur.packages.${pkgs-unstable.system}.tokei-pie
     nixfmt-rfc-style
     android-tools
     zed-editor
