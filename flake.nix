@@ -24,13 +24,12 @@
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      nixpkgs-unstable,
-      nur,
-      home-manager,
-      ...
+    { self
+    , nixpkgs
+    , nixpkgs-unstable
+    , nur
+    , home-manager
+    , ...
     }@inputs:
     let
       lib = nixpkgs.lib;
@@ -67,14 +66,16 @@
     {
       nixosConfigurations = {
         mayuri = lib.nixosSystem {
-          inherit system;
           specialArgs = {
             inherit inputs;
-            inherit pkgs;
             inherit pkgs-unstable;
             inherit nur;
           };
           modules = [
+            {
+              nixpkgs.pkgs = pkgs;
+            }
+            nixpkgs.nixosModules.readOnlyPkgs
             ./cache.nix
             ./configuration.nix
             ./services
@@ -89,7 +90,6 @@
 
               home-manager.extraSpecialArgs = {
                 inherit inputs;
-                inherit pkgs;
                 inherit pkgs-unstable;
                 inherit nur;
 
@@ -98,14 +98,16 @@
           ];
         };
         kurisu = lib.nixosSystem {
-          inherit system;
           specialArgs = {
             inherit inputs;
-            inherit pkgs;
             inherit pkgs-unstable;
             inherit nur;
           };
           modules = [
+            {
+              nixpkgs.pkgs = pkgs;
+            }
+            nixpkgs.nixosModules.readOnlyPkgs
             ./cache.nix
             ./configuration.nix
             # ./services
@@ -121,7 +123,6 @@
 
               home-manager.extraSpecialArgs = {
                 inherit inputs;
-                inherit pkgs;
                 inherit pkgs-unstable;
                 inherit nur;
 

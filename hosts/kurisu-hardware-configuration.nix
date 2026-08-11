@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "ahci" "nvme" "usb_storage" "sd_mod" ];
@@ -14,7 +15,8 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/mapper/system";
+    {
+      device = "/dev/mapper/system";
       fsType = "btrfs";
       options = [ "subvol=nixos" ];
     };
@@ -22,28 +24,30 @@
   boot.initrd.luks.devices."system".device = "/dev/disk/by-uuid/ae5fc4cf-327b-4ee7-95fd-df23c1380fc9";
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/D92C-E38A";
+    {
+      device = "/dev/disk/by-uuid/D92C-E38A";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
     };
 
   fileSystems."/swap" =
-    { device = "/dev/mapper/system";
+    {
+      device = "/dev/mapper/system";
       fsType = "btrfs";
       options = [ "subvol=swap" ];
     };
 
   fileSystems."/home" =
-    { device = "/dev/mapper/system";
+    {
+      device = "/dev/mapper/system";
       fsType = "btrfs";
       options = [ "subvol=home" ];
     };
-  
+
   swapDevices = [{
     device = "/swap/swapfile";
     size = 20 * 1024;
   }];
 
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
