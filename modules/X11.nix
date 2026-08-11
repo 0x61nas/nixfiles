@@ -32,25 +32,25 @@
   '';
 
   environment.systemPackages = with pkgs; [
-    inputs.archy-dwm.packages."${pkgs.system}".archy-wm
+    inputs.archy-dwm.packages."${pkgs.stdenv.hostPlatform.system}".archy-wm
     sxhkd
-    # xorg.libX11
-    # xorg.libX11.dev
-    # xorg.libxcb
-    # xorg.libXft
-    # xorg.libXinerama
-    xorg.xinit
-    xorg.xinput
-    xorg.xorgserver
-    xorg.xf86inputevdev
-    # xorg.xf86videointel
+    # libx11
+    # libx11.dev
+    # libxcb
+    # libxft
+    # libxinerama
+    xinit
+    xinput
+    xorg-server
+    xf86-input-evdev
+    # xf86-video-intel
     xclip
     nitrogen
-    xorg.xbacklight
-    xorg.xkill
+    xbacklight
+    xkill
     xrectsel
     xdo
-    inputs.lqth.packages."${pkgs.system}".lqth
+    inputs.lqth.packages."${pkgs.stdenv.hostPlatform.system}".lqth
     (writeShellScriptBin "lqth-wrapper" ''
         #!/bin/env bash
         CMD=lqth
