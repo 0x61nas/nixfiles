@@ -38,7 +38,13 @@ _fix_cursor() {
    echo -ne "\e[$cursor q"
 }
 
-# reset the cursor shape
-precmd_functions+=(_fix_cursor)
+function _update_prompt {
+	# PROMPT="[ $(shrink_path)  ]%(!.#.$) "
+	export PS1="[ $(shrink_path)  ]<%?>%(!.#.$) "
+}
 
-PROMPT='[ $(shrink_path)  ]%(!.#.$) '
+autoload -Uz add-zsh-hook
+add-zsh-hook chpwd _update_prompt
+add-zsh-hook precmd _fix_cursor
+
+_update_prompt

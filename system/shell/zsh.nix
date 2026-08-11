@@ -3,6 +3,7 @@
   # Download the prompt
   home.file.".config/zsh/prompt.zsh".source = ./prompt.zsh;
   home.file.".config/zsh/functions.zsh".source = ./functions.zsh;
+  home.file.".config/zsh/plugins/nekojump.zsh".source = ./nekojump.plugin.zsh;
 
   programs.zsh = {
     enable = true;
@@ -31,11 +32,6 @@
         file = "zsh-history-substring-search.zsh";
       }
       {
-        name = "you-should-use";
-        src = "${pkgs.zsh-you-should-use}/share/zsh/plugins/you-should-use";
-        file = "you-should-use.plugin.zsh";
-      }
-      {
         name = "forgit";
         src = "${pkgs.zsh-forgit}/share/zsh/zsh-forgit";
       }
@@ -54,95 +50,96 @@
       }
     ];
     initExtra = ''
-      setopt hist_find_no_dups
-      bindkey '^ ' autosuggest-accept
-      ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+            setopt hist_find_no_dups
+            bindkey '^ ' autosuggest-accept
+            ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
-      SHELL_NAME=$(basename $SHELL)
-      DISABLE_AUTO_TITLE="false"
-      ENABLE_CORRECTION="false"
-      COMPLETION_WAITING_DOTS="true"
-      source "$HOME/.config/zsh/prompt.zsh"
-      source "$HOME/.config/zsh/functions.zsh"
-      [[ -e "$HOME/.private-env.sh" ]] && source "$HOME/.private-env.sh"
-      [[ -e "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
-      if command -v gh >/dev/null 2>&1; then
-        eval "$(gh copilot alias -- $SHELL_NAME)"
-      fi
-      if command -v pyenv 1>/dev/null 2>&1; then
-        eval "$(pyenv init -)"
-      fi
+            SHELL_NAME=$(basename $SHELL)
+            DISABLE_AUTO_TITLE="false"
+            ENABLE_CORRECTION="false"
+            COMPLETION_WAITING_DOTS="true"
+            source "$HOME/.config/zsh/prompt.zsh"
+            source "$HOME/.config/zsh/functions.zsh"
+      			source $HOME/.config/zsh/plugins/nekojump/nekojump.plugin.zsh"
+            [[ -e "$HOME/.private-env.sh" ]] && source "$HOME/.private-env.sh"
+            [[ -e "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+            if command -v gh >/dev/null 2>&1; then
+              eval "$(gh copilot alias -- $SHELL_NAME)"
+            fi
+            if command -v pyenv 1>/dev/null 2>&1; then
+              eval "$(pyenv init -)"
+            fi
 
-      hst() {
-          history 0 | cut -c 8- | uniq | ${pkgs.fzf}/bin/fzf | ${pkgs.xclip}/bin/xclip -selection clipboard
-      }
+            hst() {
+                history 0 | cut -c 8- | uniq | ${pkgs.fzf}/bin/fzf | ${pkgs.xclip}/bin/xclip -selection clipboard
+            }
 
-      proj() {
-        dir="$(cat ~/.local/share/direnv/allow/* | uniq | xargs dirname | ${pkgs.fzf}/bin/fzf --height 9)"
-        cd "$dir"
-      }
-      bindkey -s '\eOP' 'proj\n'
+            proj() {
+              dir="$(cat ~/.local/share/direnv/allow/* | uniq | xargs dirname | ${pkgs.fzf}/bin/fzf --height 9)"
+              cd "$dir"
+            }
+            bindkey -s '\eOP' 'proj\n'
 
-      plf() {
-        proj
-        ${pkgs.lf}/bin/lf
-      }
+            plf() {
+              proj
+              ${pkgs.lf}/bin/lf
+            }
 
-      detach() {
-        prog=$1
-        shift
-        nohup setsid $prog $@ > /dev/null 2>&1
-      }
+            detach() {
+              prog=$1
+              shift
+              nohup setsid $prog $@ > /dev/null 2>&1
+            }
 
-      ex () {
-        if [ -f $1 ] ; then
-          case $1 in
-            *.tar.bz2)   tar xjf $1   ;;
-            *.tar.gz)    tar xzf $1   ;;
-            *.bz2)       bunzip2 $1   ;;
-            *.rar)       ${pkgs.unrar}/bin/unrar x $1   ;;
-            *.gz)        gunzip $1    ;;
-            *.tar)       tar xf $1    ;;
-            *.tbz2)      tar xjf $1   ;;
-            *.tgz)       tar xzf $1   ;;
-            *.zip)       unzip $1     ;;
-            *.Z)         uncompress $1;;
-            *.7z)        7z x $1      ;;
-            *.deb)       ar x $1      ;;
-            *.tar.xz)    tar xf $1    ;;
-            *.tar.zst)   tar xf $1    ;;
-            *)           echo "'$1' cannot be extracted via ex()" ;;
-          esac
-        else
-          echo "'$1' is not a valid file"
-        fi
-      }
-
-      checkExtraDev()
-      {
-          [ -z ''${extra_dev_shell} ] && return
-
-          addspace=""
-          [ ! -z ''${extra_packages} ] && addspace=" "
-          echo "$extra_dev_shell$addspace"
-      }
-
-
-      if [[ -n $CUSTOMZSHTOSOURCE ]]; then
-        source "$CUSTOMZSHTOSOURCE"
-      fi
-
-      chpwdf() {
-          if env | grep -q direnv; then
-              extra_dev_shell="direnv"
-          else
-              if [[ "$extra_dev_shell" = "direnv" ]]; then
-                  unset extra_dev_shell
+            ex () {
+              if [ -f $1 ] ; then
+                case $1 in
+                  *.tar.bz2)   tar xjf $1   ;;
+                  *.tar.gz)    tar xzf $1   ;;
+                  *.bz2)       bunzip2 $1   ;;
+                  *.rar)       ${pkgs.unrar}/bin/unrar x $1   ;;
+                  *.gz)        gunzip $1    ;;
+                  *.tar)       tar xf $1    ;;
+                  *.tbz2)      tar xjf $1   ;;
+                  *.tgz)       tar xzf $1   ;;
+                  *.zip)       unzip $1     ;;
+                  *.Z)         uncompress $1;;
+                  *.7z)        7z x $1      ;;
+                  *.deb)       ar x $1      ;;
+                  *.tar.xz)    tar xf $1    ;;
+                  *.tar.zst)   tar xf $1    ;;
+                  *)           echo "'$1' cannot be extracted via ex()" ;;
+                esac
+              else
+                echo "'$1' is not a valid file"
               fi
-          fi
-      }
+            }
 
-      chpwd_functions+=(chpwdf)
+            checkExtraDev()
+            {
+                [ -z ''${extra_dev_shell} ] && return
+
+                addspace=""
+                [ ! -z ''${extra_packages} ] && addspace=" "
+                echo "$extra_dev_shell$addspace"
+            }
+
+
+            if [[ -n $CUSTOMZSHTOSOURCE ]]; then
+              source "$CUSTOMZSHTOSOURCE"
+            fi
+
+            chpwdf() {
+                if env | grep -q direnv; then
+                    extra_dev_shell="direnv"
+                else
+                    if [[ "$extra_dev_shell" = "direnv" ]]; then
+                        unset extra_dev_shell
+                    fi
+                fi
+            }
+
+            chpwd_functions+=(chpwdf)
     '';
 
     completionInit = ''

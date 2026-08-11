@@ -5,7 +5,6 @@ _: {
     ./bat.nix
     ./gnupg.nix
     ./btop.nix
-    ./zoxide.nix
     ./tmux
     # ./xdg.nix
     ./gitui.nix

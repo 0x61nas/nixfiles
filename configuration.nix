@@ -72,7 +72,6 @@
       })
       networkmanagerapplet
       tmux
-      zoxide
       gdb
       gnumake
       killall
