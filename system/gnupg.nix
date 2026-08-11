@@ -5,7 +5,7 @@
     # Cache the PIN for 3 hours
     defaultCacheTtl = 3600 * 3;
     grabKeyboardAndMouse = false;
-    pinentryPackage = pkgs.pinentry-gtk2;
+    pinentry.package = pkgs.pinentry-gtk2;
     enableZshIntegration = true;
   };
   programs.gpg = {
