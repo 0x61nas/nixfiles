@@ -185,8 +185,8 @@
           otherlayer = { };
         };
         extraConfig = ''
-          					# put here any extra-config, e.g. you can copy/paste here directly a configuration, just remove the ids part
-          					[control]
+                    # put here any extra-config, e.g. you can copy/paste here directly a configuration, just remove the ids part
+                    [control]
                     control = toggle(control)
 
                     [meta]
