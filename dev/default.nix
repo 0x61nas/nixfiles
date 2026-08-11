@@ -10,9 +10,9 @@
     neovide
     heh
     hex
-#    nur.packages.${pkgs-unstable.system}.ducker
+    #    nur.packages.${pkgs-unstable.system}.ducker
     onefetch
-    nixfmt-rfc-style
+    nixfmt
     android-tools
     zed-editor
     lua
