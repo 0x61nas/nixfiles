@@ -1,18 +1,18 @@
 { pkgs-unstable, ... }:
 {
   home.packages = with pkgs-unstable; [
-    lua-language-server
-    nil
-    rust-analyzer
-    stylua
-    asm-lsp
+    # lua-language-server
+    # nil
+    # rust-analyzer
+    # stylua
+    # asm-lsp
     # nodePackages_latest.lua-fmt
-    luaformatter
-    #python312Packages.python-lsp-server
-    gopls
+    # luaformatter
+    # python312Packages.python-lsp-server
+    # gopls
     #zls
     #pylint
-    tree-sitter
+    # tree-sitter
     #nodejs_22
     # nasmfmt
     # typos
