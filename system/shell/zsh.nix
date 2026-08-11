@@ -60,7 +60,7 @@
             COMPLETION_WAITING_DOTS="true"
             source "$HOME/.config/zsh/prompt.zsh"
             source "$HOME/.config/zsh/functions.zsh"
-      			source $HOME/.config/zsh/plugins/nekojump/nekojump.plugin.zsh"
+      			source "$HOME/.config/zsh/plugins/nekojump/nekojump.plugin.zsh"
             [[ -e "$HOME/.private-env.sh" ]] && source "$HOME/.private-env.sh"
             [[ -e "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
             if command -v gh >/dev/null 2>&1; then
