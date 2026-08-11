@@ -164,6 +164,52 @@
     WEBKIT_DISABLE_COMPOSITING_MODE = "1";
   };
 
+  services.keyd = {
+    enable = true;
+    keyboards = {
+      # The name is just the name of the configuration file, it does not really matter
+      default = {
+        ids = [ "*" ]; # what goes into the [id] section, here we select all keyboards
+        # Everything but the ID section:
+        settings = {
+          # The main layer, if you choose to declare it in Nix
+          main = {
+            esc = "capslock";
+            # Maps capslock to escape when pressed and control when held.
+            capslock = "overload(control, esc)";
+            control = "oneshot(control)";
+            meta = "oneshot(meta)";
+            shift = "oneshot(shift)";
+            leftalt = "oneshot(alt)";
+          };
+          otherlayer = { };
+        };
+        extraConfig = ''
+          					# put here any extra-config, e.g. you can copy/paste here directly a configuration, just remove the ids part
+          					[control]
+                    control = toggle(control)
+
+                    [meta]
+                    meta = toggle(meta)
+
+                    [shift]
+                    shift = toggle(shift)
+
+                    [alt]
+                    leftalt = toggle(alt)
+        '';
+      };
+    };
+  };
+  # Optional, but makes sure that when you type the make palm rejection work with keyd
+  # https://github.com/rvaiya/keyd/issues/723
+  environment.etc."libinput/local-overrides.quirks".text = ''
+    [Serial Keyboards]
+    MatchUdevType=keyboard
+    MatchName=keyd virtual keyboard
+    AttrKeyboardIntegration=internal
+  '';
+
   services.printing.enable = true;
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
