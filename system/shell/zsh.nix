@@ -7,7 +7,7 @@
 
   programs.zsh = {
     enable = true;
-    dotDir = ".config/zsh";
+    dotDir = "${config.xdg.configHome}/zsh";
     syntaxHighlighting.enable = true;
     autosuggestion = {
       enable = true;
@@ -49,7 +49,7 @@
         src = "${pkgs.zsh-fzf-tab}/share/fzf-tab";
       }
     ];
-    initExtra = ''
+    initContent = ''
             setopt hist_find_no_dups
             bindkey '^ ' autosuggest-accept
             ZSH_AUTOSUGGEST_STRATEGY=(history completion)
