@@ -3,7 +3,7 @@
   # Download the prompt
   home.file.".config/zsh/prompt.zsh".source = ./prompt.zsh;
   home.file.".config/zsh/functions.zsh".source = ./functions.zsh;
-  home.file.".config/zsh/plugins/nekojump.zsh".source = ./plugins/nekojump.plugin.zsh;
+  home.file.".config/zsh/plugins/nekojump/nekojump.plugin.zsh".source = ./plugins/nekojump.plugin.zsh;
 
   programs.zsh = {
     enable = true;
