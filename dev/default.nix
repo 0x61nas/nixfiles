@@ -10,11 +10,11 @@
     neovide
     heh
     hex
-    #    nur.packages.${pkgs-unstable.system}.ducker
+    nur.packages.${pkgs-unstable.system}.ducker
+    nur.packages.${pkgs-unstable.system}.guitar
     onefetch
     nixfmt
     android-tools
-    zed-editor
     lua
     go
   ];
