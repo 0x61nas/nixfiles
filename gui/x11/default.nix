@@ -1,7 +1,12 @@
-_: {
+{ pkgs-unstable, nur, ... }: {
   imports = [
     ./sxhkd.nix
   ];
+
+  home.packages = with pkgs-unstable; [
+    nur.packages.${pkgs-unstable.system}.autolock
+  ];
+
 
   home.file = {
     ".xprofile".source = ./xprofile.sh;
