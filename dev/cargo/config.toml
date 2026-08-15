@@ -7,7 +7,6 @@ s = 'search'
 i = 'info'
 
 [build]
-jobs = 12                      # number of parallel jobs, defaults to # of CPUs
 incremental = true            # whether or not to enable incremental compilation
 
 [profile.release]
