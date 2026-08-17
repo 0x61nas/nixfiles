@@ -1,12 +1,14 @@
 { pkgs-unstable, nur, ... }: {
   imports = [
     ./sxhkd.nix
+    nur.homeManagerModules.autolock
   ];
 
-  home.packages = with pkgs-unstable; [
-    nur.packages.${pkgs-unstable.system}.autolock
-  ];
-
+  services.autolock = {
+    enable = true;
+    package = nur.packages.${pkgs-unstable.system}.autolock;
+    timeout = "300";
+  };
 
   home.file = {
     ".xprofile".source = ./xprofile.sh;
