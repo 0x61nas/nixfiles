@@ -22,7 +22,6 @@
   #   "net.lutris.Lutris"
   # ];
   # workarounds.flatpak.enable = true;
-  workarounds.pulseaudio-mic-boost.enable = true;
 
   programs.zsh.enable = true;
   # I don't use ohMyZsh, but it doses provide a some convenient functions.
@@ -211,15 +210,19 @@
   '';
 
   services.printing.enable = true;
-  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
-    enable = true;
+    enable = false;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
     # jack.enable = true;
     #media-session.enable = true; # default for now, no need to change
+  };
+
+  services.pulseaudio = {
+    enable = true;
+    package = pkgs.pulseaudioFull;
   };
 
   qt.enable = true;

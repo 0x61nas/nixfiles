@@ -33,6 +33,8 @@
   ];
 
   programs.home-manager.enable = true;
+  # Using Bluetooth headset buttons to control media player
+  services.mpris-proxy.enable = true;
 
   home.sessionVariables = {
     EDITOR = "nvim";
