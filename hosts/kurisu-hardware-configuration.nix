@@ -44,6 +44,12 @@
       options = [ "subvol=home" ];
     };
 
+  fileSystems."/var/lib/docker" =
+    { device = "/dev/mapper/system";
+      fsType = "btrfs";
+      options = [ "subvol=docker" ];
+    };
+
   swapDevices = [{
     device = "/swap/swapfile";
     size = 20 * 1024;
