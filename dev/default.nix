@@ -10,8 +10,8 @@
     neovide
     heh
     hex
-    nur.packages.${pkgs-unstable.system}.ducker
-    nur.packages.${pkgs-unstable.system}.guitar
+    nur.packages.${pkgs-unstable.stdenv.hostPlatform.system}.ducker
+    nur.packages.${pkgs-unstable.stdenv.hostPlatform.system}.guitar
     onefetch
     nixfmt
     android-tools

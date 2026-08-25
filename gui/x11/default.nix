@@ -6,7 +6,7 @@
 
   services.autolock = {
     enable = true;
-    package = nur.packages.${pkgs-unstable.system}.autolock;
+    package = nur.packages.${pkgs-unstable.stdenv.hostPlatform.system}.autolock;
     timeout = "300";
   };
 
