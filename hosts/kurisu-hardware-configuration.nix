@@ -52,7 +52,7 @@
 
   swapDevices = [{
     device = "/swap/swapfile";
-    size = 20 * 1024;
+    size = 32 * 1024 * 2;
   }];
 
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
