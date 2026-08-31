@@ -8,6 +8,7 @@
       "com.chuntung.plugin.hidetrial" # Hide Trial
       "com.intellij.spring.debugger" # Spring Debugger
       "com.jetbrains.kmm" # Kotlin Multiplatform
+      "org.jetbrains.android" # Kotlin Multiplatform dependency
       "com.anas.intellij.plugins.ayah" # Ayah
     ])
   ];
