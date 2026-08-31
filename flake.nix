@@ -18,6 +18,8 @@
 
     lqth.url = "github:0x61nas/lqth";
     archy-dwm.url = "github:archy-linux/archy-dwm";
+    
+    nix-jetbrains-plugins.url = "github:nix-community/nix-jetbrains-plugins";
 
     # flake-parts.url = "github:hercules-ci/flake-parts";
     # utils.url = "github:numtide/flake-utils";
@@ -29,6 +31,7 @@
     , nixpkgs-unstable
     , nur
     , home-manager
+    , nix-jetbrains-plugins
     , ...
     }@inputs:
     let
@@ -92,6 +95,7 @@
                 inherit inputs;
                 inherit pkgs-unstable;
                 inherit nur;
+                inherit nix-jetbrains-plugins;
 
               };
             }
@@ -125,7 +129,7 @@
                 inherit inputs;
                 inherit pkgs-unstable;
                 inherit nur;
-
+                inherit nix-jetbrains-plugins;
               };
             }
           ];

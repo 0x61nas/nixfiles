@@ -4,6 +4,7 @@
     ./cargo
     ./direnv.nix
     # ./devenv.nix
+    ./intellji.nix
   ];
 
   home.packages = with pkgs-unstable; [
