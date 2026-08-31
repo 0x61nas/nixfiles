@@ -10,6 +10,10 @@
       "com.jetbrains.kmm" # Kotlin Multiplatform
       "org.jetbrains.android" # Kotlin Multiplatform dependency
       "com.anas.intellij.plugins.ayah" # Ayah
+      "org.jetbrains.completion.full.line" # Full Line Code Completion
+      "com.haulmont.jpab" # JPA Buddy
+      "Lombook Plugin"
+      "Docker"
     ])
   ];
 }
