@@ -10,6 +10,8 @@
       "com.jetbrains.kmm" # Kotlin Multiplatform
       "org.jetbrains.android" # Kotlin Multiplatform dependency
       "com.android.tools.design" # Kotlin Multiplatform dependency
+      "androidx.compose.plugins.idea" # Kotlin Multiplatform dependency
+      "com.intellij.nativeDebug" # Kotlin Multiplatform dependency
       "com.anas.intellij.plugins.ayah" # Ayah
       "org.jetbrains.completion.full.line" # Full Line Code Completion
       "com.haulmont.jpab" # JPA Buddy
