@@ -8,7 +8,7 @@ _: {
     };
     settings = {
       user = {
-        name = "0x61nas";
+        name = "Anas Elgarhy";
         email = "anas.elgarhy.dev@gmail.com";
       };
       alias = {
