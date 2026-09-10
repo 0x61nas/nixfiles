@@ -55,7 +55,7 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@v23
         with:
           extra-conf: ${{ env.nix-conf }}
-      - uses: DeterminateSystems/magic-nix-cache-action@v14
+      - uses: DeterminateSystems/magic-nix-cache-action@v15
       - id: install-jq
         run: nix profile install '${{ env.flake }}#jq'
       - id: get-attrs
