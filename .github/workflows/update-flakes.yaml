@@ -95,16 +95,17 @@ jobs:
 
           if [ -n "${existing_pr}" ]; then
             echo "Updating existing PR #${existing_pr}."
+
             gh pr edit "${existing_pr}" \
               --title "${title}" \
               --body "${body}"
           else
             echo "Creating PR."
+
             gh pr create \
               --repo "${GITHUB_REPOSITORY}" \
               --head "${branch}" \
               --base "$(gh repo view "${GITHUB_REPOSITORY}" --json defaultBranchRef --jq '.defaultBranchRef.name')" \
               --title "${title}" \
-              --body "${body}" \
-              --delete-branch
+              --body "${body}"
           fi
