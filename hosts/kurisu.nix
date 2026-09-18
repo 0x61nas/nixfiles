@@ -21,19 +21,20 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-  # networking.interfaces.eno1.ipv4.addresses = [{
-  #   address = "192.168.1.100";
-  #   prefixLength = 24;
-  # }];
+  networking.interfaces.enp44s0.ipv4.addresses = [{
+     address = "192.168.1.3";
+     prefixLength = 24;
+  }];
 
-  # networking.defaultGateway = "192.168.1.1";
-  # networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
+  networking.defaultGateway = "192.168.1.1";
+  networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = false;
+
   gpu = {
     nvidia = {
       enable = false;
