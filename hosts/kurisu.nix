@@ -19,7 +19,16 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
-  networking.networkmanager.enable = true;
+  networking.networkmanager  = {
+    enable = true;
+    dns = "systemd-resolved";
+  };
+
+  # The systemd DNS resolver
+  # see: resolvectl status
+  services.resolved = {
+    enable = true;
+  };
 
   networking.interfaces.enp44s0.ipv4.addresses = [{
      address = "192.168.1.3";
