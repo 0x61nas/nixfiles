@@ -138,6 +138,41 @@ nixos-generate-config --root /mnt --show-hardware-config > hosts/<host>-hardware
 nh os switch -H <host>
 ```
 
+## Nix registry
+
+`registry.nix` keeps the `nix registry` in sync with this flake's inputs, so
+commands like `nix shell`, `nix run` and `nix develop` resolve to the exact
+revisions pinned in `flake.lock` automatically:
+
+| Registry alias        | Resolves to                             |
+| --------------------- | --------------------------------------- |
+| `nixpkgs`             | `nixos-26.05` channel (stable)          |
+| `nixpkgs-unstable`    | `nixos-unstable` channel                |
+| `nur`                 | anas NUR                            |
+| `home-manager`        | home-manager `release-26.05`      |
+| `impermanence`        | nix-community/impermanence        |
+| `nix-alien`           | thiagokokada/nix-alien            |
+| `lqth`                | 0x61nas/lqth                      |
+| `archy-dwm`           | archy-linux/archy-dwm             |
+| `nix-jetbrains-plugins` | nix-community/nix-jetbrains-plugins |
+
+Try it out in a shell:
+
+```
+nix shell nixpkgs#ripgrep
+nix shell nixpkgs-unstable#btop
+nix run nixpkgs#fzf
+```
+
+You can mix stable and unstable packages in one shell:
+
+```
+nix shell nixpkgs#git nixpkgs-unstable#neovim
+```
+
+To add more registries, add the input to `flake.nix` and an entry to
+`registry.nix`; delete `nix.registry.<name>` to drop an entry.
+
 ## Installation
 
 I'll guide you through the Installation, but first make sure to download the Minimal ISO image available at [NixOS](https://nixos.org/download#nixos-iso) and make a bootable drive with it.
