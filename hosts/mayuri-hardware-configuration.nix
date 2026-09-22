@@ -189,7 +189,7 @@
     settings = {
       General = {
         Enable = "Source,Sink,Media,Socket";
-        Experimental = false; # PulseAudio handles classic A2DP/HFP better than the experimental LE path
+        Experimental = true; # WirePlumber supports the experimental LE audio (BAP) path
       };
     };
   };
