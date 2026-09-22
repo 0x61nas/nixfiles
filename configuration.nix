@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, inputs, ... }:
+{ pkgs, pkgs-unstable, config, inputs, ... }:
 {
   imports = [
     ./modules
@@ -152,6 +152,7 @@
   };
 
   system.stateVersion = "24.05";
+  system.nixos.label = "${config.system.nixos.version}-${inputs.self.shortRev or "dirty"}";
   system.autoUpgrade.enable = true;
 
   environment.sessionVariables = {
