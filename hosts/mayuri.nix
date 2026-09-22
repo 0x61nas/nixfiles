@@ -19,7 +19,16 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
-  networking.networkmanager.enable = true;
+  networking.networkmanager  = {
+    enable = true;
+    dns = "systemd-resolved";
+  };
+
+  # The systemd DNS resolver
+  # see: resolvectl status
+  services.resolved = {
+    enable = true;
+  };
 
   # networking.interfaces.eno1.ipv4.addresses = [{
   #   address = "192.168.1.100";
@@ -34,6 +43,7 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+
   gpu = {
     nvidia = {
       enable = true;
