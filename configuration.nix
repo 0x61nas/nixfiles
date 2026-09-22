@@ -213,21 +213,12 @@
   services.printing.enable = true;
   security.rtkit.enable = true;
   services.pipewire = {
-    enable = false;
+    enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # jack.enable = true;
-    #media-session.enable = true; # default for now, no need to change
-  };
-
-  services.pulseaudio = {
-    enable = true;
-    package = pkgs.pulseaudioFull;
-    # Disable timer-based scheduling to fix stutter on bluetooth usb hardware
-    extraConfig = ''
-      load-module module-udev-detect tsched=0
-    '';
+    jack.enable = true;
+    wireplumber.enable = true;
   };
 
   qt.enable = true;
