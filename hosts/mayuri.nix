@@ -61,4 +61,7 @@
     };
   };
 
+    # A gui/tray to manage the bluetooth
+  services.blueman.enable = true;
+
 }
