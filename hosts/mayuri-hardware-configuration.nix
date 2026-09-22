@@ -48,24 +48,57 @@
 
   # hardware.cpu.intel.sgx = true;
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/a942f118-9171-4c12-8136-272fd43957cc";
-    fsType = "ext4";
-  };
+    fileSystems."/" =
+    { device = "/dev/mapper/system";
+      fsType = "btrfs";
+      options = [ "subvol=nixosroot" ];
+    };
+
+  boot.initrd.luks.devices."system".device = "/dev/disk/by-uuid/958050bc-97b6-4757-b6f4-0b7507c9f5bc";
+
+  fileSystems."/home" =
+    { device = "/dev/mapper/system";
+      fsType = "btrfs";
+      options = [ "subvol=home" ];
+    };
+
+  fileSystems."/home/anas/code" =
+    { device = "/dev/mapper/system";
+      fsType = "btrfs";
+      options = [ "subvol=code" ];
+    };
+
+  fileSystems."/home/anas/external-code" =
+    { device = "/dev/mapper/system";
+      fsType = "btrfs";
+      options = [ "subvol=external-code" ];
+    };
+
+  fileSystems."/home/anas/.sec" =
+    { device = "/dev/mapper/system";
+      fsType = "btrfs";
+      options = [ "subvol=sec" ];
+    };
+
+  fileSystems."/var/lib/docker" =
+    { device = "/dev/mapper/system";
+      fsType = "btrfs";
+      options = [ "subvol=docker" ];
+    };
+
+  fileSystems."/swap" =
+    { device = "/dev/mapper/system";
+      fsType = "btrfs";
+      options = [ "subvol=swap" ];
+    };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/13D9-C666";
+    device = "/dev/disk/by-uuid/096E-C94D";
     fsType = "vfat";
     options = [
       "fmask=0077"
       "dmask=0077"
     ];
-  };
-
-  fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/fa07f453-1d04-4939-b7a7-1b25a18df052";
-    fsType = "ext4";
-    neededForBoot = true;
   };
 
   fileSystems."/mnt/work" = {
@@ -87,7 +120,7 @@
 
   swapDevices = [
     {
-      device = "/var/lib/swapfile";
+      device = "/swap/swapfile";
       size = 18 * 1024;
     }
   ];
@@ -146,4 +179,16 @@
   # Thermald proactively prevents overheating on Intel CPUs and works well with other tools.
   services.thermald.enable = true;
   powerManagement.enable = true;
+
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = false;
+    settings = {
+      General = {
+        Enable = "Source,Sink,Media,Socket";
+        Experimental = true;
+      };
+    };
+  };
+
 }
