@@ -15,6 +15,7 @@
     };
     nix-alien.url = "github:thiagokokada/nix-alien";
     impermanence.url = "github:nix-community/impermanence";
+    nix-fast-build.url = "github:Mic92/nix-fast-build";
 
     lqth.url = "github:0x61nas/lqth";
     archy-dwm.url = "github:archy-linux/archy-dwm";
@@ -31,6 +32,7 @@
     , nixpkgs-unstable
     , nur
     , home-manager
+    , nix-fast-build
     , nix-jetbrains-plugins
     , ...
     }@inputs:
@@ -62,11 +64,23 @@
         nixpkgs.lib.genAttrs supportedSystems (
           system:
           f {
+            inherit system;
             pkgs = import nixpkgs { inherit system; };
           }
         );
     in
     {
+      hosts = {
+        mayuri = {
+          hostPlatform = "x86_64-linux";
+          large = false;
+        };
+        kurisu = {
+          hostPlatform = "x86_64-linux";
+          large = false;
+        };
+      };
+
       nixosConfigurations = {
         mayuri = lib.nixosSystem {
           specialArgs = {
@@ -137,12 +151,15 @@
         };
       };
 
-      packages = forEachSupportedSystem ({ pkgs }: {
+      packages = forEachSupportedSystem ({ pkgs, system }: {
         jq = pkgs.jq;
+        mayuri = self.nixosConfigurations.mayuri.config.system.build.toplevel;
+        kurisu = self.nixosConfigurations.kurisu.config.system.build.toplevel;
+        nix-fast-build = nix-fast-build.packages.${system}.default;
       });
 
       devShells = forEachSupportedSystem (
-        { pkgs }: {
+        { pkgs, ... }: {
           default = pkgs.mkShell {
             name = "nix-config";
 

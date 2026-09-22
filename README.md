@@ -132,7 +132,27 @@ nixos-generate-config --root /mnt --show-hardware-config > hosts/<host>-hardware
    `nixosConfigurations` block (e.g. `mayuri`) and renaming it to the new host
    name in both the attribute name and the imported `hosts/<host>.nix`.
 
-4. Switch to it:
+4. Add the host to the `hosts` output (used by the CI workflow to discover and
+   build/eval each host), copying an existing entry and setting the right
+   `hostPlatform`:
+
+```
+hosts.<host> = {
+  hostPlatform = "x86_64-linux";
+  large = false; # set to true to skip building in CI
+};
+```
+
+5. Optionally expose the host as a package so it can be built directly. Inside
+   the `packages = forEachSupportedSystem (...)` block, add:
+
+```
+<host> = self.nixosConfigurations.<host>.config.system.build.toplevel;
+```
+
+   which resolves to `packages.<system>.<host>` (e.g. `packages.x86_64-linux.mayuri`).
+
+6. Switch to it:
 
 ```
 nh os switch -H <host>
