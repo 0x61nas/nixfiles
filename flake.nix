@@ -82,6 +82,7 @@
             ./cache.nix
             ./configuration.nix
             ./services
+            ./hosts/mayuri.nix
             inputs.impermanence.nixosModules.impermanence
 
             home-manager.nixosModules.home-manager
