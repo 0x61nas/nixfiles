@@ -161,6 +161,9 @@
       PLATFORM_PROFILE_ON_AC = "performance";
       PLATFORM_PROFILE_ON_BAT = "low-power";
 
+      # Prevent USB autosuspend from stuttering/dropping bluetooth audio
+      USB_AUTOSUSPEND = 0;
+
       CPU_HWP_DYN_BOOST_ON_AC = 1;
       CPU_HWP_DYN_BOOST_ON_BAT = 0;
 
@@ -182,11 +185,11 @@
 
   hardware.bluetooth = {
     enable = true;
-    powerOnBoot = false;
+    powerOnBoot = true;
     settings = {
       General = {
         Enable = "Source,Sink,Media,Socket";
-        Experimental = true;
+        Experimental = false; # PulseAudio handles classic A2DP/HFP better than the experimental LE path
       };
     };
   };

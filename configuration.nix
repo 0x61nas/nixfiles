@@ -223,6 +223,10 @@
   services.pulseaudio = {
     enable = true;
     package = pkgs.pulseaudioFull;
+    # Disable timer-based scheduling to fix stutter on bluetooth usb hardware
+    extraConfig = ''
+      load-module module-udev-detect tsched=0
+    '';
   };
 
   qt.enable = true;
