@@ -19,12 +19,12 @@
 
 <div align="center">
 <h1>
-❄️ NixOS dotfiles ❄️
+❄️  Anas's NixOS flake  ❄️
 </h1>
 </div>
 
-Anas's NixOS multi-host system flake, a set of Nix expressions that declaratively
-configure every machine I use, from the kernel down to the wallpaper.
+A NixOS multi-host system flake, a set of Nix expressions that declaratively
+configure every machine I use, from the kernel down to the desktop wallpaper.
 
 *Everything is declaratively declared as everything should be :3*
 
