@@ -80,6 +80,7 @@
       fzf
       file
       usbutils
+      jq
 
       # firefox
       (pkgs.wrapFirefox (firefox-unwrapped.override { pipewireSupport = true; }) { })
