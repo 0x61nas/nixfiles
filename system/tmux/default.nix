@@ -12,6 +12,11 @@ let
   };
 in
 {
+  home.file.".config/tmux/floating-window.tmux".source = ./floating-window.tmux;
+  home.file.".config/tmux/tmux-player-ctl.py".source = ./tmux-player-ctl.py;
+  home.file.".config/tmux/resurrect".source = ./resurrect;
+  home.file.".config/tmux/continum".source = ./continum;
+  home.file.".config/tmux/prefix-highlight".source = ./prefix-highlight;
   programs.tmux = {
     enable = true;
     baseIndex = 1;
