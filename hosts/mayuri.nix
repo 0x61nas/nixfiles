@@ -49,7 +49,7 @@
       enable = true;
       isTuring = false; # https://en.wikipedia.org/wiki/Turing_(microarchitecture)#Products_using_Turing
     };
-    intel.enable = true;
+    intel.enable = false;
     amd.enable = false;
   };
   services.openssh = {
