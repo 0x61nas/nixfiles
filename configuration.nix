@@ -102,6 +102,7 @@
       # notification daemon
       dunst
       libnotify
+      floorp-bin
 
     ]
     ++ (with pkgs-unstable; [
