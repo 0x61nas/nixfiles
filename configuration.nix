@@ -1,8 +1,9 @@
-{ pkgs, pkgs-unstable, ... }:
+{ pkgs, pkgs-unstable, inputs, ... }:
 {
   imports = [
     ./modules
     ./gui/thunar.nix
+    ./registry.nix
   ];
 
   fonts.fontDir.enable = true;
