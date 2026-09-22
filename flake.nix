@@ -137,6 +137,10 @@
         };
       };
 
+      packages = forEachSupportedSystem ({ pkgs }: {
+        jq = pkgs.jq;
+      });
+
       devShells = forEachSupportedSystem (
         { pkgs }: {
           default = pkgs.mkShell {
