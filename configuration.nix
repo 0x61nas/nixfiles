@@ -188,18 +188,18 @@
           otherlayer = { };
         };
         extraConfig = ''
-                    # put here any extra-config, e.g. you can copy/paste here directly a configuration, just remove the ids part
-                    [control]
-                    control = toggle(control)
+          # put here any extra-config, e.g. you can copy/paste here directly a configuration, just remove the ids part
+          [control]
+          control = toggle(control)
 
-                    [meta]
-                    meta = toggle(meta)
+          [meta]
+          meta = toggle(meta)
 
-                    [shift]
-                    shift = toggle(shift)
+          [shift]
+          shift = toggle(shift)
 
-                    [alt]
-                    leftalt = toggle(alt)
+          [alt]
+          leftalt = toggle(alt)
         '';
       };
     };
