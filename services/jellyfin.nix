@@ -9,21 +9,17 @@ let
   inherit (lib) hasAttr fileContents optionals;
   inherit (config.vars) mainUser;
 
-  optionalGroup = name:
-    optionals
-      (hasAttr name config.users.groups)
-      [ config.users.groups.${name}.name ];
+  optionalGroup =
+    name: optionals (hasAttr name config.users.groups) [ config.users.groups.${name}.name ];
 
   # https://github.com/matt1432/nixos-jellyfin#forceEnableBackdrops
-  jellyfin-web =
-    pkgs.jellyfin-web.overrideAttrs (old: {
-      postPatch = (old.postPatch or "")
-        + ''
-        substituteInPlace src/scripts/settings/userSettings.js \
-          --replace-fail "return toBoolean(this.get('enableBackdrops', false), false);" \
-                       "return toBoolean(this.get('enableBackdrops', false), true);"
-      '';
-    });
+  jellyfin-web = pkgs.jellyfin-web.overrideAttrs (old: {
+    postPatch = (old.postPatch or "") + ''
+      substituteInPlace src/scripts/settings/userSettings.js \
+        --replace-fail "return toBoolean(this.get('enableBackdrops', false), false);" \
+                     "return toBoolean(this.get('enableBackdrops', false), true);"
+    '';
+  });
 in
 {
   # To use use NVENC for hardware encoding. To use this, CUDA must be enabled
@@ -54,34 +50,90 @@ in
       Movies = {
         contentType = "movies";
         pathInfos = [ "/mnt/data/media/movies" ];
+        automaticRefreshIntervalDays = 90;
+        automaticallyAddToCollection = true;
+        enableEmbeddedExtraTitles = true;
+        enableEmbeddedEpisodeInfos = true;
+        subtitleDownloadLanguages = [
+          "eng"
+          "ara"
+        ];
+        subtitleFetcherOrder = [
+          "Open Subtitles"
+        ];
       };
       Shows = {
         contentType = "tvshows";
         pathInfos = [ "/mnt/data/media/shows" ];
+        automaticRefreshIntervalDays = 90;
+        automaticallyAddToCollection = true;
+        enableEmbeddedExtraTitles = true;
+        enableEmbeddedEpisodeInfos = true;
+        subtitleDownloadLanguages = [
+          "eng"
+          "ara"
+        ];
+        subtitleFetcherOrder = [
+          "Open Subtitles"
+        ];
       };
       "Music Videos" = {
         contentType = "musicvideos";
         pathInfos = [ "/mnt/data/media/music videos" ];
+        automaticRefreshIntervalDays = 120;
       };
       Music = {
         contentType = "music";
         pathInfos = [ "/mnt/data/media/music" ];
+        automaticRefreshIntervalDays = 90;
+        enableEmbeddedExtraTitles = true;
+        enableEmbeddedEpisodeInfos = true;
+        #enableRealtimeMonitor = false;
       };
       "Anime Movies" = {
         contentType = "movies";
         pathInfos = [ "/mnt/data/media/anime/Movies" ];
+        automaticRefreshIntervalDays = 90;
+        automaticallyAddToCollection = true;
+        enableEmbeddedExtraTitles = true;
+        enableEmbeddedEpisodeInfos = true;
+        subtitleDownloadLanguages = [
+          "eng"
+          "ara"
+        ];
+        subtitleFetcherOrder = [
+          "Open Subtitles"
+        ];
       };
       Anime = {
         contentType = "tvshows";
         pathInfos = [ "/mnt/data/media/anime/Shows" ];
+        automaticRefreshIntervalDays = 90;
+        automaticallyAddToCollection = true;
+        enableEmbeddedExtraTitles = true;
+        enableEmbeddedEpisodeInfos = true;
+        subtitleDownloadLanguages = [
+          "eng"
+          "ara"
+        ];
+        subtitleFetcherOrder = [
+          "Open Subtitles"
+        ];
       };
     };
 
     system = {
       serverName = "Mayuri";
+      metadataPath = "/mnt/data/media/jellyfin/metadata";
+      preferredMetadataLanguage = "en";
       quickConnectAvailable = false;
       enableExternalContentInSuggestions = false;
       enableSlowResponseWarning = false;
+      trickplayOptions = {
+        enableHwAcceleration = true;
+        enableHwEncoding = true;
+        enableKeyFrameOnlyExtraction = true;
+      };
       pluginRepositories = [
         {
           tag = "RepositoryInfo";
@@ -106,6 +158,112 @@ in
             Url = "https://raw.githubusercontent.com/danieladov/JellyfinPluginManifest/master/manifest.json";
             Enabled = true;
           };
+        }
+      ];
+      metadataOptions = [
+        {
+          content = {
+            disabledImageFetchers = [ ];
+            disabledMetadataFetchers = [ ];
+            disabledMetadataSavers = [ ];
+            imageFetcherOrder = [ ];
+            itemType = "Movie";
+            localMetadataReaderOrder = [ ];
+            metadataFetcherOrder = [ ];
+          };
+          tag = "MetadataOptions";
+        }
+        {
+          content = {
+            disabledImageFetchers = [
+              "The Open Movie Database"
+            ];
+            disabledMetadataFetchers = [
+              "The Open Movie Database"
+            ];
+            disabledMetadataSavers = [ ];
+            imageFetcherOrder = [ ];
+            itemType = "MusicVideo";
+            localMetadataReaderOrder = [ ];
+            metadataFetcherOrder = [ ];
+          };
+          tag = "MetadataOptions";
+        }
+        {
+          content = {
+            disabledImageFetchers = [ ];
+            disabledMetadataFetchers = [ ];
+            disabledMetadataSavers = [ ];
+            imageFetcherOrder = [ ];
+            itemType = "Series";
+            localMetadataReaderOrder = [ ];
+            metadataFetcherOrder = [ ];
+          };
+          tag = "MetadataOptions";
+        }
+        {
+          content = {
+            disabledImageFetchers = [ ];
+            disabledMetadataFetchers = [
+              "TheAudioDB"
+            ];
+            disabledMetadataSavers = [ ];
+            imageFetcherOrder = [ ];
+            itemType = "MusicAlbum";
+            localMetadataReaderOrder = [ ];
+            metadataFetcherOrder = [ ];
+          };
+          tag = "MetadataOptions";
+        }
+        {
+          content = {
+            ImageFetcherOrder = [ ];
+            disabledImageFetchers = [ ];
+            disabledMetadataFetchers = [
+              "TheAudioDB"
+            ];
+            disabledMetadataSavers = [ ];
+            itemType = "MusicArtist";
+            localMetadataReaderOrder = [ ];
+            metadataFetcherOrder = [ ];
+          };
+          tag = "MetadataOptions";
+        }
+        {
+          content = {
+            disabledImageFetchers = [ ];
+            disabledMetadataFetchers = [ ];
+            disabledMetadataSavers = [ ];
+            imageFetcherOrder = [ ];
+            itemType = "BoxSet";
+            localMetadataReaderOrder = [ ];
+            metadataFetcherOrder = [ ];
+          };
+          tag = "MetadataOptions";
+        }
+        {
+          content = {
+            disabledImageFetchers = [ ];
+            disabledMetadataFetchers = [ ];
+            disabledMetadataSavers = [ ];
+            imageFetcherOrder = [ ];
+            itemType = "Season";
+            localMetadataReaderOrder = [ ];
+            metadataFetcherOrder = [ ];
+          };
+          tag = "MetadataOptions";
+        }
+        {
+          content = {
+            disabledImageFetchers = [ ];
+            disabledMetadataFetchers = [ ];
+            disabledMetadataSavers = [ ];
+            imageFetcherOrder = [ ];
+            itemType = "Episode";
+            localMetadataReaderOrder = [ ];
+            metadataFetcherOrder = [ ];
+          };
+          tag = "MetadataOptions";
         }
       ];
     };
