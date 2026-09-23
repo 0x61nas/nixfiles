@@ -21,7 +21,7 @@
     archy-dwm.url = "github:archy-linux/archy-dwm";
 
     nix-jetbrains-plugins.url = "github:nix-community/nix-jetbrains-plugins";
-    jellyfin-flake.url = "github:matt1432/nixos-jellyfin";
+    declarative-jellyfin.url = "github:Sveske-Juice/declarative-jellyfin";
     jellyfin-ultrachromic-src = {
       flake = false;
       owner = "CTalvio";
@@ -94,7 +94,7 @@
             inherit inputs;
             inherit pkgs-unstable;
             inherit nur;
-            inherit (inputs) jellyfin-flake jellyfin-ultrachromic-src;
+            inherit (inputs) jellyfin-ultrachromic-src;
           };
           modules = [
             {
@@ -102,6 +102,7 @@
             }
             ./cache.nix
             ./configuration.nix
+            inputs.declarative-jellyfin.nixosModules.default
             ./services
             ./hosts/mayuri.nix
             inputs.impermanence.nixosModules.impermanence

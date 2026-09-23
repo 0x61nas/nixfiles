@@ -1,5 +1,4 @@
 { config
-, jellyfin-flake
 , jellyfin-ultrachromic-src
 , lib
 , pkgs
@@ -14,16 +13,19 @@ let
     optionals
       (hasAttr name config.users.groups)
       [ config.users.groups.${name}.name ];
-  jfPackages = jellyfin-flake.packages.${pkgs.system};
-  jellyPkgs = jfPackages // lib.optionalAttrs config.gpu.nvidia.enableCUDA {
-    jellyfin-ffmpeg = jfPackages.jellyfin-ffmpeg-cuda;
-  };
 
+  # https://github.com/matt1432/nixos-jellyfin#forceEnableBackdrops
+  jellyfin-web =
+    pkgs.jellyfin-web.overrideAttrs (old: {
+      postPatch = (old.postPatch or "")
+        + ''
+        substituteInPlace src/scripts/settings/userSettings.js \
+          --replace-fail "return toBoolean(this.get('enableBackdrops', false), false);" \
+                       "return toBoolean(this.get('enableBackdrops', false), true);"
+      '';
+    });
 in
 {
-  imports = [
-    jellyfin-flake.nixosModules.default
-  ];
   # To use use NVENC for hardware encoding. To use this, CUDA must be enabled
   users.users."jellyfin".extraGroups =
     optionalGroup mainUser
@@ -32,117 +34,141 @@ in
     ++ optionalGroup "render"
     ++ optionalGroup "video";
 
-  services.jellyfin = {
+  services.declarative-jellyfin = {
     enable = true;
-    package = jellyPkgs.jellyfin;
-    webPackage = jellyPkgs.jellyfin-web.override {
-      forceEnableBackdrops = true;
-    };
-    ffmpegPackage = jellyPkgs.jellyfin-ffmpeg;
+    inherit jellyfin-web;
+    serverId = "8356f7decc7b4c8db04f62834e735b69";
 
-    # dataDir = "/mnt/data/media/jellyfin/var"
-    #hardwareAcceleration = {
-    # enable = true;
-    #type = "nvenc";
-    #device = "/dev/dri/renderD128";
-    #};
-
-    settings = {
-      system = {
-        serverName = "Mayuri";
-        quickConnectAvailable = false;
-        isStartupWizardCompleted = true;
-
-        enableExternalContentInSuggestions = false;
-
-        pluginRepositories = [
-          {
-            name = "Jellyfin Stable";
-            url = "https://repo.jellyfin.org/releases/plugin/manifest-stable.json";
-          }
-          {
-            name = "Intro Skipper";
-            url = "https://raw.githubusercontent.com/jumoog/intro-skipper/master/manifest.json";
-          }
-          {
-            name = "Merge Versions Plugin";
-            url = "https://raw.githubusercontent.com/danieladov/JellyfinPluginManifest/master/manifest.json";
-          }
-        ];
-
-        enableSlowResponseWarning = false;
+    users.anas = {
+      password = "let me in";
+      mutable = true;
+      permissions = {
+        isAdministrator = true;
+        enableContentDeletion = true;
+        enableRemoteControlOfOtherUsers = true;
+        enableCollectionManagement = true;
       };
+    };
 
-      branding =
-        let
-          jellyTheme = pkgs.stdenv.mkDerivation {
-            name = "Ultrachromic";
-            src = jellyfin-ultrachromic-src;
-            postInstall = "cp -ar $src $out";
-          };
+    libraries = {
+      Movies = {
+        contentType = "movies";
+        pathInfos = [ "/mnt/data/media/Movies" ];
+      };
+      Shows = {
+        contentType = "tvshows";
+        pathInfos = [ "/mnt/data/media/Shows" ];
+      };
+      "Music Videos" = {
+        contentType = "musicvideos";
+        pathInfos = [ "/mnt/data/media/Music Videos" ];
+      };
+      Music = {
+        contentType = "music";
+        pathInfos = [ "/mnt/data/media/Music" ];
+      };
+      Anime = {
+        contentType = "tvshows";
+        pathInfos = [ "/mnt/data/media/Anime" ];
+      };
+    };
 
-          importFile = file: fileContents "${jellyTheme}/${file}";
-        in
+    system = {
+      serverName = "Mayuri";
+      quickConnectAvailable = false;
+      enableExternalContentInSuggestions = false;
+      enableSlowResponseWarning = false;
+      pluginRepositories = [
         {
-          customCss = ''
-            /* Base theme */
-            ${importFile "base.css"}
-            ${importFile "accentlist.css"}
-            ${importFile "fixes.css"}
+          tag = "RepositoryInfo";
+          content = {
+            Name = "Jellyfin Stable";
+            Url = "https://repo.jellyfin.org/files/plugin/manifest.json";
+            Enabled = true;
+          };
+        }
+        {
+          tag = "RepositoryInfo";
+          content = {
+            Name = "Intro Skipper";
+            Url = "https://raw.githubusercontent.com/jumoog/intro-skipper/master/manifest.json";
+            Enabled = true;
+          };
+        }
+        {
+          tag = "RepositoryInfo";
+          content = {
+            Name = "Merge Versions Plugin";
+            Url = "https://raw.githubusercontent.com/danieladov/JellyfinPluginManifest/master/manifest.json";
+            Enabled = true;
+          };
+        }
+      ];
+    };
 
-            ${importFile "type/dark_withaccent.css"}
-
-            ${importFile "rounding.css"}
-            ${importFile "progress/floating.css"}
-            ${importFile "titlepage/title_banner-logo.css"}
-            ${importFile "header/header_transparent.css"}
-            ${importFile "login/login_frame.css"}
-            ${importFile "fields/fields_border.css"}
-            ${importFile "cornerindicator/indicator_floating.css"}
-
-            /* Style backdrop */
-            .backdropImage {filter: blur(18px) saturate(120%) contrast(120%) brightness(40%);}
-
-            /* Custom Settings */
-            :root {--accent: 145,75,245;}
-            :root {--rounding: 12px;}
-
-            /* https://github.com/CTalvio/Ultrachromic/issues/79 */
-            .skinHeader {
-              color: rgba(var(--accent), 0.8);;
-            }
-            .countIndicator,
-            .fullSyncIndicator,
-            .mediaSourceIndicator,
-            .playedIndicator {
-              background-color: rgba(var(--accent), 0.8);
-            }
-          '';
+    branding =
+      let
+        jellyTheme = pkgs.stdenv.mkDerivation {
+          name = "Ultrachromic";
+          src = jellyfin-ultrachromic-src;
+          postInstall = "cp -ar $src $out";
         };
 
-      encoding = {
-        hardwareAccelerationType = "nvenc";
-        hardwareDecodingCodecs = [
-          "h264"
-          "hevc"
-          "mpeg2video"
-          "mpeg4"
-          "vc1"
-          "vp8"
-          "vp9"
-          "av1"
-        ];
-        allowHevcEncoding = config.gpu.nvidia.enableCUDA;
-        enableThrottling = false;
-        enableTonemapping = true;
-        downMixAudioBoost = 1;
+        importFile = file: fileContents "${jellyTheme}/${file}";
+      in
+      {
+        customCss = ''
+          /* Base theme */
+          ${importFile "base.css"}
+          ${importFile "accentlist.css"}
+          ${importFile "fixes.css"}
+
+          ${importFile "type/dark_withaccent.css"}
+
+          ${importFile "rounding.css"}
+          ${importFile "progress/floating.css"}
+          ${importFile "titlepage/title_banner-logo.css"}
+          ${importFile "header/header_transparent.css"}
+          ${importFile "login/login_frame.css"}
+          ${importFile "fields/fields_border.css"}
+          ${importFile "cornerindicator/indicator_floating.css"}
+
+          /* Style backdrop */
+          .backdropImage {filter: blur(18px) saturate(120%) contrast(120%) brightness(40%);}
+
+          /* Custom Settings */
+          :root {--accent: 145,75,245;}
+          :root {--rounding: 12px;}
+
+          /* https://github.com/CTalvio/Ultrachromic/issues/79 */
+          .skinHeader {
+            color: rgba(var(--accent), 0.8);;
+          }
+          .countIndicator,
+          .fullSyncIndicator,
+          .mediaSourceIndicator,
+          .playedIndicator {
+            background-color: rgba(var(--accent), 0.8);
+          }
+        '';
       };
+
+    encoding = {
+      hardwareAccelerationType = "nvenc";
+      hardwareDecodingCodecs = [
+        "h264"
+        "hevc"
+        "mpeg2video"
+        "vc1"
+        "vp8"
+        "vp9"
+        "av1"
+      ];
+      allowHevcEncoding = config.gpu.nvidia.enableCUDA;
+      enableTonemapping = true;
+      downMixAudioBoost = 1;
     };
   };
 
-  environment.systemPackages = with pkgs-unstable; [ feishin ] ++ (with config.services.jellyfin; [
-    finalPackage
-    webPackage
-    ffmpegPackage
-  ]);
+  environment.systemPackages = with pkgs-unstable; [ feishin ];
 }
