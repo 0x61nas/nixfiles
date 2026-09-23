@@ -1,8 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 {
   imports = [
@@ -19,7 +18,7 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
-  networking.networkmanager  = {
+  networking.networkmanager = {
     enable = true;
     dns = "systemd-resolved";
   };
@@ -31,8 +30,8 @@
   };
 
   networking.interfaces.enp7s0.ipv4.addresses = [{
-     address = "192.168.1.2";
-     prefixLength = 24;
+    address = "192.168.1.2";
+    prefixLength = 24;
   }];
 
   networking.defaultGateway = "192.168.1.1";
@@ -52,6 +51,8 @@
     intel.enable = false;
     amd.enable = false;
   };
+  gpu.nvidia.enableCUDA = true;
+
   services.openssh = {
     enable = true;
     openFirewall = true;
@@ -61,6 +62,6 @@
     };
   };
 
-    # A gui/tray to manage the bluetooth
+  # A gui/tray to manage the bluetooth
   services.blueman.enable = true;
 }

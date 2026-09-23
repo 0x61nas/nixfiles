@@ -5,6 +5,7 @@ let
 in
 {
   options.gpu.nvidia.enable = mkEnableOption ("Use Nvidia dGPU");
+  options.gpu.nvidia.enableCUDA = mkEnableOption "CUDA support (for NVENC/HEVC transcoding)";
   options.gpu.nvidia.isTuring = mkOption {
     type = types.bool;
     default = false;
