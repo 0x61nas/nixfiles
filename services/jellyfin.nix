@@ -53,23 +53,27 @@ in
     libraries = {
       Movies = {
         contentType = "movies";
-        pathInfos = [ "/mnt/data/media/Movies" ];
+        pathInfos = [ "/mnt/data/media/movies" ];
       };
       Shows = {
         contentType = "tvshows";
-        pathInfos = [ "/mnt/data/media/Shows" ];
+        pathInfos = [ "/mnt/data/media/shows" ];
       };
       "Music Videos" = {
         contentType = "musicvideos";
-        pathInfos = [ "/mnt/data/media/Music Videos" ];
+        pathInfos = [ "/mnt/data/media/music videos" ];
       };
       Music = {
         contentType = "music";
-        pathInfos = [ "/mnt/data/media/Music" ];
+        pathInfos = [ "/mnt/data/media/music" ];
+      };
+      "Anime Movies" = {
+        contentType = "movies";
+        pathInfos = [ "/mnt/data/media/anime/Movies" ];
       };
       Anime = {
         contentType = "tvshows";
-        pathInfos = [ "/mnt/data/media/Anime" ];
+        pathInfos = [ "/mnt/data/media/anime/Shows" ];
       };
     };
 
