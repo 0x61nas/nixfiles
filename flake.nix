@@ -19,7 +19,7 @@
 
     lqth.url = "github:0x61nas/lqth";
     archy-dwm.url = "github:archy-linux/archy-dwm";
-    
+
     nix-jetbrains-plugins.url = "github:nix-community/nix-jetbrains-plugins";
     jellyfin-flake.url = "github:matt1432/nixos-jellyfin";
     jellyfin-ultrachromic-src = {
@@ -94,12 +94,12 @@
             inherit inputs;
             inherit pkgs-unstable;
             inherit nur;
+            inherit (inputs) jellyfin-flake jellyfin-ultrachromic-src;
           };
           modules = [
             {
               nixpkgs.pkgs = pkgs;
             }
-            nixpkgs.nixosModules.readOnlyPkgs
             ./cache.nix
             ./configuration.nix
             ./services
@@ -133,7 +133,6 @@
             {
               nixpkgs.pkgs = pkgs;
             }
-            nixpkgs.nixosModules.readOnlyPkgs
             ./cache.nix
             ./configuration.nix
             # ./services
