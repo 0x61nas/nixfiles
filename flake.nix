@@ -21,6 +21,13 @@
     archy-dwm.url = "github:archy-linux/archy-dwm";
     
     nix-jetbrains-plugins.url = "github:nix-community/nix-jetbrains-plugins";
+    jellyfin-flake.url = "github:matt1432/nixos-jellyfin";
+    jellyfin-ultrachromic-src = {
+      flake = false;
+      owner = "CTalvio";
+      repo = "Ultrachromic";
+      type = "github";
+    };
 
     # flake-parts.url = "github:hercules-ci/flake-parts";
     # utils.url = "github:numtide/flake-utils";
