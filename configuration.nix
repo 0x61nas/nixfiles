@@ -81,6 +81,7 @@
       file
       usbutils
       jq
+      pv #  Pipe Viewer
 
       # firefox
       (pkgs.wrapFirefox (firefox-unwrapped.override { pipewireSupport = true; }) { })
