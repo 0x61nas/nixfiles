@@ -10,6 +10,10 @@
     timeout = "300";
   };
 
+  home.packages = [
+    nur.packages.${pkgs-unstable.stdenv.hostPlatform.system}.xwallset
+  ];
+
   home.file = {
     ".xprofile".source = ./xprofile.sh;
     ".xinitrc".source = ./xinitrc.sh;
