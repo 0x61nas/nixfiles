@@ -1,7 +1,12 @@
-{ pkgs-unstable, nur, ... }: {
+{ pkgs-unstable, nur, ... }:
+let
+  wallpaper = ../../wallpapers/nix-chan-01.png;
+in
+{
   imports = [
     ./sxhkd.nix
     nur.homeManagerModules.autolock
+    nur.homeManagerModules.xsetwall
   ];
 
   services.autolock = {
@@ -10,8 +15,16 @@
     timeout = "300";
   };
 
+
+  services.xsetwall = {
+    enable = true;
+    package = nur.packages.${pkgs-unstable.stdenv.hostPlatform.system}.xsetwall;
+    whiteBorder = true;
+    staticWallpaper = "${wallpaper}";
+  };
+
   home.packages = [
-    nur.packages.${pkgs-unstable.stdenv.hostPlatform.system}.xwallset
+    nur.packages.${pkgs-unstable.stdenv.hostPlatform.system}.xsetwall
   ];
 
   home.file = {
