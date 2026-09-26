@@ -1,6 +1,7 @@
 { pkgs-unstable, nur, ... }:
 let
   wallpaper = ../../wallpapers/nix-chan-01.png;
+  wallpapersDir = ../../wallpapers;
 in
 {
   imports = [
@@ -21,6 +22,9 @@ in
     package = nur.packages.${pkgs-unstable.stdenv.hostPlatform.system}.xsetwall;
     whiteBorder = true;
     staticWallpaper = "${wallpaper}";
+    mode = "random";
+    directory = "${wallpapersDir}";
+    interval = 600; # 10 min
   };
 
   home.packages = [
