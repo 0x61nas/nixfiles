@@ -62,6 +62,17 @@
     };
   };
 
+  # Tha audio server
+  services.pipewire.enable = lib.mkForce false;
+  services.pulseaudio = {
+    enable = true;
+    package = pkgs.pulseaudioFull;
+    # Disable timer-based scheduling to fix stutter on bluetooth usb hardware
+    extraConfig = ''
+      load-module module-udev-detect tsched=0
+    '';
+  };
+
   # A gui/tray to manage the bluetooth
   services.blueman.enable = true;
 }
