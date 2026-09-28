@@ -5,5 +5,4 @@
     ./sioyek.nix
   ];
 
-  home.packages = with pkgs-unstable; [ trackma-qt spotify ];
 }
