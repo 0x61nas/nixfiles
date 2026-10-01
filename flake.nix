@@ -137,6 +137,7 @@
             ./cache.nix
             ./configuration.nix
             # ./services
+            ./services/tailscale.nix
             ./hosts/kurisu.nix
             inputs.impermanence.nixosModules.impermanence
 
