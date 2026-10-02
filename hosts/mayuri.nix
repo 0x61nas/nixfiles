@@ -4,6 +4,7 @@
 , ...
 }:
 {
+  gamingHost = true;
   imports = [
     # Include the results of the hardware scan.
     ./mayuri-hardware-configuration.nix
