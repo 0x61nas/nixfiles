@@ -4,6 +4,7 @@
     ./modules
     ./gui/thunar.nix
     ./registry.nix
+    ./steam.nix
   ];
 
   fonts.fontDir.enable = true;

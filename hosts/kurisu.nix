@@ -4,6 +4,7 @@
 , ...
 }:
 {
+  gamingHost = false;
   imports = [
     # Include the results of the hardware scan.
     ./kurisu-hardware-configuration.nix
