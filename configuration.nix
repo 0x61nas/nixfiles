@@ -24,6 +24,8 @@
   #   "net.lutris.Lutris"
   # ];
   # workarounds.flatpak.enable = true;
+  programs.appimage.enable = true;
+  programs.appimage.binfmt = true;
 
   programs.zsh.enable = true;
   # I don't use ohMyZsh, but it doses provide a some convenient functions.
