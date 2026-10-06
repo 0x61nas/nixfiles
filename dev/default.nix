@@ -13,6 +13,7 @@
     hex
     nur.packages.${pkgs-unstable.stdenv.hostPlatform.system}.ducker
     nur.packages.${pkgs-unstable.stdenv.hostPlatform.system}.guitar
+    nur.packages.${pkgs-unstable.stdenv.hostPlatform.system}.raddebugger
     onefetch
     nixfmt
     android-tools
