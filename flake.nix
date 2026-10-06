@@ -100,6 +100,10 @@
             {
               nixpkgs.pkgs = pkgs;
             }
+            ({ pkgs, ... }: {
+              nixpkgs.overlays = [ nur.overlays.default ];
+            })
+
             ./cache.nix
             ./configuration.nix
             inputs.declarative-jellyfin.nixosModules.default
@@ -134,6 +138,10 @@
             {
               nixpkgs.pkgs = pkgs;
             }
+            ({ pkgs, ... }: {
+              nixpkgs.overlays = [ nur.overlays.default ];
+            })
+
             ./cache.nix
             ./configuration.nix
             # ./services
@@ -159,12 +167,14 @@
         };
       };
 
-      packages = forEachSupportedSystem ({ pkgs, system }: {
-        jq = pkgs.jq;
-        mayuri = self.nixosConfigurations.mayuri.config.system.build.toplevel;
-        kurisu = self.nixosConfigurations.kurisu.config.system.build.toplevel;
-        nix-fast-build = nix-fast-build.packages.${system}.default;
-      });
+      packages = forEachSupportedSystem (
+        { pkgs, system }: {
+          jq = pkgs.jq;
+          mayuri = self.nixosConfigurations.mayuri.config.system.build.toplevel;
+          kurisu = self.nixosConfigurations.kurisu.config.system.build.toplevel;
+          nix-fast-build = nix-fast-build.packages.${system}.default;
+        }
+      );
 
       devShells = forEachSupportedSystem (
         { pkgs, ... }: {

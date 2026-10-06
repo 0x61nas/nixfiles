@@ -1,8 +1,9 @@
-{ pkgs-unstable, ... }:
+_:
 {
   imports = [
     ./mpv.nix
     ./sioyek.nix
+    ./librewolf.nix
   ];
 
 }
