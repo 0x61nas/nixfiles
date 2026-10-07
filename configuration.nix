@@ -106,8 +106,6 @@
       # notification daemon
       dunst
       libnotify
-      floorp-bin
-
     ]
     ++ (with pkgs-unstable; [
       neovim
@@ -117,7 +115,7 @@
     ]);
 
   #security.sudo-rs.enable = true;
-  # she was sudo girl, ama doas boy :(
+  # she was sudo girl, ama doas boy
   security.doas.enable = true;
   security.sudo.enable = false;
   security.doas.extraRules = [
