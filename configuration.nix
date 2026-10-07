@@ -86,8 +86,6 @@
       jq
       pv #  Pipe Viewer
 
-      # firefox
-      (pkgs.wrapFirefox (firefox-unwrapped.override { pipewireSupport = true; }) { })
       keepassxc
       unzip
       zip
