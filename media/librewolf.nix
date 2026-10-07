@@ -27,6 +27,7 @@ in
         traduzir-paginas-web # Translate your page in real time using Google, Bing or Yandex.
         youtube-recommended-videos # Hide YouTube related videos, comments, video suggestions wall, homepage recommendations, trending tab, and other distractions.
         wayback-machine_new # Wayback Machine
+        gruvbox-dark-theme
       ];
 
       # Extra prefs can be found at `about:config`.
