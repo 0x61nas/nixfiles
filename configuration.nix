@@ -103,6 +103,7 @@
       ntfs3g
 
       #mtpfs
+      kdePackages.krdc
       # notification daemon
       dunst
       libnotify
