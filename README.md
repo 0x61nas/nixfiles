@@ -63,10 +63,6 @@ iwctl --passphrase [passphrase] station [device] connect [SSID]
 - Temporally modifying the Firewall rules:
 
 ```sh
-nixos-firewall-tool
-
-A tool to temporarily manipulate the NixOS firewall
-
 Open TCP port:
   nixos-firewall-tool open tcp 8888
 
@@ -77,6 +73,7 @@ Show all firewall rules:
   nixos-firewall-tool show
 
 Reset firewall configuration to system settings:
+  nixos-firewall-tool reset
 ```
 
 ## Multi-host setup
