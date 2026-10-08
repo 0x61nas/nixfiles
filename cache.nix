@@ -1,4 +1,6 @@
 { ... }: {
+  imports = [ ./peer-cache.nix ];
+
   nix.settings = {
     substituters = [
       #"https://hyprland.cachix.org"
