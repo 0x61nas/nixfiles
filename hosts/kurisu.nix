@@ -39,10 +39,11 @@
   networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [
+    7777 # docker openvpn
+  ];
   # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  networking.firewall.enable = false;
+  networking.firewall.enable = true;
 
   gpu = {
     nvidia = {
