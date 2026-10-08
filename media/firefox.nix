@@ -4,6 +4,12 @@
   programs.firefox = {
     enable = true;
     package = pkgs-unstable.firefox;
+    languagePacks = [
+      "ar"
+      "en-US"
+      "ja"
+      "ka"
+    ];
 
     profiles.default = {
       # everything in the set.
