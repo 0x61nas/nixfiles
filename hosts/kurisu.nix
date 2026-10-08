@@ -58,6 +58,7 @@
     settings = {
       PermitRootLogin = "yes";
       PasswordAuthentication = true; # Set to false if using SSH keys only
+      X11Forwarding = true;
     };
   };
 
