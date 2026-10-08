@@ -23,7 +23,6 @@
         pixiv-toolkit
         privacy-extension-for-whatsapp
         readeck
-        return-youtube-dislikes
         styl-us
         tab-session-manager
         besttimetracker # Track time, analyze your habits and block addictive sites
