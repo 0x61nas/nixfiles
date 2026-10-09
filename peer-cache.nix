@@ -10,7 +10,7 @@ let
   nodeName = lib.toLower config.networking.hostName;
   self = nodes.${nodeName}
     or (throw "peer-cache: unsupported hostName '${config.networking.hostName}'");
-  peerName = "${lib.head (lib.attrNames (lib.filterAttrs (n: _: n != nodeName) nodes))}.local";
+  peerName = "${lib.head (lib.attrNames (lib.filterAttrs (n: _: n != nodeName) nodes))}";
 
   cachePort = 5000;
   signKeyPath = "/etc/nix/peer-cache.key";
