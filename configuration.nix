@@ -111,6 +111,7 @@
     ++ (with pkgs-unstable; [
       neovim
       qbittorrent
+      jackett # API Support for your favorite torrent trackers
       nvtopPackages.full
       btop
     ]);
