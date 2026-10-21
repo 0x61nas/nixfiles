@@ -13,15 +13,33 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-alien.url = "github:thiagokokada/nix-alien";
+    nix-alien = {
+      url = "github:thiagokokada/nix-alien";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     impermanence.url = "github:nix-community/impermanence";
-    nix-fast-build.url = "github:Mic92/nix-fast-build";
+    nix-fast-build = {
+      url = "github:Mic92/nix-fast-build";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
 
-    lqth.url = "github:0x61nas/lqth";
-    archy-dwm.url = "github:archy-linux/archy-dwm";
+    lqth = {
+      url = "github:0x61nas/lqth";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+    archy-dwm = {
+      url = "github:archy-linux/archy-dwm";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    nix-jetbrains-plugins.url = "github:nix-community/nix-jetbrains-plugins";
-    declarative-jellyfin.url = "github:Sveske-Juice/declarative-jellyfin";
+    nix-jetbrains-plugins = {
+      url = "github:nix-community/nix-jetbrains-plugins";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    declarative-jellyfin = {
+      url = "github:Sveske-Juice/declarative-jellyfin";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     jellyfin-ultrachromic-src = {
       flake = false;
       owner = "CTalvio";
