@@ -4,6 +4,9 @@
   programs.firefox = {
     enable = true;
     package = pkgs-unstable.firefox;
+    # Keep using the legacy profile location, the current profile lives in
+    # `~/.mozilla/firefox` and not in the XDG config home.
+    configPath = ".mozilla/firefox";
     languagePacks = [
       "ar"
       "en-US"
