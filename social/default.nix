@@ -3,5 +3,5 @@
     ./discord.nix
   ];
 
-  home.packages = with pkgs; [ telegram-desktop ];
+  home.packages = with pkgs; [ telegram-desktop gajim ];
 }
