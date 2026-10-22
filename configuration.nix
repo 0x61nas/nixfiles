@@ -230,6 +230,7 @@
     settings = {
       auto-optimise-store = true;
       sandbox = "relaxed";
+      eval-cache = true;
       experimental-features = [
         "nix-command"
         "flakes"

@@ -90,9 +90,21 @@
           system:
           f {
             inherit system;
-            pkgs = import nixpkgs { inherit system; };
+            pkgs = import nixpkgs {
+              inherit system;
+              config = {
+                allowUnfree = true;
+              };
+            };
           }
         );
+
+      commonSpecialArgs = {
+        inherit inputs pkgs-unstable nur;
+      };
+      commonHomeExtraSpecialArgs = {
+        inherit inputs pkgs-unstable nur nix-jetbrains-plugins;
+      };
     in
     {
       hosts = {
@@ -108,10 +120,7 @@
 
       nixosConfigurations = {
         mayuri = lib.nixosSystem {
-          specialArgs = {
-            inherit inputs;
-            inherit pkgs-unstable;
-            inherit nur;
+          specialArgs = commonSpecialArgs // {
             inherit (inputs) jellyfin-ultrachromic-src;
           };
           modules = [
@@ -136,22 +145,12 @@
 
               home-manager.users.anas = import ./users/anas.home.nix;
 
-              home-manager.extraSpecialArgs = {
-                inherit inputs;
-                inherit pkgs-unstable;
-                inherit nur;
-                inherit nix-jetbrains-plugins;
-
-              };
+              home-manager.extraSpecialArgs = commonHomeExtraSpecialArgs;
             }
           ];
         };
         kurisu = lib.nixosSystem {
-          specialArgs = {
-            inherit inputs;
-            inherit pkgs-unstable;
-            inherit nur;
-          };
+          specialArgs = commonSpecialArgs;
           modules = [
             {
               nixpkgs.pkgs = pkgs;
@@ -174,12 +173,7 @@
 
               home-manager.users.anas = import ./users/anas.home.nix;
 
-              home-manager.extraSpecialArgs = {
-                inherit inputs;
-                inherit pkgs-unstable;
-                inherit nur;
-                inherit nix-jetbrains-plugins;
-              };
+              home-manager.extraSpecialArgs = commonHomeExtraSpecialArgs;
             }
           ];
         };
