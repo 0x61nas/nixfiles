@@ -17,7 +17,10 @@
       url = "github:thiagokokada/nix-alien";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    impermanence.url = "github:nix-community/impermanence";
+    impermanence = {
+      url = "github:nix-community/impermanence";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-fast-build = {
       url = "github:Mic92/nix-fast-build";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
