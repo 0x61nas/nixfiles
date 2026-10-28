@@ -10,6 +10,12 @@
     ./kurisu-hardware-configuration.nix
 
   ];
+  # Use the shared nix-secrets module on this host.
+  nix-secrets = {
+    enable = true;
+    identityPaths = [ "/home/anas/.nix-secrets/keys.txt" ];
+    recipientAliases.anas = "age15mdtap3g9c47ahnlsse0vykncwjyfspsuvyd9m87nedq9g2azv2ssys4mh"; # public key
+  };
   # Networking
   networking.hostName = "Kurisu";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
