@@ -46,7 +46,7 @@
 
   # OpenVPN HTTP proxy container.
   ovpn-proxy = {
-    enable = true;
+    enable = false;
     externalInterface = "enp7s0";
     configSecret = "openvpn/mayuri/config";
     usernameSecret = "openvpn/mayuri/username";
