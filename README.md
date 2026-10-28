@@ -95,7 +95,8 @@ and `users/`.
 Secrets are managed with
 [nix-secrets](https://github.com/unnamed-systems/nix-secrets) and encrypted
 with age. The shared module is `modules/nix-secrets.nix`; it is imported by
-`modules/default.nix`, so every host gets the same secret definitions.
+`modules/default.nix`, so every host gets the same module, but each host only
+declares the secrets it actually uses.
 
 Encryption keys and recipient aliases are **host-specific** and live in the
 host file:
@@ -112,27 +113,24 @@ nix-secrets = {
 `nix-secrets.enable` turns activation on for that host. A host without it keeps
 the module available but does not decrypt anything.
 
-Every secret can be disabled per host:
+Secrets are declared by the feature module or host that uses them. For example,
+enabling `ovpn-proxy` declares its three OpenVPN secrets on that host only, so a
+host that does not use the proxy never tries to decrypt them. Every declared
+secret can still be disabled per host:
 
 ```nix
-nix-secrets.secrets."openvpn/config".enable = false;
-nix-secrets.secrets."openvpn/username".enable = false;
-nix-secrets.secrets."openvpn/password".enable = false;
+nix-secrets.secrets."openvpn/mayuri/config".enable = false;
 ```
 
-The currently declared secrets are:
+Templates use the same option namespace. Their content is interpolated when
+the secrets are activated:
 
-| Secret              | Used by                                      |
-| ------------------- | -------------------------------------------- |
-| `openvpn/config`    | ProtonVPN `.ovpn` configuration              |
-| `openvpn/username`  | OpenVPN username                             |
-| `openvpn/password`  | OpenVPN password                             |
-| `openvpn/credentials` | Rendered template combining username/password |
-
-`openvpn/credentials` is a template, not a secret file. Disabling either
-`openvpn/username` or `openvpn/password` disables the template. The
-`ovpn-proxy` container in `nixos-containers.nix` is also only created when all
-three OpenVPN secrets are enabled.
+```nix
+nix-secrets.templates."example/credentials".content = ''
+  ${config.security.nix-secrets.secrets."example/username"}
+  ${config.security.nix-secrets.secrets."example/password"}
+'';
+```
 
 #### Managing secrets
 
@@ -144,19 +142,36 @@ nix-secrets keygen -o ~/.nix-secrets/keys.txt
 ```
 
 Put the printed public key into that host's `recipientAliases.anas`, then edit
-the encrypted values. `-f` is a global option, so it goes before `edit`:
+the encrypted values. `-f` is a global option, so it goes before `edit`.
+
+Each host uses its own secret names, so every encrypted file is only readable
+by the host it was encrypted for.
+
+Mayuri:
 
 ```sh
-nix-secrets -f .#mayuri edit openvpn/username
-nix-secrets -f .#mayuri edit openvpn/password
-nix-secrets -f .#mayuri edit openvpn/config
+nix-secrets -f .#mayuri edit openvpn/mayuri/username
+nix-secrets -f .#mayuri edit openvpn/mayuri/password
+nix-secrets -f .#mayuri edit openvpn/mayuri/config
 ```
+
+Kurisu:
+
+```sh
+nix-secrets -f .#kurisu edit openvpn/kurisu/username
+nix-secrets -f .#kurisu edit openvpn/kurisu/password
+nix-secrets -f .#kurisu edit openvpn/kurisu/config
+```
+
+The CLI only sees secrets that are enabled on that host. Set
+`ovpn-proxy.enable = true` on Kurisu before creating its secrets; the
+configuration will not build until all three encrypted files exist.
 
 The editor is taken from `$EDITOR`. To pipe a value in instead of opening an
 editor (useful for scripted updates), set it to `-`:
 
 ```sh
-EDITOR=- nix-secrets -f .#mayuri edit openvpn/username < username.txt
+EDITOR=- nix-secrets -f .#mayuri edit openvpn/mayuri/username < username.txt
 ```
 
 If evaluation fails with:
@@ -170,7 +185,7 @@ the flake is being copied as a plain path, which includes a stale
 reference instead:
 
 ```sh
-nix-secrets -f "git+file://$PWD#mayuri" edit openvpn/username
+nix-secrets -f "git+file://$PWD#mayuri" edit openvpn/mayuri/username
 ```
 
 The secrets are stored in `secrets/` (`storagePath` is set to
@@ -178,7 +193,7 @@ The secrets are stored in `secrets/` (`storagePath` is set to
 them:
 
 ```sh
-git add secrets/openvpn/
+git add secrets/
 ```
 
 Then rebuild:
@@ -189,8 +204,66 @@ nh os switch -H mayuri
 
 The `nix-secrets` CLI is part of the development shell, and secret names are
 host-specific: if a host has `nix-secrets.enable = false`, its manifest has no
-secrets and you must edit from a host that has them enabled (or enable them
-there first).
+secrets and you must edit from a host that has them enabled.
+
+### OpenVPN HTTP proxy (`ovpn-proxy`)
+
+`modules/ovpn-proxy.nix` runs OpenVPN and Privoxy inside a NixOS container and
+exposes the proxy on the host's LAN interface. It is imported by
+`modules/default.nix`, but nothing runs unless a host enables it:
+
+```nix
+# hosts/mayuri.nix
+ovpn-proxy = {
+  enable = true;
+  externalInterface = "enp7s0";
+  configSecret = "openvpn/mayuri/config";
+  usernameSecret = "openvpn/mayuri/username";
+  passwordSecret = "openvpn/mayuri/password";
+  credentialsTemplate = "openvpn/mayuri/credentials";
+};
+```
+
+The LAN address and prefix are read from the first IPv4 address on
+`externalInterface` (`192.168.1.2/24` on Mayuri, `192.168.1.3/24` on Kurisu).
+That address is used for the host port forward and for the container's return
+route to LAN clients. Override `lanAddress` / `lanPrefixLength` if the proxy
+should be reached through a different address.
+
+Kurisu points at its own set:
+
+```nix
+# hosts/kurisu.nix
+ovpn-proxy = {
+  enable = true; # after the secrets below exist
+  externalInterface = "enp44s0";
+  configSecret = "openvpn/kurisu/config";
+  usernameSecret = "openvpn/kurisu/username";
+  passwordSecret = "openvpn/kurisu/password";
+  credentialsTemplate = "openvpn/kurisu/credentials";
+};
+```
+
+Other per-host options:
+
+| Option                | Default                    | Purpose                                             |
+| --------------------- | -------------------------- | --------------------------------------------------- |
+| `port`                | `7777`                     | TCP port exposed on the host                        |
+| `proxyPort`           | `8080`                     | Privoxy port inside the container                   |
+| `hostAddress`         | `10.234.0.1`               | Host side of the private container network          |
+| `localAddress`        | `10.234.0.2`               | Container side of the private container network     |
+| `network`             | `10.234.0.0/24`            | Container network used for NAT                      |
+| `dns`                 | `1.1.1.1`, `1.0.0.1`       | DNS servers inside the container                    |
+| `loopbackIPs`         | `127.0.0.1` plus LAN        | Extra addresses allowed to use the forwarded port    |
+| `openvpnServer`       | `proton`                   | Name of the OpenVPN systemd service                  |
+| `configSecret`        | `openvpn/config`           | `.ovpn` configuration secret                        |
+| `usernameSecret`      | `openvpn/username`         | OpenVPN username secret                             |
+| `passwordSecret`      | `openvpn/password`         | OpenVPN password secret                             |
+| `credentialsTemplate` | `openvpn/credentials`      | Rendered username/password template                 |
+
+The container is only created when `enable = true`, `externalInterface` is
+set, and all three secrets are enabled. The credentials template is rendered
+automatically, so there is no separate `.enc` file for it.
 
 ### Mutual binary cache (`peer-cache.nix`)
 
