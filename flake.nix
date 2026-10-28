@@ -225,7 +225,6 @@
             nativeBuildInputs = with pkgs; [
               # Nix
               # agenix
-              nil
               nix-melt
               nix-output-monitor
               nix-tree
@@ -249,15 +248,8 @@
 
               # Misc
               jq
-              pre-commit
-              just
-              fzf
             ];
             shellHook = ''
-              #!/usr/bin/env bash
-              if ! grep -q "pre-commit" .git/hooks/pre-commit 2>/dev/null; then
-                  pre-commit install
-              fi
               ${pkgs.git}/bin/git status .
             '';
           };
