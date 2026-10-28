@@ -115,6 +115,7 @@
       qbittorrent
       nvtopPackages.full
       btop
+      fastfetch
     ]);
 
   #security.sudo-rs.enable = true;
