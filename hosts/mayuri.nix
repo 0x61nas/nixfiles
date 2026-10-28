@@ -10,6 +10,13 @@
     ./mayuri-hardware-configuration.nix
 
   ];
+
+  # Use the shared nix-secrets module on this host.
+  nix-secrets = {
+    enable = true;
+    identityPaths = [ "/home/anas/.nix-secrets/keys.txt" ];
+    recipientAliases.anas = "age124py20nfzyj0mxrvd8y06qqppm4xvqm4xl2emeg56pc9afefgglqn6wpzj"; # public key
+  };
   # Networking
   networking.hostName = "Mayuri";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.

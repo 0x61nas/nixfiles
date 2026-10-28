@@ -11,5 +11,6 @@
     ./archy-slstatus.nix
     ./fonts.nix
     ./vars.nix
+    ./nix-secrets.nix
   ];
 }

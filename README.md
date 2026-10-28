@@ -90,6 +90,87 @@ as networking, GPU and bluetooth. Shared configuration lives in
 `configuration.nix`, `cache.nix` / `peer-cache.nix`, `modules/`, `services/`
 and `users/`.
 
+### Secrets (`nix-secrets`)
+
+Secrets are managed with
+[nix-secrets](https://github.com/unnamed-systems/nix-secrets) and encrypted
+with age. The shared module is `modules/nix-secrets.nix`; it is imported by
+`modules/default.nix`, so every host gets the same secret definitions.
+
+Encryption keys and recipient aliases are **host-specific** and live in the
+host file:
+
+```nix
+# hosts/<host>.nix
+nix-secrets = {
+  enable = true;
+  identityPaths = [ "/home/anas/.config/nix-secrets/keys.txt" ];
+  recipientAliases.anas = "age1..."; # public key from `nix-secrets keygen`
+};
+```
+
+`nix-secrets.enable` turns activation on for that host. A host without it keeps
+the module available but does not decrypt anything.
+
+Every secret can be disabled per host:
+
+```nix
+nix-secrets.secrets."openvpn/config".enable = false;
+nix-secrets.secrets."openvpn/username".enable = false;
+nix-secrets.secrets."openvpn/password".enable = false;
+```
+
+The currently declared secrets are:
+
+| Secret              | Used by                                      |
+| ------------------- | -------------------------------------------- |
+| `openvpn/config`    | ProtonVPN `.ovpn` configuration              |
+| `openvpn/username`  | OpenVPN username                             |
+| `openvpn/password`  | OpenVPN password                             |
+| `openvpn/credentials` | Rendered template combining username/password |
+
+`openvpn/credentials` is a template, not a secret file. Disabling either
+`openvpn/username` or `openvpn/password` disables the template. The
+`ovpn-proxy` container in `nixos-containers.nix` is also only created when all
+three OpenVPN secrets are enabled.
+
+#### Managing secrets
+
+Generate an age key once per host (do not commit the private key):
+
+```sh
+mkdir -p ~/.config/nix-secrets
+nix-secrets keygen -o ~/.config/nix-secrets/keys.txt
+```
+
+Put the printed public key into that host's `recipientAliases.anas`, then edit
+the encrypted values:
+
+```sh
+nix-secrets edit --flake .#mayuri openvpn/username
+nix-secrets edit --flake .#mayuri openvpn/password
+nix-secrets edit --flake .#mayuri openvpn/config
+```
+
+The secrets are stored in `secrets/` (`storagePath` is set to
+`/home/anas/nixfiles/secrets`) and must be tracked by git so the flake can see
+them:
+
+```sh
+git add secrets/openvpn/
+```
+
+Then rebuild:
+
+```sh
+nh os switch -H mayuri
+```
+
+The `nix-secrets` CLI is part of the development shell, and secret names are
+host-specific: if a host has `nix-secrets.enable = false`, its manifest has no
+secrets and you must edit from a host that has them enabled (or enable them
+there first).
+
 ### Mutual binary cache (`peer-cache.nix`)
 
 `mayuri` and `kurisu` form a mutual binary-cache pair, wired in via
@@ -168,7 +249,9 @@ nixos-generate-config --root /mnt --show-hardware-config > hosts/<host>-hardware
 ```
 
 2. Create `hosts/<host>.nix` importing that hardware config and set the
-   host-specific options you need (hostname, networking, GPU, ...).
+   host-specific options you need (hostname, networking, GPU, ...). If the host
+   should decrypt secrets, also set `nix-secrets.enable`, `identityPaths` and
+   `recipientAliases` there.
 
 3. Register the host in `flake.nix` by copying an existing
    `nixosConfigurations` block (e.g. `mayuri`) and renaming it to the new host

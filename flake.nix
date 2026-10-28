@@ -25,6 +25,10 @@
       url = "github:Mic92/nix-fast-build";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    nix-secrets = {
+      url = "github:unnamed-systems/nix-secrets";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     lqth = {
       url = "github:0x61nas/lqth";
@@ -214,7 +218,7 @@
       );
 
       devShells = forEachSupportedSystem (
-        { pkgs, ... }: {
+        { pkgs, system }: {
           default = pkgs.mkShell {
             name = "nix-config";
 
@@ -226,6 +230,7 @@
               nix-output-monitor
               nix-tree
               nixpkgs-fmt
+              inputs.nix-secrets.packages.${system}.default
 
               # Lua
               # stylua
