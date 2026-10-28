@@ -37,6 +37,7 @@
   services.mpris-proxy.enable = true;
   # mewo :3
   nixowos.enable = true;
+  nixowos.overlays.enable = true;
 
   home.sessionVariables = {
     EDITOR = "nvim";

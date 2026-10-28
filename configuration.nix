@@ -11,6 +11,7 @@
   # desktop.hyprland.enable = true;
   # mewo :3
   nixowos.enable = true;
+  nixowos.overlays.enable = true;
 
   # Firmware update helper
   # https://nixos.wiki/wiki/Fwupd
