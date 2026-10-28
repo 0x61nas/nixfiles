@@ -9,6 +9,12 @@
 
   fonts.fontDir.enable = true;
   # desktop.hyprland.enable = true;
+  # mewo :3
+  nixowos.enable = true;
+  nixowos.overlays.enable = true;
+
+  # UwU/o_O systemd status messages (overlays/systemd)
+  systemd.package = pkgs.suwustemd;
 
   # Firmware update helper
   # https://nixos.wiki/wiki/Fwupd
@@ -113,6 +119,7 @@
       qbittorrent
       nvtopPackages.full
       btop
+      fastfetch
     ]);
 
   #security.sudo-rs.enable = true;

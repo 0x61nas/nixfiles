@@ -49,6 +49,10 @@
       repo = "Ultrachromic";
       type = "github";
     };
+    nixowos = {
+      url = "github:yunfachi/nixowos";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # flake-parts.url = "github:hercules-ci/flake-parts";
     # utils.url = "github:numtide/flake-utils";
@@ -62,6 +66,7 @@
     , home-manager
     , nix-fast-build
     , nix-jetbrains-plugins
+    , nixowos
     , ...
     }@inputs:
     let
@@ -72,6 +77,9 @@
         config = {
           allowUnfree = true;
         };
+        overlays = [
+          (import ./overlays/systemd)
+        ];
       };
       pkgs-unstable = import nixpkgs-unstable {
         inherit system;
@@ -150,6 +158,13 @@
 
               home-manager.extraSpecialArgs = commonHomeExtraSpecialArgs;
             }
+            # Mewo :3
+            nixowos.nixosModules.default
+            {
+              home-manager.users.anas.imports = [
+                nixowos.homeModules.default
+              ];
+            }
           ];
         };
         kurisu = lib.nixosSystem {
@@ -177,6 +192,13 @@
               home-manager.users.anas = import ./users/anas.home.nix;
 
               home-manager.extraSpecialArgs = commonHomeExtraSpecialArgs;
+            }
+            # Mewo :3
+            nixowos.nixosModules.default
+            {
+              home-manager.users.anas.imports = [
+                nixowos.homeModules.default
+              ];
             }
           ];
         };
