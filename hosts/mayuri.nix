@@ -8,7 +8,6 @@
   imports = [
     # Include the results of the hardware scan.
     ./mayuri-hardware-configuration.nix
-    ../nixos-containers.nix
   ];
 
   # Use the shared nix-secrets module on this host.

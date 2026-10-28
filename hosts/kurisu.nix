@@ -8,6 +8,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./kurisu-hardware-configuration.nix
+    ../nixos-containers.nix
 
   ];
   # Use the shared nix-secrets module on this host.

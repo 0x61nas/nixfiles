@@ -22,6 +22,10 @@ in
           sourcePort = 7777;
           destination = "10.234.0.2:8080";
           proto = "tcp";
+
+          # Also allow the host itself to use the proxy on 7777. Without this
+          # the port forward only applies to traffic arriving on enp7s0.
+          loopbackIPs = [ "127.0.0.1" "192.168.1.2" ];
         }
       ];
     };

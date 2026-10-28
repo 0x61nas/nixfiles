@@ -104,7 +104,7 @@ host file:
 # hosts/<host>.nix
 nix-secrets = {
   enable = true;
-  identityPaths = [ "/home/anas/.config/nix-secrets/keys.txt" ];
+  identityPaths = [ "/home/anas/.nix-secrets/keys.txt" ];
   recipientAliases.anas = "age1..."; # public key from `nix-secrets keygen`
 };
 ```
@@ -139,17 +139,38 @@ three OpenVPN secrets are enabled.
 Generate an age key once per host (do not commit the private key):
 
 ```sh
-mkdir -p ~/.config/nix-secrets
-nix-secrets keygen -o ~/.config/nix-secrets/keys.txt
+mkdir -p ~/.nix-secrets
+nix-secrets keygen -o ~/.nix-secrets/keys.txt
 ```
 
 Put the printed public key into that host's `recipientAliases.anas`, then edit
-the encrypted values:
+the encrypted values. `-f` is a global option, so it goes before `edit`:
 
 ```sh
-nix-secrets edit --flake .#mayuri openvpn/username
-nix-secrets edit --flake .#mayuri openvpn/password
-nix-secrets edit --flake .#mayuri openvpn/config
+nix-secrets -f .#mayuri edit openvpn/username
+nix-secrets -f .#mayuri edit openvpn/password
+nix-secrets -f .#mayuri edit openvpn/config
+```
+
+The editor is taken from `$EDITOR`. To pipe a value in instead of opening an
+editor (useful for scripted updates), set it to `-`:
+
+```sh
+EDITOR=- nix-secrets -f .#mayuri edit openvpn/username < username.txt
+```
+
+If evaluation fails with:
+
+```text
+error: file '/fsmonitor--daemon.ipc' has an unsupported type
+```
+
+the flake is being copied as a plain path, which includes a stale
+`.git/fsmonitor--daemon.ipc` socket. Use the git URL form of the flake
+reference instead:
+
+```sh
+nix-secrets -f "git+file://$PWD#mayuri" edit openvpn/username
 ```
 
 The secrets are stored in `secrets/` (`storagePath` is set to
