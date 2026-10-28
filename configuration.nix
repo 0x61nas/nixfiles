@@ -9,6 +9,8 @@
 
   fonts.fontDir.enable = true;
   # desktop.hyprland.enable = true;
+  # mewo :3
+  nixowos.enable = true;
 
   # Firmware update helper
   # https://nixos.wiki/wiki/Fwupd

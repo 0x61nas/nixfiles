@@ -405,6 +405,26 @@
         "type": "github"
       }
     },
+    "nixowos": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792824924,
+        "narHash": "sha256-+4fa6VAwXuT572gG/WYGh1tGpXvYAN+s696CfNIF870=",
+        "owner": "yunfachi",
+        "repo": "nixowos",
+        "rev": "533f1fdacb6968e5c8bd0ef4959f8a366a2ce73e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yunfachi",
+        "repo": "nixowos",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1792503283,
@@ -464,6 +484,7 @@
         "nix-alien": "nix-alien",
         "nix-fast-build": "nix-fast-build_2",
         "nix-jetbrains-plugins": "nix-jetbrains-plugins",
+        "nixowos": "nixowos",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur"
