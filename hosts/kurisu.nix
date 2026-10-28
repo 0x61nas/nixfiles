@@ -8,14 +8,23 @@
   imports = [
     # Include the results of the hardware scan.
     ./kurisu-hardware-configuration.nix
-    ../nixos-containers.nix
-
   ];
   # Use the shared nix-secrets module on this host.
   nix-secrets = {
     enable = true;
     identityPaths = [ "/home/anas/.nix-secrets/keys.txt" ];
     recipientAliases.anas = "age15mdtap3g9c47ahnlsse0vykncwjyfspsuvyd9m87nedq9g2azv2ssys4mh"; # public key
+  };
+
+  # OpenVPN HTTP proxy. Enable this once the Kurisu-specific secrets below
+  # exist in secrets/openvpn/kurisu/.
+  ovpn-proxy = {
+    enable = false;
+    externalInterface = "enp44s0";
+    configSecret = "openvpn/kurisu/config";
+    usernameSecret = "openvpn/kurisu/username";
+    passwordSecret = "openvpn/kurisu/password";
+    credentialsTemplate = "openvpn/kurisu/credentials";
   };
   # Networking
   networking.hostName = "Kurisu";
@@ -46,9 +55,7 @@
   networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [
-    7777 # docker openvpn
-  ];
+  # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   networking.firewall.enable = true;
 

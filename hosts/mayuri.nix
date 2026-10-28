@@ -44,6 +44,16 @@
   networking.defaultGateway = "192.168.1.1";
   networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
 
+  # OpenVPN HTTP proxy container.
+  ovpn-proxy = {
+    enable = true;
+    externalInterface = "enp7s0";
+    configSecret = "openvpn/mayuri/config";
+    usernameSecret = "openvpn/mayuri/username";
+    passwordSecret = "openvpn/mayuri/password";
+    credentialsTemplate = "openvpn/mayuri/credentials";
+  };
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];

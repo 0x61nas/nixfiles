@@ -12,5 +12,6 @@
     ./fonts.nix
     ./vars.nix
     ./nix-secrets.nix
+    ./ovpn-proxy.nix
   ];
 }

@@ -8,10 +8,6 @@ let
 
   # Only secrets that are enabled on this host are handed to nix-secrets.
   enabledSecrets = lib.filterAttrs (_: secret: secret.enable) cfg.secrets;
-
-  openvpnCredentialsEnabled =
-    enabledSecrets ? "openvpn/username"
-    && enabledSecrets ? "openvpn/password";
 in
 {
   imports = [ inputs.nix-secrets.nixosModules.default ];
@@ -47,6 +43,23 @@ in
       description = "Secrets managed by nix-secrets. Each entry can be disabled per host.";
     };
 
+    templates = lib.mkOption {
+      type = lib.types.attrsOf (
+        lib.types.submodule {
+          options.content = lib.mkOption {
+            type = lib.types.lines;
+            description = "Content of the rendered template.";
+          };
+        }
+      );
+      default = { };
+      description = ''
+        Templates managed by nix-secrets. Use
+        `security.nix-secrets.secrets.<name>` inside the content to insert a
+        decrypted secret value.
+      '';
+    };
+
     identityPaths = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];
@@ -64,15 +77,6 @@ in
 
   config = lib.mkMerge [
     {
-      # Define the known secrets at normal priority so host-level overrides
-      # such as `nix-secrets.secrets."openvpn/config".enable = false` merge
-      # instead of replacing the whole set.
-      nix-secrets.secrets = {
-        "openvpn/config" = { };
-        "openvpn/username" = { };
-        "openvpn/password" = { };
-      };
-
       security.nix-secrets = {
         storage = ../secrets;
         storagePath = "/home/anas/nixfiles/secrets";
@@ -93,12 +97,11 @@ in
           )
           enabledSecrets;
 
-        templates = lib.mkIf openvpnCredentialsEnabled {
-          "openvpn/credentials".content = ''
-            ${config.security.nix-secrets.secrets."openvpn/username"}
-            ${config.security.nix-secrets.secrets."openvpn/password"}
-          '';
-        };
+        templates = lib.mapAttrs
+          (_: template: {
+            inherit (template) content;
+          })
+          cfg.templates;
       };
     })
   ];
