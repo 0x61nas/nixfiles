@@ -16,7 +16,15 @@
     recipientAliases.anas = "age15mdtap3g9c47ahnlsse0vykncwjyfspsuvyd9m87nedq9g2azv2ssys4mh"; # public key
   };
 
-  # OpenVPN HTTP proxy. Enable this once the Kurisu-specific secrets below
+  # Declare Kurisu's OpenVPN secrets even while the container is disabled, so
+  # `nix-secrets -f .#kurisu edit ...` can create them.
+  nix-secrets.secrets = {
+    "openvpn/kurisu/config" = { };
+    "openvpn/kurisu/username" = { };
+    "openvpn/kurisu/password" = { };
+  };
+
+  # OpenVPN HTTP proxy. Enable this once the Kurisu-specific secrets above
   # exist in secrets/openvpn/kurisu/.
   ovpn-proxy = {
     enable = false;
