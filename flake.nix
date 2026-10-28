@@ -77,6 +77,9 @@
         config = {
           allowUnfree = true;
         };
+        overlays = [
+          (import ./overlays/systemd)
+        ];
       };
       pkgs-unstable = import nixpkgs-unstable {
         inherit system;

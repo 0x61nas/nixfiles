@@ -13,6 +13,9 @@
   nixowos.enable = true;
   nixowos.overlays.enable = true;
 
+  # UwU/o_O systemd status messages (overlays/systemd)
+  systemd.package = pkgs.suwustemd;
+
   # Firmware update helper
   # https://nixos.wiki/wiki/Fwupd
   services.fwupd.enable = true;
