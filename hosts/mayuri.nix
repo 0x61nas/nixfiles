@@ -52,6 +52,9 @@
     usernameSecret = "openvpn/mayuri/username";
     passwordSecret = "openvpn/mayuri/password";
     credentialsTemplate = "openvpn/mayuri/credentials";
+
+    # MagicDNS resolves the bare name `mayuri` to this Tailscale address.
+    extraLoopbackIPs = [ "100.126.74.4" ];
   };
 
   # Open ports in the firewall.

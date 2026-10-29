@@ -154,10 +154,20 @@ in
 
     loopbackIPs = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [ "127.0.0.1" lanAddress ];
+      default = [ "127.0.0.1" "127.0.0.2" lanAddress ];
       description = ''
-        Additional addresses that may use the forwarded port locally, such as
-        127.0.0.1 and the host's LAN address.
+        Addresses that may use the forwarded port locally. Defaults to
+        127.0.0.1, the hostname address 127.0.0.2, and the host's LAN address.
+      '';
+    };
+
+    extraLoopbackIPs = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      example = [ "100.64.0.1" ];
+      description = ''
+        Additional addresses appended to loopbackIPs, such as a Tailscale
+        address used by MagicDNS to resolve this host's name.
       '';
     };
 
@@ -239,10 +249,11 @@ in
             destination = "${cfg.localAddress}:${toString cfg.proxyPort}";
             proto = "tcp";
 
-            # Also allow the host itself to use the proxy. Without this the
-            # port forward only applies to traffic arriving on the LAN
+            # Also allow the host itself and the extra addresses (for example
+            # the Tailscale/MagicDNS address) to use the proxy. Without this
+            # the port forward only applies to traffic arriving on the LAN
             # interface.
-            inherit (cfg) loopbackIPs;
+            loopbackIPs = cfg.loopbackIPs ++ cfg.extraLoopbackIPs;
           }
         ];
       };

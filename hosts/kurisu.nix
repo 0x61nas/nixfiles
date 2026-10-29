@@ -25,6 +25,9 @@
     usernameSecret = "openvpn/kurisu/username";
     passwordSecret = "openvpn/kurisu/password";
     credentialsTemplate = "openvpn/kurisu/credentials";
+
+    # MagicDNS resolves the bare name `kurisu` to this Tailscale address.
+    extraLoopbackIPs = [ "100.98.50.57" ];
   };
   # Networking
   networking.hostName = "Kurisu";
