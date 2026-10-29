@@ -163,9 +163,10 @@ nix-secrets -f .#kurisu edit openvpn/kurisu/password
 nix-secrets -f .#kurisu edit openvpn/kurisu/config
 ```
 
-The CLI only sees secrets that are enabled on that host. Set
-`ovpn-proxy.enable = true` on Kurisu before creating its secrets; the
-configuration will not build until all three encrypted files exist.
+The CLI only sees secrets that are enabled on that host. Kurisu declares its
+OpenVPN secrets in `nix-secrets.secrets` even while `ovpn-proxy.enable = false`,
+so they can be created before the container is enabled. Once all three
+encrypted files exist, set `ovpn-proxy.enable = true` and rebuild.
 
 The editor is taken from `$EDITOR`. To pipe a value in instead of opening an
 editor (useful for scripted updates), set it to `-`:
@@ -221,6 +222,9 @@ ovpn-proxy = {
   usernameSecret = "openvpn/mayuri/username";
   passwordSecret = "openvpn/mayuri/password";
   credentialsTemplate = "openvpn/mayuri/credentials";
+
+  # MagicDNS resolves the bare name `mayuri` to this Tailscale address.
+  extraLoopbackIPs = [ "100.126.74.4" ];
 };
 ```
 
@@ -241,6 +245,9 @@ ovpn-proxy = {
   usernameSecret = "openvpn/kurisu/username";
   passwordSecret = "openvpn/kurisu/password";
   credentialsTemplate = "openvpn/kurisu/credentials";
+
+  # MagicDNS resolves the bare name `kurisu` to this Tailscale address.
+  extraLoopbackIPs = [ "100.98.50.57" ];
 };
 ```
 
@@ -254,7 +261,8 @@ Other per-host options:
 | `localAddress`        | `10.234.0.2`               | Container side of the private container network     |
 | `network`             | `10.234.0.0/24`            | Container network used for NAT                      |
 | `dns`                 | `1.1.1.1`, `1.0.0.1`       | DNS servers inside the container                    |
-| `loopbackIPs`         | `127.0.0.1` plus LAN        | Extra addresses allowed to use the forwarded port    |
+| `loopbackIPs`         | `127.0.0.1`, `127.0.0.2`, LAN | Addresses allowed to use the forwarded port       |
+| `extraLoopbackIPs`    | `[ ]`                      | Extra addresses appended, e.g. a Tailscale address  |
 | `openvpnServer`       | `proton`                   | Name of the OpenVPN systemd service                  |
 | `configSecret`        | `openvpn/config`           | `.ovpn` configuration secret                        |
 | `usernameSecret`      | `openvpn/username`         | OpenVPN username secret                             |
@@ -264,6 +272,74 @@ Other per-host options:
 The container is only created when `enable = true`, `externalInterface` is
 set, and all three secrets are enabled. The credentials template is rendered
 automatically, so there is no separate `.enc` file for it.
+
+#### Accessing the proxy
+
+From a machine connected to the Tailscale tailnet, the bare hostname resolves
+through MagicDNS:
+
+```sh
+curl -x http://kurisu:7777 https://ifconfig.me
+```
+
+MagicDNS resolves each host to its Tailscale address, so both hosts list their
+Tailscale address in `extraLoopbackIPs`. The port forward then works both on
+the LAN and over Tailscale.
+
+On the LAN, mDNS works without Tailscale:
+
+```sh
+curl -x http://kurisu.local:7777 https://ifconfig.me
+```
+
+On the host itself, `127.0.0.2` (the hostname address) is included by default.
+If you want bare `kurisu` to resolve to the LAN address without Tailscale, add
+`192.168.1.3 kurisu` to the client's `/etc/hosts` or to the local DNS server.
+
+#### Troubleshooting: `Failed to create an input reader`
+
+If a switch fails during nix-secrets activation with:
+
+```text
+INFO Nothing to deploy
+ERROR Failed to create an input reader
+Failed to run activate script
+```
+
+the manifest references an `.enc` file that is not present in the flake source.
+Flakes only see git-tracked files, so an untracked secret is invisible even
+though it exists on disk.
+
+Check that:
+
+1. The secret is declared on that host and `nix-secrets.enable = true`.
+2. The file path matches the secret name:
+   `openvpn/mayuri/config` → `secrets/openvpn/mayuri/config.enc`.
+3. The file is tracked or staged: `git add secrets/` and `git status --short`.
+4. Re-run the switch:
+
+   ```sh
+   sudo nixos-rebuild switch --flake .#<host>
+   ```
+
+If the source secret cannot be read with `nix-secrets decrypt` because the
+container is disabled on that host, decrypt it directly with age and pipe it
+into the target host:
+
+```sh
+nix shell nixpkgs#age -c age --decrypt \
+  --identity /home/anas/.nix-secrets/keys.txt \
+  --output /tmp/secret \
+  secrets/openvpn/mayuri/config.enc
+
+EDITOR=- nix-secrets -f "git+file:///path/to/nixfiles#kurisu" \
+  edit openvpn/kurisu/config < /tmp/secret
+
+rm -f /tmp/secret
+```
+
+The target host's manifest decides the recipient, so the new file is encrypted
+to that host's key.
 
 ### Mutual binary cache (`peer-cache.nix`)
 
