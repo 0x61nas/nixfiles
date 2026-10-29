@@ -12,7 +12,6 @@
   home.stateVersion = "23.11";
 
   home.packages = with pkgs; [
-    pfetch-rs
     thunderbird
     tree
     yt-dlp
@@ -29,7 +28,6 @@
     #protonup-qt
     wine64Packages.stagingFull
     inlyne
-    anki
   ];
 
   programs.home-manager.enable = true;
