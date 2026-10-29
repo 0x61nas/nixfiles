@@ -19,7 +19,7 @@
   # OpenVPN HTTP proxy. Enable this once the Kurisu-specific secrets above
   # exist in secrets/openvpn/kurisu/.
   ovpn-proxy = {
-    enable = false;
+    enable = true;
     externalInterface = "enp44s0";
     configSecret = "openvpn/kurisu/config";
     usernameSecret = "openvpn/kurisu/username";
