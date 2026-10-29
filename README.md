@@ -1,22 +1,3 @@
-<h1 align="center">
-  <div>
-    <a href="https://github.com/0x61nas/nixfiles/issues">
-        <img src="https://img.shields.io/github/issues/0x61nas/nixfiles?color=fab387&labelColor=303446&style=for-the-badge">
-    </a>
-    <a href="https://github.com/0x61nas/nixfiles/stargazers">
-        <img src="https://img.shields.io/github/stars/0x61nas/nixfiles?color=ca9ee6&labelColor=303446&style=for-the-badge">
-    </a>
-    <a href="https://github.com/0x61nas/nixfiles">
-        <img src="https://img.shields.io/github/repo-size/0x61nas/nixfiles?color=ea999c&labelColor=303446&style=for-the-badge">
-    </a>
-    <a href="https://github.com/0x61nas/nixfiles/LICENSE">
-        <img src="https://img.shields.io/static/v1.svg?style=for-the-badge&label=License&message=MIT&logoColor=ca9ee6&colorA=313244&colorB=cba6f7"/>
-    </a>
-    <br>
-    </div>
-        <img href="https://builtwithnix.org" src="https://builtwithnix.org/badge.svg"/>
-   </h1>
-
 <div align="center">
 <h1>
 ❄️  Anas's NixOS flake  ❄️
