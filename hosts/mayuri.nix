@@ -10,6 +10,10 @@
     ./mayuri-hardware-configuration.nix
   ];
 
+  # nix-secrets activates in stage 1, so the age identity under /home must be
+  # mounted before the initrd activation script runs.
+  fileSystems."/home".neededForBoot = true;
+
   # Use the shared nix-secrets module on this host.
   nix-secrets = {
     enable = true;
