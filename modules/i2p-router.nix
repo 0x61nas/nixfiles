@@ -120,21 +120,21 @@ let
     {
       sourcePort = cfg.console.port;
       destination = "${cfg.localAddress}:${toString cfg.console.port}";
-      loopbackIPs = [ "127.0.0.1" ];
+      loopbackIPs = [ "127.0.0.1" ] ++ cfg.extraLoopbackIPs;
     }
   ]
   ++ lib.optionals cfg.httpProxy.enable [
     {
       sourcePort = cfg.httpProxy.port;
       destination = "${cfg.localAddress}:${toString cfg.httpProxy.port}";
-      loopbackIPs = [ "127.0.0.1" ];
+      loopbackIPs = [ "127.0.0.1" ] ++ cfg.extraLoopbackIPs;
     }
   ]
   ++ lib.optionals cfg.socksProxy.enable [
     {
       sourcePort = cfg.socksProxy.port;
       destination = "${cfg.localAddress}:${toString cfg.socksProxy.port}";
-      loopbackIPs = [ "127.0.0.1" ];
+      loopbackIPs = [ "127.0.0.1" ] ++ cfg.extraLoopbackIPs;
     }
   ];
 
@@ -187,6 +187,17 @@ in
       type = lib.types.listOf lib.types.str;
       default = [ "1.1.1.1" "1.0.0.1" ];
       description = "DNS servers used inside the container.";
+    };
+
+    extraLoopbackIPs = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      example = [ "100.98.50.57" ];
+      description = ''
+        Extra addresses allowed to reach the forwarded proxy ports, in
+        addition to 127.0.0.1. Add this host's Tailscale address so other
+        hosts in the PAC fallback list can use these proxies.
+      '';
     };
 
     peerPort = lib.mkOption {
