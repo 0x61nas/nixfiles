@@ -8,6 +8,53 @@ let
 
   # Only secrets that are enabled on this host are handed to nix-secrets.
   enabledSecrets = lib.filterAttrs (_: secret: secret.enable) cfg.secrets;
+  enabledTemplates = lib.filterAttrs (_: template: template.enable) cfg.templates;
+
+  # Optional pass-through to security.nix-secrets for secrets/templates that
+  # need a custom location or ownership (for example a service's key file).
+  placementOptions = {
+    path = lib.mkOption {
+      type = lib.types.nullOr (
+        lib.types.addCheck lib.types.str (path: builtins.substring 0 1 path == "/")
+      );
+      default = null;
+      description = ''
+        Absolute path where to place the decrypted file. Null uses the
+        nix-secrets default. Use a string, not a Nix path, so the file is not
+        copied into the store.
+      '';
+    };
+
+    mode = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      description = "Permissions of the decrypted file, e.g. \"0400\". Null uses the default.";
+    };
+
+    owner = lib.mkOption {
+      type = lib.types.nullOr (lib.types.either lib.types.int lib.types.str);
+      default = null;
+      description = "Owner of the decrypted file. Null uses the default.";
+    };
+
+    group = lib.mkOption {
+      type = lib.types.nullOr (lib.types.either lib.types.int lib.types.str);
+      default = null;
+      description = "Group of the decrypted file. Null uses the default.";
+    };
+
+    isSymlink = lib.mkOption {
+      type = lib.types.nullOr lib.types.bool;
+      default = null;
+      description = "Whether to symlink the file instead of writing it in place. Null uses the default.";
+    };
+  };
+
+  # Drop null values so they don't override nix-secrets' own defaults.
+  placementAttrs = item:
+    lib.filterAttrs (_: value: value != null) {
+      inherit (item) path mode owner group isSymlink;
+    };
 in
 {
   imports = [ inputs.nix-secrets.nixosModules.default ];
@@ -37,7 +84,7 @@ in
                 security.nix-secrets.defaultRecipients is used.
               '';
             };
-          };
+          } // placementOptions;
         }
       );
       description = "Secrets managed by nix-secrets. Each entry can be disabled per host.";
@@ -46,10 +93,18 @@ in
     templates = lib.mkOption {
       type = lib.types.attrsOf (
         lib.types.submodule {
-          options.content = lib.mkOption {
-            type = lib.types.lines;
-            description = "Content of the rendered template.";
-          };
+          options = {
+            enable = lib.mkOption {
+              type = lib.types.bool;
+              default = true;
+              description = "Whether this template is managed on this host.";
+            };
+
+            content = lib.mkOption {
+              type = lib.types.lines;
+              description = "Content of the rendered template.";
+            };
+          } // placementOptions;
         }
       );
       default = { };
@@ -91,17 +146,18 @@ in
 
         secrets = lib.mapAttrs
           (_: secret:
-            lib.optionalAttrs (secret.recipients != [ ]) {
+            (lib.optionalAttrs (secret.recipients != [ ]) {
               inherit (secret) recipients;
-            }
+            })
+            // placementAttrs secret
           )
           enabledSecrets;
 
         templates = lib.mapAttrs
           (_: template: {
             inherit (template) content;
-          })
-          cfg.templates;
+          } // placementAttrs template)
+          enabledTemplates;
       };
     })
   ];

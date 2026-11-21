@@ -39,6 +39,7 @@
   i2p-router = {
     enable = false;
     externalInterface = "enp44s0";
+    extraLoopbackIPs = [ "100.98.50.57" ];
     console.passwordSecret = "i2p/kurisu/console/password";
     sites.blog = {
       enable = false;
