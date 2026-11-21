@@ -37,7 +37,7 @@
   # I2P router (i2pd) container. Create the encrypted secrets below, then set
   # both enable flags to true to start the router and publish the site.
   i2p-router = {
-    enable = false;
+    enable = true;
     externalInterface = "enp44s0";
     extraLoopbackIPs = [ "100.98.50.57" ];
     console.passwordSecret = "i2p/kurisu/console/password";
