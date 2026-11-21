@@ -62,6 +62,7 @@ let
       auth = ${bool cfg.console.auth}
       user = ${cfg.console.user}
       ${lib.optionalString cfg.console.auth "pass = ${consolePlaceholder}"}
+      hostname = ${cfg.console.hostname}
     ''}
 
     [httpproxy]
@@ -306,6 +307,16 @@ in
         default = "i2p/console/password";
         description = "nix-secrets secret containing the web console password.";
       };
+
+      hostname = lib.mkOption {
+        type = lib.types.str;
+        default = lib.toLower config.networking.hostName;
+        defaultText = lib.literalExpression "lib.toLower config.networking.hostName";
+        description = ''
+          Host name accepted by i2pd's strict Host-header check. Use the same
+          name you open the console with (for example `kurisu:7070`).
+        '';
+      };
     };
 
     httpProxy = {
@@ -452,6 +463,10 @@ in
     })
 
     (lib.mkIf containerReady {
+      # A failed i2pd exits the container with a non-zero status. Do not let
+      # the host respawn an empty router.
+      systemd.services."container@i2p-router".serviceConfig.Restart = lib.mkForce "no";
+
       networking.nat = {
         enable = true;
         inherit (cfg) externalInterface;
@@ -515,6 +530,12 @@ in
                 # cannot create directories directly under /run.
                 RuntimeDirectory = "i2pd";
                 RuntimeDirectoryMode = "0700";
+                # If i2pd fails, stop for good: no restart, and exit the
+                # container manager with a non-zero status so the failure is
+                # visible. The host container unit is also set to Restart=no.
+                Restart = lib.mkForce "no";
+                FailureAction = "exit";
+                FailureActionExitStatus = 1;
                 ExecStartPre = "+${preStartScript}";
                 ExecStart = lib.mkForce
                   "${cfg.package}/bin/i2pd --service --conf=${runDir}/i2pd.conf --tunconf=${tunnelsConf}";
