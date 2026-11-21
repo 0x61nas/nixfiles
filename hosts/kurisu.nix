@@ -34,13 +34,22 @@
     extraLoopbackIPs = [ "100.98.50.57" ];
   };
 
-  # I2P router (i2pd) container. Create the encrypted secrets below, then set
-  # both enable flags to true to start the router and publish the site.
+  # Java I2P router container. Create the encrypted secrets below, then enable
+  # a site to publish it.
   i2p-router = {
     enable = true;
     externalInterface = "enp44s0";
     extraLoopbackIPs = [ "100.98.50.57" ];
     console.passwordSecret = "i2p/kurisu/console/password";
+    share = 65;
+    bandwidth = {
+      inbound = 270;
+      outbound = 54;
+      inboundBurst = 300;
+      outboundBurst = 60;
+      inboundBurstPeak = 6000;
+      outboundBurstPeak = 1200;
+    };
     sites.blog = {
       enable = false;
       port = 8080;
