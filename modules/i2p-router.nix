@@ -116,6 +116,15 @@ let
     )
     (builtins.attrNames enabledSites);
 
+  # The bind-mounted secrets stay root-owned, so the copy must run as root.
+  # systemd's "+" prefix on ExecStartPre overrides the service's User=.
+  preStartScript = pkgs.writeShellScript "i2pd-pre-start" ''
+    set -e
+    ${pkgs.coreutils}/bin/install -o ${user} -g ${group} -m 0400 \
+      ${mountDir}/i2pd.conf ${runDir}/i2pd.conf
+    ${siteKeyCopies}
+  '';
+
   proxyForwards = lib.optionals cfg.console.enable [
     {
       sourcePort = cfg.console.port;
@@ -501,16 +510,12 @@ in
 
             systemd.services.i2pd = {
               after = [ "network-online.target" ];
-              preStart = ''
-                ${pkgs.coreutils}/bin/install -o ${user} -g ${group} -m 0400 \
-                  ${mountDir}/i2pd.conf ${runDir}/i2pd.conf
-                ${siteKeyCopies}
-              '';
               serviceConfig = {
                 # Created by systemd before ExecStartPre: the service user
                 # cannot create directories directly under /run.
                 RuntimeDirectory = "i2pd";
                 RuntimeDirectoryMode = "0700";
+                ExecStartPre = "+${preStartScript}";
                 ExecStart = lib.mkForce
                   "${cfg.package}/bin/i2pd --service --conf=${runDir}/i2pd.conf --tunconf=${tunnelsConf}";
               };
