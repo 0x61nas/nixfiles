@@ -33,6 +33,20 @@
     # MagicDNS resolves the bare name `kurisu` to this Tailscale address.
     extraLoopbackIPs = [ "100.98.50.57" ];
   };
+
+  # I2P router (i2pd) container. Create the encrypted secrets below, then set
+  # both enable flags to true to start the router and publish the site.
+  i2p-router = {
+    enable = false;
+    externalInterface = "enp44s0";
+    console.passwordSecret = "i2p/kurisu/console/password";
+    sites.blog = {
+      enable = false;
+      port = 8080;
+      keySecret = "i2p/kurisu/sites/blog/keys";
+    };
+  };
+
   # Networking
   networking.hostName = "Kurisu";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.

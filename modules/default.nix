@@ -13,5 +13,6 @@
     ./vars.nix
     ./nix-secrets.nix
     ./ovpn-proxy.nix
+    ./i2p-router.nix
   ];
 }

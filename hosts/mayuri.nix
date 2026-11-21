@@ -61,6 +61,19 @@
     extraLoopbackIPs = [ "100.126.74.4" ];
   };
 
+  # I2P router (i2pd) container. Create the encrypted secrets below, then set
+  # both enable flags to true to start the router and publish the site.
+  i2p-router = {
+    enable = false;
+    externalInterface = "enp7s0";
+    console.passwordSecret = "i2p/mayuri/console/password";
+    sites.blog = {
+      enable = false;
+      port = 8080;
+      keySecret = "i2p/mayuri/sites/blog/keys";
+    };
+  };
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
