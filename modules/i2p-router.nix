@@ -502,13 +502,18 @@ in
             systemd.services.i2pd = {
               after = [ "network-online.target" ];
               preStart = ''
-                ${pkgs.coreutils}/bin/install -d -o ${user} -g ${group} -m 0700 ${runDir}
                 ${pkgs.coreutils}/bin/install -o ${user} -g ${group} -m 0400 \
                   ${mountDir}/i2pd.conf ${runDir}/i2pd.conf
                 ${siteKeyCopies}
               '';
-              serviceConfig.ExecStart = lib.mkForce
-                "${cfg.package}/bin/i2pd --service --conf=${runDir}/i2pd.conf --tunconf=${tunnelsConf}";
+              serviceConfig = {
+                # Created by systemd before ExecStartPre: the service user
+                # cannot create directories directly under /run.
+                RuntimeDirectory = "i2pd";
+                RuntimeDirectoryMode = "0700";
+                ExecStart = lib.mkForce
+                  "${cfg.package}/bin/i2pd --service --conf=${runDir}/i2pd.conf --tunconf=${tunnelsConf}";
+              };
             };
           };
       };
