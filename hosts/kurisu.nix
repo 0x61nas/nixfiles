@@ -41,14 +41,26 @@
     externalInterface = "enp44s0";
     extraLoopbackIPs = [ "100.98.50.57" ];
     console.passwordSecret = "i2p/kurisu/console/password";
+    console.universalTheming = true;
+    console.embedApps = true;
+    i2cp.auth = true;
     share = 65;
     bandwidth = {
       inbound = 270;
       outbound = 54;
       inboundBurst = 300;
       outboundBurst = 60;
-      inboundBurstPeak = 6000;
-      outboundBurstPeak = 1200;
+      inboundBurstPeak = 5996;
+      outboundBurstPeak = 1191;
+    };
+    webapps = {
+      addressbook = true;
+      i2psnark = true;
+      i2ptunnel = true;
+      imagegen = true;
+      jsonrpc = true;
+      susidns = true;
+      susimail = true;
     };
     sites.blog = {
       enable = false;
