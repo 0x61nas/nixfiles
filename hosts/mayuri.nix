@@ -66,11 +66,26 @@
   i2p-router = {
     enable = false;
     externalInterface = "enp7s0";
+    extraLoopbackIPs = [ "100.126.74.4" ];
     console.passwordSecret = "i2p/mayuri/console/password";
     sites.blog = {
       enable = false;
       port = 8080;
       keySecret = "i2p/mayuri/sites/blog/keys";
+    };
+  };
+
+  # Tor container. Create the onion key secret below, then enable the router
+  # and the site to publish it.
+  tor-router = {
+    enable = false;
+    externalInterface = "enp7s0";
+    extraLoopbackIPs = [ "100.126.74.4" ];
+    sites.blog = {
+      enable = false;
+      port = 8080;
+      targetPort = 8080;
+      keySecret = "tor/mayuri/sites/blog/keys";
     };
   };
 

@@ -14,5 +14,6 @@
     ./nix-secrets.nix
     ./ovpn-proxy.nix
     ./i2p-router.nix
+    ./tor-router.nix
   ];
 }

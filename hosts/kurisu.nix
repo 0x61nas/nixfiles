@@ -69,6 +69,20 @@
     };
   };
 
+  # Tor container. Create the onion key secret below, then enable the router
+  # and the site to publish it.
+  tor-router = {
+    enable = false;
+    externalInterface = "enp44s0";
+    extraLoopbackIPs = [ "100.98.50.57" ];
+    sites.blog = {
+      enable = false;
+      port = 8080;
+      targetPort = 8080;
+      keySecret = "tor/kurisu/sites/blog/keys";
+    };
+  };
+
   # Networking
   networking.hostName = "Kurisu";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
