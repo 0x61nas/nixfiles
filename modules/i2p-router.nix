@@ -724,6 +724,12 @@ in
       # Do not let the host respawn an empty router.
       systemd.services."container@i2p-router".serviceConfig.Restart = lib.mkForce "no";
 
+      # DNAT from 127.0.0.1/8 to the container requires loopback routing.
+      boot.kernel.sysctl = {
+        "net.ipv4.conf.all.route_localnet" = true;
+        "net.ipv4.conf.default.route_localnet" = true;
+      };
+
       networking.nat = {
         enable = true;
         inherit (cfg) externalInterface;

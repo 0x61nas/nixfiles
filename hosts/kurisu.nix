@@ -39,7 +39,9 @@
   i2p-router = {
     enable = true;
     externalInterface = "enp44s0";
-    extraLoopbackIPs = [ "100.98.50.57" ];
+    # NixOS maps the host name to 127.0.0.2 locally; MagicDNS maps it to the
+    # Tailscale address on the other hosts.
+    extraLoopbackIPs = [ "127.0.0.2" "100.98.50.57" ];
     console.passwordSecret = "i2p/kurisu/console/password";
     console.universalTheming = true;
     console.embedApps = true;
@@ -74,7 +76,9 @@
   tor-router = {
     enable = false;
     externalInterface = "enp44s0";
-    extraLoopbackIPs = [ "100.98.50.57" ];
+    # NixOS maps the host name to 127.0.0.2 locally; MagicDNS maps it to the
+    # Tailscale address on the other hosts.
+    extraLoopbackIPs = [ "127.0.0.2" "100.98.50.57" ];
     sites.blog = {
       enable = false;
       port = 8080;
