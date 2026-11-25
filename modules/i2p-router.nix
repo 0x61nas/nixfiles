@@ -153,6 +153,7 @@ let
     cp ${pkgs.writeText "i2p-webapps.config" webappsConfig} $out/webapps.config
     cp ${pkgs.writeText "i2p-subscriptions.txt" subscriptionsConfig} \
       $out/addressbook/subscriptions.txt
+    cp ${cfg.package}/hosts.txt $out/hosts.txt
     ${lib.optionalString cfg.console.enable ''
       cp ${pkgs.writeText "i2p-webconsole-client.config" webConsoleClientConfig} \
         $out/clients.config.d/00-webconsole.config
@@ -217,7 +218,9 @@ let
       "$config_dir/clients.config.d" "$config_dir/i2ptunnel.config.d" \
       "$config_dir/addressbook"
 
-    "$install_bin" -o "$owner" -g "$group" -m 0400 \
+    "$install_bin" -o "$owner" -g "$group" -m 0600 \
+      "$dist_dir/hosts.txt" "$config_dir/hosts.txt"
+    "$install_bin" -o "$owner" -g "$group" -m 0600 \
       "$dist_dir/addressbook/subscriptions.txt" \
       "$config_dir/addressbook/subscriptions.txt"
 
