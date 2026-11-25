@@ -687,8 +687,8 @@ in
         {
           assertion = builtins.all
             (sub:
-              builtins.replaceStrings [ "\n" "\r" ] [ "" ] sub.name == sub.name &&
-              builtins.replaceStrings [ "\n" "\r" ] [ "" ] sub.url == sub.url)
+              builtins.replaceStrings [ "\n" "\r" ] [ "" "" ] sub.name == sub.name &&
+              builtins.replaceStrings [ "\n" "\r" ] [ "" "" ] sub.url == sub.url)
             cfg.addressBook.subscriptions;
           message = "i2p-router address book subscription names and URLs must not contain newlines.";
         }
