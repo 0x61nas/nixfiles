@@ -322,18 +322,171 @@ rm -f /tmp/secret
 The target host's manifest decides the recipient, so the new file is encrypted
 to that host's key.
 
+### Anonymous routers (`i2p-router`, `tor-router`)
+
+`modules/i2p-router.nix` runs Java I2P (`pkgs.i2p`) and
+`modules/tor-router.nix` runs Tor in **private NixOS containers**, the same
+pattern as `ovpn-proxy.nix`. Both are disabled on each host until their secrets
+exist. Each container has its own network (`10.235.0.0/24` for I2P,
+`10.236.0.0/24` for Tor) with host-side address `10.235.0.1` / `10.236.0.1`.
+Decrypted secrets are bind-mounted individually; nothing secret is copied into
+the Nix store. The router console password is hashed in `ExecStartPre`, so only
+the hash lands in the generated config.
+
+Java I2P configuration is generated rather than edited by hand:
+`router.config`, `logger.config`, `webapps.config`, split `clients.config.d/`,
+and split `i2ptunnel.config.d/`. The address-book subscriptions are:
+
+```text
+http://i2p-projekt.i2p/hosts.txt
+http://stats.i2p/cgi-bin/newhosts.txt
+http://i2host.i2p/cgi-bin/i2hostetag
+http://identiguy.i2p/hosts.txt
+```
+
+The package's `hosts.txt` is seeded into the config dir and the router uses
+`HostsTxtNamingService`: the default blockfile database imports `hosts.txt`
+only when it is first created and would otherwise ignore later seeds. Both
+`hosts.txt` and `addressbook/subscriptions.txt` are installed mode `0600` so
+I2P can save updates. The first subscription fetch happens a few minutes after
+startup, then every 12 hours.
+
+Set `externalInterface` to the host's LAN interface (needed by NAT), flip the
+router and site `enable` flags, and allow the loopback/Tailscale addresses that
+should reach the forwarded ports:
+
+```nix
+# hosts/kurisu.nix
+i2p-router = {
+  enable = true;
+  externalInterface = "enp44s0";
+  # NixOS maps the host name to 127.0.0.2 locally; MagicDNS maps it to this
+  # Tailscale address on the other hosts.
+  extraLoopbackIPs = [ "127.0.0.2" "100.98.50.57" ];
+  console.passwordSecret = "i2p/kurisu/console/password";
+  sites.blog = {
+    port = 8080; # onion-side port
+    keySecret = "i2p/kurisu/sites/blog/keys";
+  };
+};
+
+tor-router = {
+  enable = true;
+  externalInterface = "enp44s0";
+  extraLoopbackIPs = [ "127.0.0.2" "100.98.50.57" ];
+  sites.blog = {
+    port = 80;       # port exposed by the onion service
+    targetPort = 8080; # local backend on the host
+    keySecret = "tor/kurisu/sites/blog/keys";
+  };
+};
+```
+
+The I2P module also enables `net.ipv4.conf.all.route_localnet`; without it,
+DNAT from `127.0.0.1` to the container's proxy ports times out. The router is
+fail-stop: `Restart = no` and `FailureAction = exit` keep a broken Java I2P
+process from being respawned as an empty router.
+
+A site's `host`/`target` defaults to the host's container address, so a backend
+listening on the host is reachable. Set it to `127.0.0.1` for a backend running
+inside the container. Each enabled site becomes a Java I2P `http` server tunnel
+(use `type = "server"` for generic TCP) or a Tor v3 onion service.
+
+Secrets:
+
+| Secret | Purpose |
+| ------ | ------- |
+| `i2p-router.console.passwordSecret` | Java I2P web console password; hashed at startup, plaintext never enters the store |
+| each I2P site's `keySecret` | destination key in `eepPriv.dat` format, installed at `<config-dir>/<site>-keys.dat` |
+| each Tor site's `keySecret` | v3 `hs_ed25519_secret_key`, installed inside the container's onion directory |
+
+The `.i2p`/`.onion` address is derived from its key, so back the key up:
+replacing it changes the address.
+
+With the `enable` flags set, declare the secrets first so `nix-secrets edit`
+can create them before the first successful rebuild:
+
+```sh
+# Java I2P console password
+nix shell nixpkgs#openssl -c openssl rand -hex 32 |
+  EDITOR=- nix-secrets -f "git+file://$PWD#kurisu" edit i2p/kurisu/console/password
+
+# Java I2P site key (`keyinfo` prints the resulting b32 address)
+nix shell nixpkgs#i2pd-tools -c keygen /tmp/blog-keys.dat
+nix shell nixpkgs#i2pd-tools -c keyinfo /tmp/blog-keys.dat
+EDITOR=- nix-secrets -f "git+file://$PWD#kurisu" \
+  edit i2p/kurisu/sites/blog/keys < /tmp/blog-keys.dat
+rm /tmp/blog-keys.dat
+
+# Tor v3 onion key: use the GPU vanity generator (see scripts/README.md)
+./scripts/generate-vanity-onion.sh --import --host kurisu spacebar
+```
+
+The generator imports `hs_ed25519_secret_key` into
+`tor/kurisu/sites/spacebar/keys`; it never writes plaintext keys into git or
+the Nix store. To let Tor generate a key instead:
+
+```sh
+nix shell nixpkgs#tor -c timeout 10s tor \
+  --DataDirectory /tmp/tor-onion --HiddenServiceDir /tmp/onion \
+  --HiddenServicePort 80 127.0.0.1:8080 || true
+EDITOR=- nix-secrets -f "git+file://$PWD#kurisu" \
+  edit tor/kurisu/sites/blog/keys < /tmp/onion/hs_ed25519_secret_key
+rm -rf /tmp/tor-onion /tmp/onion
+
+git add secrets/ && nh os switch -H kurisu
+```
+
+Host access is forwarded to `127.0.0.1`, `127.0.0.2`, the LAN address, and any
+`extraLoopbackIPs`: I2P console `7070`, HTTP proxy `4444`, SOCKS proxy `4447`;
+Tor SOCKS `9050`. Only the I2P peer port `8887` (TCP/UDP) is opened on the host
+when `openFirewall` is true. Add more sites with another `sites.<name>` entry
+and its own key secret. Verify the address book with:
+
+```sh
+curl -x http://kurisu:4444 http://git.idk.i2p/
+# http://kurisu:7070/susidns/addressbook?book=router&filter=none
+```
+
+### Firefox PAC (generated)
+
+`media/firefox.nix` generates the PAC at build time from the flake's
+`nixosConfigurations`; there is no checked-in PAC file. For each proxy type it
+collects every host with that router enabled, puts **this** host first, and
+emits the rest as ordered fallbacks (Firefox tries them left to right):
+
+```js
+function FindProxyForURL(url, host) {
+  if (dnsDomainIs(host, ".onion")) return "SOCKS5 127.0.0.1:9050; SOCKS5 mayuri:9050; DIRECT";
+  if (dnsDomainIs(host, ".i2p")) return "PROXY 127.0.0.1:4444; PROXY mayuri:4444; DIRECT";
+  return "DIRECT";
+}
+```
+
+Local proxies use `127.0.0.1`; other hosts use their flake name, which
+MagicDNS resolves to their Tailscale address. On Kurisu that address is
+`100.98.50.57`, while the host name resolves locally to `127.0.0.2`
+(`/etc/hosts`). Router forwards therefore allow `127.0.0.1`, `127.0.0.2`, the
+LAN address, and each host's `extraLoopbackIPs`. The I2P module also enables
+`net.ipv4.conf.all.route_localnet`, without which DNAT from these loopback
+addresses to the container's proxy ports times out. Rules for a router that is
+disabled everywhere are omitted entirely. If **no** router is enabled on any
+host, the PAC is not installed and Firefox is set to direct
+(`network.proxy.type = 0`).
+
 ### Mutual binary cache (`peer-cache.nix`)
 
-`mayuri` and `kurisu` form a mutual binary-cache pair, wired in via
+`mayuri` and `kurisu` form a pull-only binary-cache pair, wired in via
 `cache.nix` → `peer-cache.nix`:
 
 - each host serves its whole store over HTTP with **harmonia** on port 5000
-  (`http://<peer>.local:5000`, names resolved via mDNS/avahi), signing
+  (`http://<peer>:5000`, using the flake/MagicDNS host name), signing
   responses with its own key;
-- every build is automatically pushed to the peer with a `post-build-hook`
-  that runs `nix copy --to ssh-ng://root@<peer>.local`;
-- pushes use a dedicated ssh keypair stored in `/etc/nix/` (nothing under any
-  `~/.ssh/`), and host keys are pinned in `/etc/nix/peer-cache-known-hosts`;
+- each host adds the other as a substituter with priority 20, so it is
+  preferred over `cache.nixos.org` (40) and Cachix (41);
+- builds are **not** pushed. There is no `post-build-hook`, no push SSH key,
+  and no root `authorizedKeys` entry. A build stays local until the peer pulls
+  it through its configured substituter;
 - a firewall rule opens port `5000` on the LAN interface only (stays dormant
   while `networking.firewall.enable = false`).
 
@@ -345,51 +498,42 @@ to that host's key.
 doas nix-store --generate-binary-cache-key <host>.lan-1 /etc/nix/peer-cache.key /etc/nix/peer-cache.key.pub
 ```
 
-2. On one machine, generate the shared push keypair and copy it to the other:
+2. Paste both signing public keys into `peer-cache.nix` in
+   `trusted-public-keys`, replacing the placeholders:
 
-```
-ssh-keygen -q -t ed25519 -N '' -C peer-cache -f /tmp/peer-cache-push
-doas install -m 600 /tmp/peer-cache-push /etc/nix/peer-cache-push.key
-cat /tmp/peer-cache-push | ssh root@<peer>.local 'umask 077; cat > /etc/nix/peer-cache-push.key'
-```
-
-3. Paste the three public keys into `peer-cache.nix`, replacing the
-   placeholders:
-
-   - both signing keys (`cat /etc/nix/peer-cache.key.pub` on each machine) →
-     the `trusted-public-keys` list;
-   - the push public key (`cat /tmp/peer-cache-push.pub`) → the
-     `users.users.root.openssh.authorizedKeys.keys` list.
+   - `cat /etc/nix/peer-cache.key.pub` on each machine gives
+     `<host>.lan-1:...`.
 
    The signing keys must exist **before** the first switch, otherwise the
    harmonia unit fails to start (`LoadCredential`).
 
-4. Rebuild both hosts and restart the daemon so the new `post-build-hook`
-   is picked up:
+3. Rebuild both hosts:
 
 ```
 nh os switch -H <host>
-doas systemctl restart nix-daemon
 ```
+
+No push keypair and no separate `nix-daemon` restart are needed.
 
 #### Verifying
 
 ```
-# build a path no public cache has, on one host
+# on one host, build a path no public cache has
 nix build --impure --expr 'with import <nixpkgs> {}; runCommand "peer-cache-test" {} "echo hello > $out"'
 p=$(readlink -f result); h=$(basename "$p" | cut -d- -f1)
 
-# it should be signed and served by the peer's cache
-curl -s "http://<peer>.local:5000/$h.narinfo"        # expect Sig: <peer>.lan-1:...
+# that host serves a signed narinfo for it
+curl -s "http://localhost:5000/$h.narinfo" | grep '^Sig:'
 
-# on the peer: the push already landed; delete it, then fetch it back
-nix path-info "$p" && doas nix-store --delete "$p"
-nix build --impure --expr '<same expr>' --dry-run --option substituters "http://<host>.local:5000"
+# on the other host, delete it if present, then fetch it from the source cache
+if nix path-info "$p" >/dev/null 2>&1; then doas nix-store --delete "$p"; fi
+nix build --impure --expr '<same expr>' --dry-run --option substituters "http://<source>:5000"
 ```
 
-The pair is strictly two-node: `peer-cache.nix` maps each host to the single
-other entry in its `nodes` table. Adding a third host requires extending the
-module to push to (and substitute from) every other node.
+The mapping still chooses one peer per host: `peer-cache.nix` maps each host
+to the first other entry in its `nodes` table. A third host is therefore not
+automatically a full mesh; extend `substituters` in the module if every host
+should pull from every other node.
 
 ### How to add a new host
 
@@ -409,10 +553,11 @@ nixos-generate-config --root /mnt --show-hardware-config > hosts/<host>-hardware
    name in both the attribute name and the imported `hosts/<host>.nix`.
 
 4. Join the binary-cache pair: add the host to the `nodes` table in
-   `peer-cache.nix` (lowercase hostname + LAN interface name) and follow the
-   *Mutual binary cache* setup steps above to generate its signing key and
-   paste the public keys. Note the module is currently a strict two-node pair —
-   with more hosts it needs extending to push to every other node.
+   `peer-cache.nix` (lowercase hostname + LAN interface name), generate its
+   signing key, and paste its public key into `trusted-public-keys`. No push
+   keypair or root `authorizedKeys` entry is needed: other hosts pull builds
+   from this host's substituter. Note the module still maps each host to one
+   peer, so it is not a full mesh with more than two hosts.
 
 5. Add the host to the `hosts` output (used by the CI workflow to discover and
    build/eval each host), copying an existing entry and setting the right
