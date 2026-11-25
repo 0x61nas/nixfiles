@@ -160,7 +160,9 @@
 
               home-manager.users.anas = import ./users/anas.home.nix;
 
-              home-manager.extraSpecialArgs = commonHomeExtraSpecialArgs;
+              home-manager.extraSpecialArgs = commonHomeExtraSpecialArgs // {
+                localHostName = "mayuri";
+              };
             }
             # Mewo :3
             nixowos.nixosModules.default
@@ -195,7 +197,9 @@
 
               home-manager.users.anas = import ./users/anas.home.nix;
 
-              home-manager.extraSpecialArgs = commonHomeExtraSpecialArgs;
+              home-manager.extraSpecialArgs = commonHomeExtraSpecialArgs // {
+                localHostName = "kurisu";
+              };
             }
             # Mewo :3
             nixowos.nixosModules.default
