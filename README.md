@@ -495,7 +495,10 @@ and the configured numeric owner/group, so multi-scrobbler can create its own
 database, credentials and logs there. It uses the Docker-compatible directory
 layout (`CONFIG_DIR=/config`, `DATA_DIR=/config`, `LOGS_DIR=/config/logs`). The
 generated JSON files are mounted read-only over files in that directory, so
-edit the host config rather than the files inside the container.
+edit the host config rather than the files inside the container. They contain
+no plaintext credentials and are generated mode `0644` because nix-secrets
+copies non-symlink templates into place as root while the service runs
+unprivileged.
 
 Credentials are supplied through a root-owned nix-secrets template mounted
 read-only at `/run/secrets/multi-scrobbler.env`; plaintext never enters git or

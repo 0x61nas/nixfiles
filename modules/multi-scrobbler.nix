@@ -261,10 +261,12 @@ in
       };
 
       # Declarative, non-secret JSON config. Credentials stay as interpolation
-      # placeholders until multi-scrobbler reads them at startup.
+      # placeholders until multi-scrobbler reads them at startup. nix-secrets
+      # copies non-symlink templates into place as root, so these files are
+      # world-readable for the unprivileged service inside the container.
       nix-secrets.templates.${jellyfinConfigTemplate} = {
         content = jellyfinConfig;
-        mode = "0640";
+        mode = "0644";
         owner = cfg.uid;
         group = cfg.gid;
         isSymlink = false;
@@ -272,7 +274,7 @@ in
 
       nix-secrets.templates.${tealFmConfigTemplate} = {
         content = tealFmConfig;
-        mode = "0640";
+        mode = "0644";
         owner = cfg.uid;
         group = cfg.gid;
         isSymlink = false;
