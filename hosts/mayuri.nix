@@ -89,6 +89,28 @@
     };
   };
 
+  # Multi-Scrobbler a playing tracker
+  multi-scrobbler = {
+    enable = true;
+    port = 9078;
+    timeZone = "Africa/Cairo";
+    baseUrl = "http://mayuri:9078";
+    hostConfigDir = "/var/lib/multi-scrobbler/config";
+    uid = 1000;
+    gid = 1001;
+    jellyfin = {
+      url = "http://127.0.0.1:8096";
+      user = "anas";
+      id = "Mayuri-Jellyfin";
+      apiKeySecret = "multi-scrobbler/mayuri/jellyfin-apikey";
+    };
+    tealFm = {
+      id = "TealFm";
+      identifier = "anelgarhy.bsky.social";
+      appPasswordSecret = "multi-scrobbler/mayuri/teal-fm-app-password";
+    };
+  };
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];

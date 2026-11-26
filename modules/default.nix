@@ -15,5 +15,6 @@
     ./ovpn-proxy.nix
     ./i2p-router.nix
     ./tor-router.nix
+    ./multi-scrobbler.nix
   ];
 }
