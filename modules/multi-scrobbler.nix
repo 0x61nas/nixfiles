@@ -16,11 +16,19 @@ let
 
   configMount = "/config";
   environmentMount = "/run/secrets/multi-scrobbler.env";
+  jellyfinConfigMount = "${configMount}/jellyfin.json";
+  tealFmConfigMount = "${configMount}/tealfm.json";
+
+  jellyfinConfigTemplate = "multi-scrobbler-jellyfin-config";
+  tealFmConfigTemplate = "multi-scrobbler-tealfm-config";
 
   extraEnvironment = lib.mapAttrsToList
     (name: value: "${name}=${toString value}")
     cfg.extraEnvironment;
 
+  # Only runtime/persistent-directory settings stay in the environment. Sources
+  # and clients are declared in JSON files below, using interpolation keys that
+  # do not collide with multi-scrobbler's own ENV configuration names.
   environment = [
     "TZ=${cfg.timeZone}"
     "PORT=${toString cfg.port}"
@@ -28,12 +36,33 @@ let
     "CONFIG_DIR=${configMount}"
     "DATA_DIR=${configMount}"
     "LOGS_DIR=${configMount}/logs"
-    "JELLYFIN_URL=${cfg.jellyfin.url}"
-    "JELLYFIN_USER=${cfg.jellyfin.user}"
-    "JELLYFIN_ID=${cfg.jellyfin.id}"
-    "TEALFM_ID=${cfg.tealFm.id}"
-    "TEALFM_IDENTIFIER=${cfg.tealFm.identifier}"
   ] ++ extraEnvironment;
+
+  jellyfinConfig = builtins.toJSON [
+    {
+      name = cfg.jellyfin.name;
+      id = cfg.jellyfin.id;
+      enable = true;
+      clients = [ ];
+      data = {
+        url = cfg.jellyfin.url;
+        user = cfg.jellyfin.user;
+        apiKey = "[[MS_JELLYFIN_API_KEY]]";
+      };
+    }
+  ];
+
+  tealFmConfig = builtins.toJSON [
+    {
+      name = cfg.tealFm.name;
+      id = cfg.tealFm.id;
+      configureAs = "client";
+      data = {
+        identifier = cfg.tealFm.identifier;
+        appPassword = "[[MS_TEALFM_APP_PASSWORD]]";
+      };
+    }
+  ];
 in
 {
   options.multi-scrobbler = {
@@ -110,22 +139,28 @@ in
     };
 
     jellyfin = {
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = "Mayuri Jellyfin";
+        description = "Friendly name for the Jellyfin source in jellyfin.json.";
+      };
+
       url = lib.mkOption {
         type = lib.types.str;
         default = "http://127.0.0.1:8096";
-        description = "Jellyfin URL passed as JELLYFIN_URL.";
+        description = "Jellyfin URL written to jellyfin.json.";
       };
 
       user = lib.mkOption {
         type = lib.types.str;
         default = "anas";
-        description = "Jellyfin username passed as JELLYFIN_USER.";
+        description = "Jellyfin username written to jellyfin.json.";
       };
 
       id = lib.mkOption {
         type = lib.types.str;
         default = "Mayuri-Jellyfin";
-        description = "multi-scrobbler source identifier passed as JELLYFIN_ID.";
+        description = "multi-scrobbler source identifier written to jellyfin.json.";
       };
 
       apiKeySecret = lib.mkOption {
@@ -136,16 +171,22 @@ in
     };
 
     tealFm = {
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = "TealFm";
+        description = "Friendly name for the Teal.fm client in tealfm.json.";
+      };
+
       id = lib.mkOption {
         type = lib.types.str;
         default = "myTeal";
-        description = "multi-scrobbler client identifier passed as TEALFM_ID.";
+        description = "multi-scrobbler client identifier written to tealfm.json.";
       };
 
       identifier = lib.mkOption {
         type = lib.types.str;
         default = "anelgarhy.bsky.social";
-        description = "Teal.fm account identifier passed as TEALFM_IDENTIFIER.";
+        description = "Teal.fm account identifier written to tealfm.json.";
       };
 
       appPasswordSecret = lib.mkOption {
@@ -209,13 +250,32 @@ in
       nix-secrets.templates."${cfg.environmentTemplate}" = {
         content = ''
           ADMIN_SETUP_PW=${config.security.nix-secrets.secrets.${cfg.adminSetupPasswordSecret}}
-          JELLYFIN_APIKEY=${config.security.nix-secrets.secrets.${cfg.jellyfin.apiKeySecret}}
-          TEALFM_APP_PW=${config.security.nix-secrets.secrets.${cfg.tealFm.appPasswordSecret}}
+          MS_JELLYFIN_API_KEY=${config.security.nix-secrets.secrets.${cfg.jellyfin.apiKeySecret}}
+          MS_TEALFM_APP_PASSWORD=${config.security.nix-secrets.secrets.${cfg.tealFm.appPasswordSecret}}
         '';
         path = "/var/lib/multi-scrobbler/environment.env";
         mode = "0440";
         owner = "root";
-        group = toString cfg.gid;
+        group = cfg.gid;
+        isSymlink = false;
+      };
+
+      # Declarative, non-secret JSON config. Credentials stay as interpolation
+      # placeholders until multi-scrobbler reads them at startup.
+      nix-secrets.templates.${jellyfinConfigTemplate} = {
+        content = jellyfinConfig;
+        mode = "0640";
+        owner = cfg.uid;
+        group = cfg.gid;
+        isSymlink = false;
+      };
+
+      nix-secrets.templates.${tealFmConfigTemplate} = {
+        content = tealFmConfig;
+        mode = "0640";
+        owner = cfg.uid;
+        group = cfg.gid;
+        isSymlink = false;
       };
 
       networking.firewall.allowedTCPPorts = [ cfg.port ];
@@ -241,6 +301,14 @@ in
           "${configMount}" = {
             hostPath = cfg.hostConfigDir;
             isReadOnly = false;
+          };
+          "${jellyfinConfigMount}" = {
+            hostPath = config.security.nix-secrets.templates.${jellyfinConfigTemplate}.path;
+            isReadOnly = true;
+          };
+          "${tealFmConfigMount}" = {
+            hostPath = config.security.nix-secrets.templates.${tealFmConfigTemplate}.path;
+            isReadOnly = true;
           };
           "${environmentMount}" = {
             hostPath = config.security.nix-secrets.templates.${cfg.environmentTemplate}.path;

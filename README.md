@@ -448,6 +448,92 @@ curl -x http://kurisu:4444 http://git.idk.i2p/
 # http://kurisu:7070/susidns/addressbook?book=router&filter=none
 ```
 
+### Multi-Scrobbler (`multi-scrobbler`)
+
+`modules/multi-scrobbler.nix` runs the `multi-scrobbler` package from the
+`nixpkgs-unstable` input in a **host-network NixOS container**, matching
+Docker's `network_mode: host`. That lets the web UI bind host port `9078` and
+reach Jellyfin at `http://127.0.0.1:8096`. The container firewall is disabled;
+the host opens port `9078`.
+
+The host config supplies all non-secret settings:
+
+```nix
+# hosts/kurisu.nix
+multi-scrobbler = {
+  enable = true;
+  port = 9078;
+  timeZone = "Africa/Cairo";
+  baseUrl = "http://kurisu:9078";
+  hostConfigDir = "/var/lib/multi-scrobbler/config";
+  uid = 1000;
+  gid = 1001;
+  adminSetupPasswordSecret = "multi-scrobbler/kurisu/admin-setup-password";
+  jellyfin = {
+    url = "http://127.0.0.1:8096";
+    user = "anas";
+    id = "Mayuri-Jellyfin";
+    apiKeySecret = "multi-scrobbler/kurisu/jellyfin-apikey";
+  };
+  tealFm = {
+    id = "TealFm";
+    identifier = "anelgarhy.bsky.social";
+    appPasswordSecret = "multi-scrobbler/kurisu/teal-fm-app-password";
+  };
+};
+```
+
+Sources and clients are declared as **per-type JSON config files** instead of
+`JELLYFIN_*`/`TEALFM_*` environment variables: the module generates
+`/config/jellyfin.json` and `/config/tealfm.json` on every switch. Only runtime
+settings still use the environment: `TZ`, `PORT`, `BASE_URL`, `CONFIG_DIR`,
+`DATA_DIR`, `LOGS_DIR` and `ADMIN_SETUP_PW`. Optional `jellyfin.name` and
+`tealFm.name` set the human-readable names in those files.
+
+`hostConfigDir` is bind-mounted at `/config` and pre-created with mode `0750`
+and the configured numeric owner/group, so multi-scrobbler can create its own
+database, credentials and logs there. It uses the Docker-compatible directory
+layout (`CONFIG_DIR=/config`, `DATA_DIR=/config`, `LOGS_DIR=/config/logs`). The
+generated JSON files are mounted read-only over files in that directory, so
+edit the host config rather than the files inside the container.
+
+Credentials are supplied through a root-owned nix-secrets template mounted
+read-only at `/run/secrets/multi-scrobbler.env`; plaintext never enters git or
+the Nix store. `ADMIN_SETUP_PW` is consumed directly. The other two are exposed
+as `MS_JELLYFIN_API_KEY` and `MS_TEALFM_APP_PASSWORD`, which the JSON files
+reference as `[[MS_JELLYFIN_API_KEY]]` and `[[MS_TEALFM_APP_PASSWORD]]`.
+These interpolation names are deliberately not multi-scrobbler ENV config names.
+Create the three secrets before switching:
+
+```sh
+read -rsp 'Admin setup password: ' setuppw; echo
+printf '%s' "$setuppw" | EDITOR=- nix-secrets -f "git+file://$PWD#kurisu" \
+  edit multi-scrobbler/kurisu/admin-setup-password
+unset setuppw
+
+read -rsp 'Jellyfin API key: ' key; echo
+printf '%s' "$key" | EDITOR=- nix-secrets -f "git+file://$PWD#kurisu" \
+  edit multi-scrobbler/kurisu/jellyfin-apikey
+unset key
+
+read -rsp 'Teal.fm app password: ' pw; echo
+printf '%s' "$pw" | EDITOR=- nix-secrets -f "git+file://$PWD#kurisu" \
+  edit multi-scrobbler/kurisu/teal-fm-app-password
+unset pw
+
+git add secrets/ && nh os switch -H kurisu
+```
+
+The host firewall opens `9078`, and the container shares the host network, so
+the dashboard is reachable from another machine on the LAN:
+
+```sh
+curl http://kurisu:9078/api/health
+```
+
+The service restarts automatically unless it is stopped with
+`systemctl stop multi-scrobbler` inside the container.
+
 ### Firefox PAC (generated)
 
 `media/firefox.nix` generates the PAC at build time from the flake's
