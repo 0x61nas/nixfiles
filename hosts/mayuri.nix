@@ -98,6 +98,7 @@
     hostConfigDir = "/var/lib/multi-scrobbler/config";
     uid = 1000;
     gid = 1001;
+    adminSetupPasswordSecret = "multi-scrobbler/mayuri/admin-setup-password";
     jellyfin = {
       url = "http://127.0.0.1:8096";
       user = "anas";

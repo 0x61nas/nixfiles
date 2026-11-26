@@ -8,6 +8,7 @@ let
 
   secretEnabled = name: config.nix-secrets.secrets.${name}.enable or false;
   secretsAvailable = config.nix-secrets.enable
+    && secretEnabled cfg.adminSetupPasswordSecret
     && secretEnabled cfg.jellyfin.apiKeySecret
     && secretEnabled cfg.tealFm.appPasswordSecret;
 
@@ -99,6 +100,15 @@ in
       description = "Group name created inside the container for the service.";
     };
 
+    adminSetupPasswordSecret = lib.mkOption {
+      type = lib.types.str;
+      default = "multi-scrobbler/admin-setup-password";
+      description = ''
+        nix-secrets secret containing ADMIN_SETUP_PW, used to create the
+        initial admin account on first setup.
+      '';
+    };
+
     jellyfin = {
       url = lib.mkOption {
         type = lib.types.str;
@@ -175,8 +185,9 @@ in
           assertion = !cfg.enable || secretsAvailable;
           message = ''
             multi-scrobbler is enabled, but its secrets are not available on this host.
-            Enable nix-secrets and make sure ${cfg.jellyfin.apiKeySecret} and
-            ${cfg.tealFm.appPasswordSecret} are enabled.
+            Enable nix-secrets and make sure ${cfg.adminSetupPasswordSecret},
+            ${cfg.jellyfin.apiKeySecret} and ${cfg.tealFm.appPasswordSecret}
+            are enabled.
           '';
         }
         {
@@ -190,12 +201,14 @@ in
     # can create them before the first successful switch.
     (lib.mkIf cfg.enable {
       nix-secrets.secrets = {
+        "${cfg.adminSetupPasswordSecret}" = { };
         "${cfg.jellyfin.apiKeySecret}" = { };
         "${cfg.tealFm.appPasswordSecret}" = { };
       };
 
       nix-secrets.templates."${cfg.environmentTemplate}" = {
         content = ''
+          ADMIN_SETUP_PW=${config.security.nix-secrets.secrets.${cfg.adminSetupPasswordSecret}}
           JELLYFIN_APIKEY=${config.security.nix-secrets.secrets.${cfg.jellyfin.apiKeySecret}}
           TEALFM_APP_PW=${config.security.nix-secrets.secrets.${cfg.tealFm.appPasswordSecret}}
         '';
