@@ -52,11 +52,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1791787650,
-        "narHash": "sha256-uvxrXuF7dx6hE54XcrlV7Pt7dCAkY5kqsj3yI5Io7nw=",
+        "lastModified": 1793550497,
+        "narHash": "sha256-JYE7WgUdcHDzAkCJZDQ5YkyEI5aGy3nglQFHVE1wwL8=",
         "owner": "Sveske-Juice",
         "repo": "declarative-jellyfin",
-        "rev": "a8f81812af6bc9017e6d85820a2fd60038c05589",
+        "rev": "aef9fd0151562f394cabd9f14d01b5b201765a94",
         "type": "github"
       },
       "original": {
@@ -200,11 +200,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794943722,
-        "narHash": "sha256-Qkh6uNyMsic61gfyOO8VXnC+HEBdti6Xe2kKiMf66O0=",
+        "lastModified": 1795325060,
+        "narHash": "sha256-XYoMPsqRFZ6jOaYI1KAAu8fzqif4tkCX8mhEKrViDXQ=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "5643e73425b85ac359ba2aaf83deae8ce1cd7968",
+        "rev": "6480d7d8533b88c78cc6dcda395ab89cd546e450",
         "type": "github"
       },
       "original": {
@@ -349,11 +349,11 @@
         "treefmt-nix": "treefmt-nix_3"
       },
       "locked": {
-        "lastModified": 1795072075,
-        "narHash": "sha256-W356WzCAIrkCq8nQeZHpg541uA3drlotn0KarZTgXOc=",
+        "lastModified": 1795350784,
+        "narHash": "sha256-ZbFwbrqBJEyICUyqlzz9AcaTVZz0zbd2G7Mzweal3kk=",
         "owner": "Mic92",
         "repo": "nix-fast-build",
-        "rev": "7ded99eaf9c714caa99756b1384ec9d021269710",
+        "rev": "bb1b2d0e9079e7619ed5f96ad27fbde6790d4260",
         "type": "github"
       },
       "original": {
@@ -392,11 +392,11 @@
         "systems": "systems_5"
       },
       "locked": {
-        "lastModified": 1794650935,
-        "narHash": "sha256-dp/hNMEWQXl2TDiOGHvwryT08DxC56PvK7oQx1B1MOQ=",
+        "lastModified": 1795259076,
+        "narHash": "sha256-VWuPWde1tAAD0Tu4KA2ZfhW6nhk9x/tkbv0hi47v1R8=",
         "owner": "nix-community",
         "repo": "nix-jetbrains-plugins",
-        "rev": "13fde73c7609e16915c1cfde9e9cc0c9d09c55ff",
+        "rev": "1cb423def1692e4840be3378176ff159ee7c8cae",
         "type": "github"
       },
       "original": {
@@ -412,11 +412,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795156162,
-        "narHash": "sha256-1r3Y1AHu+z5r1DZxSJX8kWR3zv5QRxOax0F7FGbv65g=",
+        "lastModified": 1795635705,
+        "narHash": "sha256-iT2uRAVoTwcNXpX8uFiBEIYa2LhZEnol823UQrJvOVk=",
         "owner": "unnamed-systems",
         "repo": "nix-secrets",
-        "rev": "095890f9b5f1fd396539ed2f4092c2e86325a3ec",
+        "rev": "6790b3968acdaea623e210bedd290e24a6bd90a4",
         "type": "github"
       },
       "original": {
@@ -447,11 +447,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1795137884,
-        "narHash": "sha256-xVwloUjz7paCDnvN5dkrasmAGV+O6uyRUPFHxv2w3VA=",
-        "rev": "ab5c18fdedfc8f9bbc9d773f10a540790e2787a7",
+        "lastModified": 1795370043,
+        "narHash": "sha256-RThZ6/XvhVczW74iClJaGo9+fXjvfm5mvvzTy6hrcYU=",
+        "rev": "0dc498bfe49baeb18b0f9891e800b53bb2603193",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.14894.ab5c18fdedfc/nixexprs.tar.zst"
+        "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.15079.0dc498bfe49b/nixexprs.tar.zst"
       },
       "original": {
         "id": "nixpkgs",
@@ -461,11 +461,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1795085501,
-        "narHash": "sha256-kqy60mdSH4GQAv3kzSeefteaiCv9arf3P+auosZrpo0=",
-        "rev": "0bb8272318b4ca41bf0edc6224df3e3e3046b70d",
+        "lastModified": 1795234589,
+        "narHash": "sha256-pAEASBc6wof0S58XcSEdZoQ2iFQDkCnZwH+wFLrkd1Q=",
+        "rev": "2786a2a72088ecf32aea5b3ec52099e6a7cff78f",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1124497.0bb8272318b4/nixexprs.tar.zst"
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1125864.2786a2a72088/nixexprs.tar.zst"
       },
       "original": {
         "id": "nixpkgs",
