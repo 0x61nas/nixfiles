@@ -5,7 +5,7 @@
       "com.github.lonre.gruvbox-intellij-theme"
       # "zielu.gittoolbox" # Git Tool Box
       "io.github.salatmaster.direnv" # Direnv Everywhere
-      "com.chuntung.plugin.hidetrial" # Hide Trial
+      #"com.chuntung.plugin.hidetrial" # Hide Trial
       "com.intellij.spring.debugger" # Spring Debugger
       "com.jetbrains.kmm" # Kotlin Multiplatform
       "org.jetbrains.android" # Kotlin Multiplatform dependency
