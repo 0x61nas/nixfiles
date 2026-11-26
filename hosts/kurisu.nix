@@ -87,6 +87,30 @@
     };
   };
 
+  # Multi-Scrobbler a playing tracker
+  multi-scrobbler = {
+    enable = true;
+    port = 9078;
+    timeZone = "Africa/Cairo";
+    baseUrl = "http://kurisu:9078";
+    hostConfigDir = "/var/lib/multi-scrobbler/config";
+    uid = 1000;
+    gid = 1001;
+    adminSetupPasswordSecret = "multi-scrobbler/kurisu/admin-setup-password";
+    jellyfin = {
+      url = "http://127.0.0.1:8096";
+      user = "anas";
+      id = "Mayuri-Jellyfin";
+      apiKeySecret = "multi-scrobbler/kurisu/jellyfin-apikey";
+    };
+    tealFm = {
+      id = "TealFm";
+      identifier = "anelgarhy.bsky.social";
+      appPasswordSecret = "multi-scrobbler/kurisu/teal-fm-app-password";
+    };
+  };
+
+
   # Networking
   networking.hostName = "Kurisu";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.

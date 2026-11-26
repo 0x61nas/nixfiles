@@ -91,7 +91,7 @@
 
   # Multi-Scrobbler a playing tracker
   multi-scrobbler = {
-    enable = true;
+    enable = false;
     port = 9078;
     timeZone = "Africa/Cairo";
     baseUrl = "http://mayuri:9078";
