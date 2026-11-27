@@ -64,8 +64,9 @@ let
     }
   ];
 
-  containerInterface = "ve-mul-scrobler";
-
+  # Match on the container address, not iifname: nspawn truncates long veth
+  # names (ve-multi-scrobbler becomes e.g. ve-multi-scqLsJ), so an iifname
+  # match would silently never fire.
   # Keep the firewall allow-list and the container's /etc/hosts entry in sync
   # with the URL multi-scrobbler actually dials.
   jellyfinUrl =
@@ -113,23 +114,21 @@ let
     # The nixos-fw forward chain accepts established/related traffic and DNAT'd
     # connections before these rules, so replies and the forwarded web UI work.
     ${lib.concatStringsSep "\n" (map (target: ''
-      iifname "${containerInterface}" ip saddr ${cfg.localAddress} \
-        ip daddr ${target.address} tcp dport ${toString target.port} \
+      ip saddr ${cfg.localAddress} ip daddr ${target.address} \
+        tcp dport ${toString target.port} \
         accept comment "multi-scrobbler: allow ${target.address}:${toString target.port}"
     '') localTargets)}
 
     # Deny every other local/private destination, including other Tailscale
     # peers, the host itself and link-local/multicast ranges.
-    iifname "${containerInterface}" ip saddr ${cfg.localAddress} \
-      ip daddr { ${localNetworks4} } drop comment "multi-scrobbler: deny local IPv4"
-    iifname "${containerInterface}" ip6 saddr fe80::/10 \
-      ip6 daddr { ${localNetworks6} } drop comment "multi-scrobbler: deny local IPv6"
+    ip saddr ${cfg.localAddress} ip daddr { ${localNetworks4} } \
+      drop comment "multi-scrobbler: deny local IPv4"
+    ip6 saddr fe80::/10 ip6 daddr { ${localNetworks6} } \
+      drop comment "multi-scrobbler: deny local IPv6"
 
     # Anything else is internet traffic (teal.fm, Last.fm, public DNS, ...).
-    iifname "${containerInterface}" ip saddr ${cfg.localAddress} \
-      accept comment "multi-scrobbler: allow internet"
-    iifname "${containerInterface}" ip6 saddr fe80::/10 \
-      accept comment "multi-scrobbler: allow internet (IPv6)"
+    ip saddr ${cfg.localAddress} accept comment "multi-scrobbler: allow internet"
+    ip6 saddr fe80::/10 accept comment "multi-scrobbler: allow internet (IPv6)"
   '';
 in
 {
