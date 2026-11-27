@@ -64,7 +64,7 @@ let
     }
   ];
 
-  containerInterface = "ve-mul-scrobbler";
+  containerInterface = "ve-mul-scrobler";
 
   # Keep the firewall allow-list and the container's /etc/hosts entry in sync
   # with the URL multi-scrobbler actually dials.
