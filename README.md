@@ -17,17 +17,14 @@ which host configuration is applied, so you only need to pass the machine's name
 - Rebuild and switch the system configuration (from the configuration directory):
 
 ```
-nh os switch -H mayuri
+doas nixos-rebuild switch --flake .#mayuri --print-build-logs
 ```
 
 OR
 
 ```
-nh os switch -H kurisu
+doas nixos-rebuild switch --flake .#kurisu --print-build-logs
 ```
-
-The `programs.nh.flake` option points this repo, so `nh` uses the config from
-`/home/anas/nixfiles`.
 
 - Update the flake inputs:
 
@@ -181,7 +178,7 @@ git add secrets/
 Then rebuild:
 
 ```sh
-nh os switch -H mayuri
+doas nixos-rebuild switch --flake .#mayuri --print-build-logs
 ```
 
 The `nix-secrets` CLI is part of the development shell, and secret names are
@@ -434,7 +431,7 @@ EDITOR=- nix-secrets -f "git+file://$PWD#kurisu" \
   edit tor/kurisu/sites/blog/keys < /tmp/onion/hs_ed25519_secret_key
 rm -rf /tmp/tor-onion /tmp/onion
 
-git add secrets/ && nh os switch -H kurisu
+git add secrets/ && doas nixos-rebuild switch --flake .#kurisu --print-build-logs
 ```
 
 Host access is forwarded to `127.0.0.1`, `127.0.0.2`, the LAN address, and any
@@ -524,7 +521,7 @@ printf '%s' "$pw" | EDITOR=- nix-secrets -f "git+file://$PWD#kurisu" \
   edit multi-scrobbler/kurisu/teal-fm-app-password
 unset pw
 
-git add secrets/ && nh os switch -H kurisu
+git add secrets/ && doas nixos-rebuild switch --flake .#kurisu --print-build-logs
 ```
 
 The host firewall opens `9078`, and the container shares the host network, so
@@ -599,7 +596,7 @@ doas nix-store --generate-binary-cache-key <host>.lan-1 /etc/nix/peer-cache.key 
 3. Rebuild both hosts:
 
 ```
-nh os switch -H <host>
+doas nixos-rebuild switch --flake .#<host> --print-build-logs
 ```
 
 No push keypair and no separate `nix-daemon` restart are needed.
@@ -671,7 +668,7 @@ hosts.<host> = {
 7. Switch to it:
 
 ```
-nh os switch -H <host>
+doas nixos-rebuild switch --flake .#<host> --print-build-logs
 ```
 
 ## Nix registry
