@@ -355,6 +355,11 @@ in
             };
           };
       };
+      # start after the tailscaled service so the host names resolve
+      systemd.services."container@multi-scrobbler" = {
+        after = [ "tailscaled.service" ];
+        requires = [ "tailscaled.service" ];
+    };
     })
   ];
 }
