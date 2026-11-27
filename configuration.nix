@@ -230,10 +230,10 @@
 
   nix = {
     package = pkgs-unstable.nixVersions.latest;
-    # gc = {
-    #   automatic = true;
-    #   dates = "weekly";
-    # };
+     gc = {
+       automatic = true;
+       dates = "monthly";
+     };
     settings = {
       auto-optimise-store = true;
       sandbox = "relaxed";
@@ -243,13 +243,5 @@
         "flakes"
       ];
     };
-  };
-
-  programs.nh = {
-    enable = true;
-    package = pkgs-unstable.nh;
-    clean.enable = true;
-    clean.extraArgs = "--keep-since 2month --keep 3";
-    flake = "/home/anas/nixfiles";
   };
 }
