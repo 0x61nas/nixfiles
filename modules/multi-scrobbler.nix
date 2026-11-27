@@ -1,5 +1,6 @@
 { config
 , lib
+, pkgs
 , pkgs-unstable
 , ...
 }:
@@ -63,6 +64,13 @@ let
       };
     }
   ];
+
+  # nspawn copies the host's resolv.conf (a stub resolver that does not exist
+  # in the container's netns). Bind a known-good public resolver file instead
+  # so ATProto handle lookups work.
+  resolvConfFile = pkgs.writeText "multi-scrobbler-resolv.conf" (
+    lib.concatStringsSep "\n" (map (ns: "nameserver ${ns}") cfg.dnsServers) + "\n"
+  );
 
   # Match on the container address, not iifname: nspawn truncates long veth
   # names (ve-multi-scrobbler becomes e.g. ve-multi-scqLsJ), so an iifname
@@ -443,6 +451,10 @@ in
             hostPath = config.security.nix-secrets.templates.${cfg.environmentTemplate}.path;
             isReadOnly = true;
           };
+          "/etc/resolv.conf" = {
+            hostPath = "${resolvConfFile}";
+            isReadOnly = true;
+          };
         };
 
         config =
@@ -455,9 +467,9 @@ in
               allowedTCPPorts = [ cfg.port ];
             };
 
-            # Public DNS plus a pinned Jellyfin hostname: MagicDNS and the
-            # host's 127.0.0.53 stub are unavailable inside this netns.
-            networking.nameservers = cfg.dnsServers;
+            # resolv.conf is bind-mounted with public DNS; don't let
+            # resolvconf replace it with the host's unusable stub.
+            networking.resolvconf.enable = false;
             networking.extraHosts = lib.optionalString
               (cfg.jellyfin.address != null
                 && jellyfinUrl.host != null
