@@ -63,6 +63,74 @@ let
       };
     }
   ];
+
+  containerInterface = "ve-multi-scrobbler";
+
+  # Keep the firewall allow-list and the container's /etc/hosts entry in sync
+  # with the URL multi-scrobbler actually dials.
+  jellyfinUrl =
+    let
+      match = builtins.match "[[:alpha:]][[:alnum:]+.-]*://([^/:]+)(:([0-9]+))?(/.*)?$" cfg.jellyfin.url;
+    in
+    if match == null then
+      { host = null; port = null; }
+    else
+      {
+        host = builtins.head match;
+        port = if builtins.elemAt match 2 == null then null else builtins.fromJSON (builtins.elemAt match 2);
+      };
+
+  # Local ranges the isolated container must not reach. 100.64.0.0/10 covers
+  # Tailscale's IPv4 range; fc00::/7 covers its IPv6 ULA range.
+  localNetworks4 = lib.concatStringsSep ", " [
+    "0.0.0.0/8"
+    "10.0.0.0/8"
+    "100.64.0.0/10"
+    "127.0.0.0/8"
+    "169.254.0.0/16"
+    "172.16.0.0/12"
+    "192.168.0.0/16"
+    "224.0.0.0/4"
+    "240.0.0.0/4"
+  ];
+
+  localNetworks6 = lib.concatStringsSep ", " [
+    "::1/128"
+    "fc00::/7"
+    "fe80::/10"
+    "ff00::/8"
+    "2001:db8::/32"
+  ];
+
+  localTargets =
+    lib.optional (cfg.jellyfin.address != null && jellyfinUrl.port != null) {
+      address = cfg.jellyfin.address;
+      port = jellyfinUrl.port;
+    }
+    ++ cfg.allowedLocalTargets;
+
+  forwardRules = ''
+    # The nixos-fw forward chain accepts established/related traffic and DNAT'd
+    # connections before these rules, so replies and the forwarded web UI work.
+    ${lib.concatStringsSep "\n" (map (target: ''
+      iifname "${containerInterface}" ip saddr ${cfg.localAddress} \
+        ip daddr ${target.address} tcp dport ${toString target.port} \
+        accept comment "multi-scrobbler: allow ${target.address}:${toString target.port}"
+    '') localTargets)}
+
+    # Deny every other local/private destination, including other Tailscale
+    # peers, the host itself and link-local/multicast ranges.
+    iifname "${containerInterface}" ip saddr ${cfg.localAddress} \
+      ip daddr { ${localNetworks4} } drop comment "multi-scrobbler: deny local IPv4"
+    iifname "${containerInterface}" ip6 saddr fe80::/10 \
+      ip6 daddr { ${localNetworks6} } drop comment "multi-scrobbler: deny local IPv6"
+
+    # Anything else is internet traffic (teal.fm, Last.fm, public DNS, ...).
+    iifname "${containerInterface}" ip saddr ${cfg.localAddress} \
+      accept comment "multi-scrobbler: allow internet"
+    iifname "${containerInterface}" ip6 saddr fe80::/10 \
+      accept comment "multi-scrobbler: allow internet (IPv6)"
+  '';
 in
 {
   options.multi-scrobbler = {
@@ -151,6 +219,16 @@ in
         description = "Jellyfin URL written to jellyfin.json.";
       };
 
+      address = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = "100.126.74.4";
+        description = ''
+          IPv4 address of the Jellyfin server (Mayuri's Tailscale address). It
+          is the only local destination allowed on the URL's port and is pinned
+          in the container's /etc/hosts. Set to null if Jellyfin is online.
+        '';
+      };
+
       user = lib.mkOption {
         type = lib.types.str;
         default = "anas";
@@ -216,6 +294,48 @@ in
       type = lib.types.str;
       default = "multi-scrobbler/environment";
       description = "nix-secrets template used to pass secret environment variables.";
+    };
+
+    hostAddress = lib.mkOption {
+      type = lib.types.str;
+      default = "10.100.0.1";
+      description = "Host side of the container's private veth pair.";
+    };
+
+    localAddress = lib.mkOption {
+      type = lib.types.str;
+      default = "10.100.0.2";
+      description = "Container side of the container's private veth pair.";
+    };
+
+    dnsServers = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ "1.1.1.1" "8.8.8.8" ];
+      description = ''
+        Public resolvers used inside the isolated container. The host's stub
+        resolver is not reachable from its own network namespace.
+      '';
+    };
+
+    allowedLocalTargets = lib.mkOption {
+      type = lib.types.listOf (lib.types.submodule {
+        options = {
+          address = lib.mkOption {
+            type = lib.types.str;
+            description = "IPv4 address or CIDR of the allowed local destination.";
+          };
+          port = lib.mkOption {
+            type = lib.types.port;
+            description = "TCP port allowed on that destination.";
+          };
+        };
+      });
+      default = [ ];
+      example = [ { address = "192.168.1.10"; port = 8000; } ];
+      description = ''
+        Additional local/Tailscale destinations the container may reach. All
+        other local traffic is dropped; internet traffic is always allowed.
+      '';
     };
   };
 
@@ -295,9 +415,17 @@ in
       containers.multi-scrobbler = {
         autoStart = true;
 
-        # Equivalent to Docker's `network_mode: host`: the app binds the host's
-        # port 9078 directly and can reach Jellyfin at 127.0.0.1:8096.
-        privateNetwork = false;
+        privateNetwork = true;
+        hostAddress = cfg.hostAddress;
+        localAddress = cfg.localAddress;
+
+        forwardPorts = [
+          {
+            containerPort = cfg.port;
+            hostPort = cfg.port;
+            protocol = "tcp";
+          }
+        ];
 
         bindMounts = {
           "${configMount}" = {
@@ -323,9 +451,19 @@ in
           {
             system.stateVersion = "26.05";
 
-            # The container shares the host's network namespace, so the host's
-            # firewall owns port 9078.
-            networking.firewall.enable = false;
+            networking.firewall = {
+              enable = true;
+              allowedTCPPorts = [ cfg.port ];
+            };
+
+            # Public DNS plus a pinned Jellyfin hostname: MagicDNS and the
+            # host's 127.0.0.53 stub are unavailable inside this netns.
+            networking.nameservers = cfg.dnsServers;
+            networking.extraHosts = lib.optionalString
+              (cfg.jellyfin.address != null
+                && jellyfinUrl.host != null
+                && builtins.match "[0-9.]+" jellyfinUrl.host == null)
+              "${cfg.jellyfin.address} ${jellyfinUrl.host}\n";
 
             users.groups.${cfg.group}.gid = cfg.gid;
             users.users.${cfg.user} = {
@@ -359,6 +497,24 @@ in
       systemd.services."container@multi-scrobbler" = {
         after = [ "tailscaled.service" ];
         requires = [ "tailscaled.service" ];
+    };
+    networking.nftables.enable = true;
+    networking.firewall = {
+      filterForward = true;
+      extraForwardRules = forwardRules;
+    };
+
+    # systemd-networkd is disabled on these hosts, so the ve-* interface never
+    # gets its usual IPMasquerade=both. NAT the container's address explicitly
+    # or neither the internet nor Tailscale replies would make it back.
+    networking.nftables.tables."multi-scrobbler-nat" = {
+      family = "ip";
+      content = ''
+        chain postrouting {
+          type nat hook postrouting priority srcnat; policy accept;
+          ip saddr ${cfg.localAddress} masquerade comment "multi-scrobbler: outbound NAT"
+        }
+      '';
     };
     })
   ];
